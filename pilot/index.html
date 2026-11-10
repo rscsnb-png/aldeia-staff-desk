@@ -378,6 +378,22 @@ body::before{background:var(--hdr)}
 .ibcomp input{flex:1;min-height:46px;border-radius:23px;padding:0 16px;min-width:0}
 .ibcomp .btn{border-radius:23px;min-height:46px;padding:0 18px}
 .pwnav{display:flex;align-items:center;gap:8px}.pwnav .wl{flex:1;min-width:0;text-align:center;font-size:14px}.pwnav .iconx{background:var(--surface);border:1px solid var(--line)}
+.hal-test{background:#fde7c4;color:#4a3200;border:1.5px solid #e0a43a;cursor:pointer;align-items:center}.hal-test b{color:#7a4a00}.hal-test .hal-t span{color:#4a3200}
+.tico{width:30px;height:30px;border-radius:50%;background:#e0a43a;color:#fff;display:grid;place-items:center;font-size:15px;font-weight:800;flex:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hal-test{background:#4a3410;color:#fde7c4;border-color:#a87420}:root:not([data-theme="light"]) .hal-test b,:root:not([data-theme="light"]) .hal-test .hal-t span{color:#fde7c4}}
+:root[data-theme="dark"] .hal-test{background:#4a3410;color:#fde7c4;border-color:#a87420}:root[data-theme="dark"] .hal-test b,:root[data-theme="dark"] .hal-test .hal-t span{color:#fde7c4}
+.hal-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;cursor:default}.hal-row .acts{display:flex;gap:6px}
+.okb{background:var(--ok-bg)}
+.moodrow{flex-basis:100%;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mood{width:42px;height:42px;border-radius:21px;border:1px solid var(--line-strong);background:var(--surface);font-size:22px;line-height:1;cursor:pointer;padding:0;opacity:.6}
+.mood.on{opacity:1;border:2px solid var(--accent);background:var(--accent-soft)}
+.moodstrip{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;text-align:center}.ms{display:flex;flex-direction:column;align-items:center}.ms .me{font-size:22px;line-height:1.3}.ms small{font-size:10px;color:var(--muted);white-space:nowrap}
+.ibhb{display:flex;gap:6px;flex:none}.ibhb .btn{background:var(--hdr-btn);color:var(--hdr-fg);border-color:transparent}.ibhb .btn.danger{color:#8a1f15;background:#fff}
+.bub{position:relative}.bub.sel{outline:2px solid var(--accent)}
+.bsel{position:absolute;top:8px;left:8px;width:26px;height:26px;border-radius:13px;border:2px solid var(--accent);background:var(--surface);color:var(--accent);font-weight:800;font-size:13px;display:grid;place-items:center;cursor:pointer;padding:0}
+.bub.sel .bsel{background:var(--accent);color:var(--accent-fg)}
+.ibchat.selm .bub{padding-left:42px;min-height:44px}
+.lvc .thumbs{margin:0}
 </style>
 </head>
 <body>
@@ -428,7 +444,7 @@ window.__PILOT=true;
 window.startApp=function(){
 const PILOT=!!window.__PILOT;
 const VERSION='2.3.0-pilot';
-const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log'];
+const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','papprove','mood','leavereq','incidents','maint','ibhide','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log'];
 const S={settings:{}}; COLLS.forEach(c=>S[c]=[]);
 let entryMap={}, soMap={}, db=null, dl=null, assets=null, photoOk=false, loaded=false, dbState='loading';
 const lsGet=k=>{try{return localStorage.getItem('asd_'+k)}catch(e){return null}};
@@ -563,8 +579,8 @@ function testsOnDate(date){
 function tagsFor(o,sid,noTime){
   const t=noTime?[]:[timeLabel(o)];
   if(o.childIds&&o.childIds.length>1) t.push(whoLabel(o)); else if(o.childId) t.push('Child: '+nm('children',o.childId));
-  if(o.gradeId) t.push(nm('grades',o.gradeId));
-  if(o.curriculumId) t.push(nm('curriculum',o.curriculumId));
+  if(o.gradeId&&!PILOT) t.push(nm('grades',o.gradeId));
+  if(o.curriculumId&&!PILOT) t.push(nm('curriculum',o.curriculumId));
   if(o.topicId) t.push(tName(o.topicId));
   return t.filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join('');
 }
@@ -586,9 +602,9 @@ function syncPlans(rid,date,sid,done){const r=byId('resp',rid);if(!r)return;cons
 
 /* ---------- render core ---------- */
 const panel=document.getElementById('panel');
-function tabsFor(){if(ui.isMgr)return [['home','Today'],['check','Checklist'],['reg','Register'],['plan','Planning'],['resp','Responsibilities'],['time','Timetable'],['over','Overview'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Resources']]:[]),['fb','Messages'],['inbox','Inbox'],['setup','Setup']];
+function tabsFor(){if(ui.isMgr)return [['home','Today'],['check','Checklist'],['reg','Register'],['plan','Planning'],['resp','Responsibilities'],['time','Timetable'],['over','Overview'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Resources'],['leave','Leave'],['inc','Incidents'],['maint','Maintenance']]:[]),['fb','Messages'],['inbox','Inbox'],['setup','Setup']];
   const P=myPerms(),t=[['home','Today'],['check','Checklist'],['reg','Register'],['plan','Planning']];if(P.includes('resp'))t.push(['resp','Responsibilities']);
-  t.push(['time','Timetable'],['over',P.includes('overview')?'Overview':'My progress'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Resources']]:[]),['fb','Messages']);
+  t.push(['time','Timetable'],['over',P.includes('overview')?'Overview':'My progress'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Resources'],['leave','Leave'],['inc','Incidents'],['maint','Maintenance']]:[]),['fb','Messages']);
   if(P.includes('inbox'))t.push(['inbox','Inbox']);if(P.includes('setup'))t.push(['setup','Setup']);return t}
 const signedIn=()=>!!(ui.me||ui.mgr);
 const NAVICO={home:'<path d="M3 11 12 4l9 7v9H3z"/>',plan:'<path d="M4 20h16M6 16l9-9 3 3-9 9H6z"/>',reg:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11l2 2 4-4"/>',fb:'<path d="M4 5h16v11H8l-4 4z"/>',inbox:'<path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
@@ -624,7 +640,7 @@ let pending=false;
 const isEditing=()=>{const a=document.activeElement;return a&&panel.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!['checkbox','radio','file'].includes(a.type)};
 function scheduleRender(){if(isEditing()){pending=true;return}render()}
 document.addEventListener('focusout',()=>{if(pending)setTimeout(()=>{if(!isEditing()){pending=false;render()}},60)});
-const VIEWS={news:vNews,req:vReq,home:vHome,reg:vReg,bday:vBday,inbox:PILOT?vInboxP:vInbox,search:vSearch,time:vTime,check:vCheck,plan:PILOT?vPlanP:vPlan,over:vOver,kids:vKids,cover:vCover,fb:vFb,resp:vResp,setup:vSetup};
+const VIEWS={news:vNews,req:vReq,leave:vLeave,inc:vInc,maint:vMaint,home:vHome,reg:vReg,bday:vBday,inbox:PILOT?vInboxP:vInbox,search:vSearch,time:vTime,check:vCheck,plan:PILOT?vPlanP:vPlan,over:vOver,kids:vKids,cover:vCover,fb:vFb,resp:vResp,setup:vSetup};
 function render(){
   pending=false;
   try{
@@ -637,6 +653,7 @@ function render(){
     if(dbState==='none') h+=`<div class="banner info"><b>Sign in to Claude to use the shared tracker.</b><span>Ticks, comments and planning are saved in one shared place once you're signed in.</span></div>`;
     else if(dbState==='error') h+=`<div class="banner"><b>Couldn't reach the shared data.</b><span>Check your connection, then reopen this page.</span></div>`;
     if(PILOT&&signedIn()&&ui.tab!=='home') h+=`<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>`;
+    if(PILOT&&signedIn()&&ui.tab!=='home'&&!navigator.onLine) h+=`<div class="banner"><b>You're offline</b><span class="small">Changes are saved on this phone and sent when you're back online.</span></div>`;
     if(ui.viewing) h+=`<div class="banner" style="background:var(--accent-soft)"><div class="row spread"><b>Viewing as ${esc(nm('staff',ui.me))}</b><button class="btn sm primary" data-act="viewexit">Back to my view</button></div></div>`;
     if(!signedIn()) h+=vGate(); else {if(ui.acct)h+=acctCard(); h+=VIEWS[ui.tab]();}
     panel.innerHTML=h;
@@ -971,6 +988,7 @@ function vPlanP(){
     return `<button class="wkd${x===d?' on':''}${ps.length?'':' empty'}" data-act="plday" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small></button>`}).join('')}</div>`;
   if(kids.length>1) h+=`<div class="chiprow" role="group" aria-label="Show planning for">${[['','All '+kids.length],...grps.map(g=>['g:'+g.id,g.name]),...kids.map(c=>['c:'+c.id,(c.name||'').split(' ')[0]])].map(([v,l])=>`<button class="chip${v===w?' on':''}" data-act="plwho" data-v="${v}" aria-pressed="${v===w}">${esc(l)}</button>`).join('')}</div>`;
   h+=`<div class="plbar"><button class="btn primary" data-act="psopen" data-d="${d}">+ Add activity</button><button class="btn" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="copyweek">Copy last week</button></div>`;
+  h+=papBox();
   if(!w&&kids.length>1){const wk=plansFor(ds),miss=kids.filter(c=>!wk.some(p=>covers(p,c.id)));
     if(miss.length&&miss.length<kids.length) h+=`<div class="banner warnb"><span class="small"><b>No planning this week yet for:</b> ${miss.map(c=>esc((c.name||'').split(' ')[0])).join(', ')}</span></div>`}
   const ps=plansFor([d]).filter(plWhoMatch),bs=breaksFor(),ts=testsOnDate(d),tk=w?[]:itemsFor([d]);
@@ -1045,7 +1063,7 @@ function ibEvents(sid){const ev=[];
     S.replies.filter(r=>r.fid===f.id&&(r.by==='manager'||r.by===sid)).forEach(r=>ev.push({t:'r',at:r.at||'',r,f,me:r.by==='manager'}));
     if(!f.from||f.from==='manager'){const t=(f.doneBy||{})[sid];if(t)ev.push({t:'d',at:t,f,me:false})}});
   photoRecs().filter(x=>x.sid===sid&&x.staffPh).forEach(x=>ev.push({t:'p',at:x.at||x.date||'',x,me:false}));
-  return ev.sort((a,b)=>a.at.localeCompare(b.at))}
+  return ev.filter(e=>ibVisible(sid,e)).sort((a,b)=>a.at.localeCompare(b.at))}
 function ibThreads(){return liveStaff().map(s=>{const ev=ibEvents(s.id),seen=ibSeen(s.id);return {sid:s.id,ev,last:ev[ev.length-1],unread:ev.filter(e=>!e.me&&e.at>seen&&!(e.t==='f'&&e.f.deleted)).length}})
   .filter(t=>t.ev.length).sort((a,b)=>(b.last.at||'').localeCompare(a.last.at||''))}
 function ibPrev(e){if(!e)return '';if(e.t==='p')return 'Photo · '+e.x.text;if(e.t==='d')return 'Marked done · '+e.f.text;if(e.t==='r')return (e.me?'You: ':'')+e.r.text;
@@ -1057,6 +1075,9 @@ function ibApprovals(){const out=[];
     if(f.kind==='unlock'){const open=(f.scope==='plan'?plocked(f.from,f.date):signed(f.from,f.date))&&!f.closed;
       if(open)out.push({at:f.at,sid:f.from,txt:(f.scope==='plan'?'Unlock planning · ':'Unlock checklist · ')+fmt(f.date),note:f.text,btn:`<button class="btn sm primary" data-act="${f.scope==='plan'?'unlockplan':'unlockday'}" data-s="${f.from}" data-d="${f.date}">Unlock</button>`})}
     else if(!f.from||f.from==='manager')Object.entries(f.doneBy||{}).forEach(([k,t])=>{if(!(f.approvedFor||{})[k])out.push({at:t,sid:k,txt:'Done · '+f.text,btn:`<button class="btn sm primary" data-act="fbapprove" data-id="${f.id}" data-s="${k}">Approve</button><button class="btn sm" data-act="fbreopen" data-id="${f.id}" data-s="${k}">Not yet</button>`})})});
+  S.papprove.forEach(r=>{if(r.status!=='submitted')return;const n=S.plans.filter(p=>p.staffId===r.staffId&&weekDates(parse(r.ws)).includes(p.date)).length;
+    out.push({at:r.at,sid:r.staffId,txt:`Week ${isoWeek(parse(r.ws))} planning · ${n} activities`,btn:`<button class="btn sm primary" data-act="papok" data-id="${r.id}">Approve</button><button class="btn sm" data-act="ibplan" data-s="${r.staffId}" data-ws="${r.ws}">Open week</button>`})});
+  S.leavereq.forEach(r=>{if(r.status!=='pending')return;out.push({at:r.at,sid:r.staffId,txt:`${r.type} · ${fmt(r.from)}${r.to&&r.to!==r.from?' – '+fmt(r.to):''}`,note:r.note,btn:`<button class="btn sm" data-act="tab" data-t="leave">Open leave</button>`})});
   return out.sort((a,b)=>(b.at||'').localeCompare(a.at||''))}
 function vInboxP(){if(ui.ibChat&&byId('staff',ui.ibChat))return ibThread(ui.ibChat);
   const tab=ui.ibTab||'chats',ap=ibApprovals(),th=ibThreads(),ph=photoRecs().filter(x=>x.staffPh);
@@ -1070,7 +1091,7 @@ function vInboxP(){if(ui.ibChat&&byId('staff',ui.ibChat))return ibThread(ui.ibCh
   return h}
 function ibThread(sid){const s=byId('staff',sid),ev=ibEvents(sid);
   if(ev.length&&ev[ev.length-1].at>ibSeen(sid))lsSet(ibSeenK(sid),new Date().toISOString());
-  let h=`<div class="ibhead"><button class="iconx" data-act="ibback" aria-label="Back to chats">‹</button>${av(sid,staffLabel(s))}<div><b>${esc(staffLabel(s))}</b><div class="small">${esc([nm('branches',(s||{}).branchId),s&&s.role].filter(Boolean).join(' · '))}</div></div></div><div class="ibchat">`;
+  let h=`<div class="ibhead"><button class="iconx" data-act="ibback" aria-label="Back to chats">‹</button>${av(sid,staffLabel(s))}<div style="flex:1;min-width:0"><b>${esc(staffLabel(s))}</b><div class="small">${esc([nm('branches',(s||{}).branchId),s&&s.role].filter(Boolean).join(' · '))}</div></div><span class="ibhb">${ui.ibSel?'<button class="btn sm" data-act="ibselx">Cancel</button>':`<button class="btn sm" data-act="ibselon">Select</button><button class="btn sm danger" data-act="ibclear" data-s="${sid}">${ui.confirmDel==='ibchat'+sid?'Tap again':'Delete chat'}</button>`}</span></div>${ui.confirmDel==='ibchat'+sid?'<div class="banner"><span class="small">This removes the whole chat from your inbox. Staff keep their own copy. Tap <b>Tap again</b> to confirm.</span></div>':''}<div class="ibchat${ui.ibSel?' selm':''}">`;
   let day='';
   ev.forEach(e=>{const d=(e.at||'').slice(0,10);if(d&&d!==day){day=d;h+=`<div class="dpill">${esc(relDay(d))}</div>`}
     let body='',cls=e.me?'bub me':'bub';
@@ -1080,10 +1101,166 @@ function ibThread(sid){const s=byId('staff',sid),ev=ibEvents(sid);
     else if(e.t==='r') body=`<div class="bq">${esc((e.f.text||'').slice(0,90))}</div><div class="bt">${esc(e.r.text)}</div>`;
     else if(e.t==='d'){const ok=(e.f.approvedFor||{})[sid];body=`<div class="bl">Marked as done</div><div class="bt">${esc(e.f.text)}</div>${ok?'<span class="pill done">Approved</span>':`<div class="row" style="gap:6px"><button class="btn sm primary" data-act="fbapprove" data-id="${e.f.id}" data-s="${sid}">Approve</button><button class="btn sm" data-act="fbreopen" data-id="${e.f.id}" data-s="${sid}">Not yet</button></div>`}`}
     else if(e.t==='p'){cls+=' ph';body=`${thumbs(e.x.photos)}<div class="bl">${esc(e.x.kind)} · ${esc(e.x.text)}</div>`}
-    h+=`<div class="${cls}">${body}<div class="bm">${esc(hhmm(e.at))}</div></div>`});
+    const k=ibKey(e),sl=!!(ui.ibSel&&ui.ibSel.has(k));
+    h+=`<div class="${cls}${sl?' sel':''}">${ui.ibSel?`<button class="bsel" data-act="ibsel" data-k="${esc(k)}" aria-pressed="${sl}" aria-label="Select message">${sl?'✓':''}</button>`:''}${body}<div class="bm">${esc(hhmm(e.at))}</div></div>`});
   if(!ev.length)h+='<div class="muted small" style="text-align:center;padding:20px">No messages yet.</div>';
+  if(ui.ibSel){const n=ui.ibSel.size;return h+`</div><div class="ibcomp"><button class="btn danger" data-act="ibseldel" data-s="${sid}"${n?'':' disabled'}>${ui.confirmDel==='ibsel'+sid?'Tap again to delete':'Delete '+n+' selected'}</button><button class="btn" data-act="ibselx">Cancel</button></div><div class="small muted">Deleting removes messages from your inbox only. Staff keep their own copy.</div>`}
   h+=`</div><form class="ibcomp" data-act="ibsend" data-s="${sid}"><input type="text" id="tf-ibc" placeholder="Message ${esc((staffLabel(s)||'').split(' ')[0])}" autocomplete="off" aria-label="Message to ${esc(staffLabel(s))}"><button class="btn primary" type="submit">Send</button></form>`;
   return h}
+
+/* ---------- pilot round 3 ---------- */
+const workDays=(a,b)=>{let n=0,d=parse(a);const e=parse(b||a);while(d<=e){const w=d.getDay();if(w&&w<6)n++;d=addDays(d,1)}return n};
+const seenAt=k=>lsGet('p3_'+k+'_'+meKey())||'';
+const markSeen=k=>lsSet('p3_'+k+'_'+meKey(),new Date().toISOString());
+const fullTab=(t,label,h)=>`<button class="hal hal-info" data-act="tab" data-t="${t}"><b>${label}</b>${h?`<span> · ${h}</span>`:''}</button>`;
+
+function homeBarsP(){const pb=pilotBars(),i=pb.indexOf('</div>')+6;return pb.slice(0,i)+testBars()+pb.slice(i)+pilotBars3()}
+/* test reminders on Today */
+function testBars(){const t=todayIso();
+  const list=ui.isMgr?S.tests.filter(x=>x.date&&x.date>=t&&daysBetween(t,x.date)<=(Number(x.lead)||3)&&(!ui.f.branch||!x.branchId||x.branchId===ui.f.branch)).sort((a,b)=>a.date.localeCompare(b.date)):(ui.me?testsFor(ui.me):[]);
+  return list.slice(0,4).map(x=>{const d=daysBetween(t,x.date),when=d===0?'Today':d===1?'Tomorrow':'In '+d+' days';
+    const what=[tName(x.topicId)||x.title||'Test',x.childId&&nm('children',x.childId),ui.isMgr&&x.staffId&&nm('staff',x.staffId)].filter(Boolean).map(esc).join(' · ');
+    return `<button class="hal hal-test" data-act="pltest" data-d="${x.date}"><span class="tico" aria-hidden="true">✎</span><span class="hal-t"><b>Test ${when.toLowerCase()} · ${esc(fmt(x.date))}</b><span>${what}</span></span></button>`}).join('')}
+
+/* 4 weekly plan approval */
+const papId=(sid,ws)=>sid+'_'+ws;
+function papBox(){const sid=ui.isMgr?ui.f.staff:ui.me;if(!sid||sid==='*')return '';const ws=iso(ui.ws),r=byId('papprove',papId(sid,ws)),n=S.plans.filter(p=>p.staffId===sid&&weekDates(ui.ws).includes(p.date)).length;
+  const wk='week '+isoWeek(ui.ws);
+  if(ui.isMgr){if(!r)return n?`<div class="banner"><span class="small">${esc(nm('staff',sid))} has not submitted ${wk} planning for approval yet (${n} planned).</span></div>`:'';
+    return `<div class="banner ${r.status==='approved'?'okb':''}"><div class="row spread"><span><b>${esc(nm('staff',sid))} · ${wk} planning</b><br><span class="small">${r.status==='approved'?'Approved '+esc(fmtAt(r.decidedAt)):r.status==='changes'?'Changes asked: '+esc(r.note||''):'Submitted '+esc(fmtAt(r.at))+' · '+n+' activities'}</span></span>${r.status==='submitted'?`<span class="acts"><button class="btn sm primary" data-act="papok" data-id="${r.id}">Approve</button></span>`:''}</div>${r.status==='submitted'?`<div class="addnew"><input type="text" id="tf-pch-${r.id}" placeholder="What should change?" aria-label="Changes needed"><button class="btn sm" data-act="papchg" data-id="${r.id}">Ask for changes</button></div>`:''}</div>`}
+  if(!r)return `<div class="banner"><div class="row spread"><span class="small"><b>${wk} planning</b> · ${n} activit${n===1?'y':'ies'} planned. When it is ready, send it to your manager.</span><button class="btn sm primary" data-act="papsend"${n?'':' disabled'}>Submit for approval</button></div></div>`;
+  if(r.status==='approved')return `<div class="banner okb"><span class="small"><b>${wk} planning approved</b> · ${esc(fmtAt(r.decidedAt))}</span></div>`;
+  if(r.status==='changes')return `<div class="banner"><div class="row spread"><span class="small"><b>Your manager asked for changes to ${wk}:</b> ${esc(r.note||'See messages')}</span><button class="btn sm primary" data-act="papsend">Submit again</button></div></div>`;
+  return `<div class="banner info"><span class="small"><b>${wk} planning submitted</b> · waiting for your manager · ${esc(fmtAt(r.at))}</span></div>`}
+
+/* 9 mood check-in */
+const MOODS=[[1,'😢','Very upset'],[2,'🙁','Upset'],[3,'😐','Okay'],[4,'🙂','Good'],[5,'😄','Great']];
+const moodOf=(d,cid)=>byId('mood',d+'_'+cid);
+function moodBtns(d,c){const m=moodOf(d,c.id);return `<div class="moodrow" role="group" aria-label="Mood for ${esc(c.name)}"><span class="small muted">Mood</span>${MOODS.map(([v,e,l])=>`<button class="mood${m&&m.mood===v?' on':''}" data-act="moodset" data-d="${d}" data-c="${c.id}" data-v="${v}" aria-label="${l}" aria-pressed="${!!(m&&m.mood===v)}" title="${l}">${e}</button>`).join('')}</div>`}
+function moodCard(cid){const days=[];let d=parse(todayIso());while(days.length<10){if(d.getDay()&&d.getDay()<6)days.unshift(iso(d));d=addDays(d,-1)}
+  return `<div class="card"><h3>Mood · last 2 weeks</h3><div class="moodstrip">${days.map(x=>{const m=moodOf(x,cid),mo=m&&MOODS.find(k=>k[0]===m.mood);return `<div class="ms"><span class="me" aria-label="${mo?mo[2]:'Not recorded'}">${mo?mo[1]:'·'}</span><small>${esc(fmt(x).split(' ').slice(0,2).join(' '))}</small></div>`}).join('')}</div><span class="small muted">Recorded on the Register each morning.</span></div>`}
+
+/* 27 absence and mood alerts */
+function kidsScope(){const br=ui.isMgr?(ui.f.branch||''):myBranch();return sortByName('children').filter(c=>!br||c.branchId===br)}
+function absAlerts(){const t=todayIso(),from=iso(addDays(parse(t),-14)),out=[];
+  kidsScope().forEach(c=>{const ab=S.attendance.filter(a=>a.childId===c.id&&!a.present&&a.date>=from&&a.date<=t);
+    if(ab.length>=3){out.push({cid:c.id,txt:`${c.name} absent ${ab.length} times in 2 weeks`});return}
+    const byDay={};S.attendance.filter(a=>a.childId===c.id&&!a.present&&a.date>=iso(addDays(parse(t),-28))).forEach(a=>{const w=parse(a.date).getDay();byDay[w]=(byDay[w]||0)+1});
+    const w=Object.keys(byDay).find(k=>byDay[k]>=3);if(w)out.push({cid:c.id,txt:`${c.name} often absent on ${DAYS_LONG[w]}s (${byDay[w]} of the last 4)`})});
+  kidsScope().forEach(c=>{const ms=S.mood.filter(m=>m.childId===c.id).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);if(ms.length===3&&ms.every(m=>m.mood<=2))out.push({cid:c.id,txt:`${c.name} upset 3 days in a row`,mood:true})});
+  return out}
+
+/* 16 leave requests + 24 sick note */
+const LV_TYPES=['Annual leave','Sick leave','Family responsibility','Study leave','Unpaid leave','Other'];
+function vLeave(){let h='';const mine=S.leavereq.filter(r=>r.staffId===ui.me).sort((a,b)=>(b.at||'').localeCompare(a.at||''));
+  if(ui.me) h+=`<div class="card"><h3>Apply for leave</h3><div class="grid2"><label class="fld"><span>Type</span><select id="tf-lv-type">${LV_TYPES.map(x=>`<option>${x}</option>`).join('')}</select></label><span></span>
+    <label class="fld"><span>From</span><input type="date" id="tf-lv-from" value="${todayIso()}"></label><label class="fld"><span>To</span><input type="date" id="tf-lv-to"></label></div>
+    <label class="fld"><span>Note (optional)</span><input type="text" id="tf-lv-note" placeholder="e.g. Doctor's appointment in the morning"></label>
+    <div class="actions"><button class="btn primary" data-act="lvsend">Send request</button></div><span class="small muted">For sick leave you can add a photo of the doctor's note after sending.</span></div>`;
+  const card=(r,mgr)=>{const days=workDays(r.from,r.to);
+    return `<div class="card lvc"><div class="row spread"><span><b>${mgr?esc(nm('staff',r.staffId))+' · ':''}${esc(r.type)}</b><div class="small muted">${esc(fmt(r.from))}${r.to&&r.to!==r.from?' – '+esc(fmt(r.to)):''} · ${days} work day${days===1?'':'s'}${r.note?' · '+esc(r.note):''}</div></span><span class="pill ${r.status==='approved'?'done':r.status==='declined'?'missed':'due'}">${r.status==='pending'?'Waiting':r.status==='approved'?'Approved':'Declined'}</span></div>
+      ${thumbs(r.photos)}${r.mgrNote?`<div class="small">Manager: ${esc(r.mgrNote)}</div>`:''}${r.coverId?`<div class="small">Cover: ${esc(nm('staff',r.coverId))}</div>`:''}
+      ${mgr&&r.status==='pending'?`<div class="grid2"><label class="fld"><span>Cover person (optional)</span><select id="tf-lv-cov-${r.id}">${opt('staff','','No cover')}</select></label><label class="fld"><span>Note to staff (optional)</span><input type="text" id="tf-lv-mn-${r.id}"></label></div><div class="actions"><button class="btn primary" data-act="lvok" data-id="${r.id}">Approve</button><button class="btn danger" data-act="lvno" data-id="${r.id}">Decline</button></div>`:''}
+      ${!mgr&&(r.status==='pending'||/Sick/.test(r.type))?`<div class="actions">${photoOk?`<button class="btn sm" data-act="photopick" data-kind="leavereq" data-k="${r.id}">${/Sick/.test(r.type)?'+ Sick note photo':'+ Photo'}</button>`:''}${r.status==='pending'?`<button class="btn sm" data-act="del" data-c="leavereq" data-id="${r.id}">${ui.confirmDel==='leavereq'+r.id?'Tap again to cancel':'Cancel request'}</button>`:''}</div>`:''}</div>`};
+  if(ui.isMgr){const all=S.leavereq.filter(r=>!ui.f.branch||(byId('staff',r.staffId)||{}).branchId===ui.f.branch).sort((a,b)=>(b.at||'').localeCompare(a.at||''));const pend=all.filter(r=>r.status==='pending');
+    h+=`<h2>Waiting for you <span class="count">${pend.length}</span></h2>`+(pend.length?pend.map(r=>card(r,true)).join(''):'<div class="card empty">No leave requests waiting.</div>');
+    h+=`<h2>Decided</h2>`+(all.filter(r=>r.status!=='pending').slice(0,20).map(r=>card(r,true)).join('')||'<div class="muted small">None yet.</div>')}
+  else h+=`<h2>My requests</h2>`+(mine.length?mine.map(r=>card(r,false)).join(''):'<div class="card empty">No leave requests yet.</div>');
+  return h}
+
+/* 30 incident reports */
+const INJ=['No injury','Minor (plaster, ice)','Needs medical care'];
+function incForm(cid){return `<div class="card"><h3>Report an incident or injury</h3><div class="grid2">
+  <label class="fld"><span>Child</span><select id="tf-in-child">${opt('children',cid||'','Choose child')}</select></label>
+  <label class="fld"><span>Date</span><input type="date" id="tf-in-date" value="${todayIso()}"></label>
+  <label class="fld"><span>Time</span><select id="tf-in-time">${timeOpts('','—')}</select></label>
+  <label class="fld"><span>Where</span><input type="text" id="tf-in-where" placeholder="e.g. Playground"></label></div>
+  <label class="fld"><span>What happened</span><textarea id="tf-in-what" rows="3" placeholder="Describe what happened, who was involved"></textarea></label>
+  <div class="grid2"><label class="fld"><span>Injury</span><select id="tf-in-inj">${INJ.map(x=>`<option>${x}</option>`).join('')}</select></label>
+  <label class="fld"><span>First aid given (optional)</span><input type="text" id="tf-in-aid" placeholder="e.g. Cleaned and plaster"></label>
+  <label class="fld"><span>Parent informed</span><select id="tf-in-par"><option value="">Not yet</option><option>Phone call</option><option>WhatsApp</option><option>In person</option></select></label>
+  <label class="fld"><span>Witness (optional)</span><select id="tf-in-wit">${opt('staff','','None')}</select></label></div>
+  <div class="actions"><button class="btn primary" data-act="insave">Save report</button></div></div>`}
+function incCard(x){const mgr=ui.isMgr,c=byId('children',x.childId)||{};
+  return `<div class="card"><div class="row spread"><span><b>${esc(c.name||'Child')}</b> · ${esc(fmt(x.date))}${x.time?' '+esc(x.time):''}${x.where?' · '+esc(x.where):''}<div class="small muted">Reported by ${esc(x.by==='manager'?'Manager':nm('staff',x.by))}${x.witness?' · witness '+esc(nm('staff',x.witness)):''}</div></span><span class="pill ${x.status==='closed'?'done':'due'}">${x.status==='closed'?'Reviewed':'Open'}</span></div>
+    <div class="fbtext">${esc(x.what)}</div>
+    <div class="row" style="gap:6px;flex-wrap:wrap"><span class="pill ${x.injury===INJ[2]?'missed':x.injury===INJ[1]?'due':''}">${esc(x.injury||INJ[0])}</span>${x.aid?`<span class="pill">First aid: ${esc(x.aid)}</span>`:''}<span class="pill ${x.parent?'done':'missed'}">${x.parent?'Parent informed · '+esc(x.parent):'Parent not informed yet'}</span></div>
+    ${thumbs(x.photos)}${x.mgrNote?`<div class="small"><b>Manager:</b> ${esc(x.mgrNote)}</div>`:''}
+    <div class="actions">${!x.parent&&(mgr||x.by===ui.me)?`<select id="tf-in-p-${x.id}" aria-label="How parent was informed"><option>Phone call</option><option>WhatsApp</option><option>In person</option></select><button class="btn sm primary" data-act="inpar" data-id="${x.id}">Parent informed</button>`:''}
+      ${photoOk&&(mgr||x.by===ui.me)?`<button class="btn sm" data-act="photopick" data-kind="incidents" data-k="${x.id}">+ Photo</button>`:''}<button class="btn sm" data-act="inprint" data-id="${x.id}">Print</button></div>
+    ${mgr&&x.status!=='closed'?`<div class="addnew"><input type="text" id="tf-in-mn-${x.id}" placeholder="Manager note (optional)" aria-label="Manager note"><button class="btn sm primary" data-act="inclose" data-id="${x.id}">Mark reviewed</button></div>`:''}</div>`}
+function vInc(){const list=S.incidents.filter(x=>ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+  let h=incForm('');const open=list.filter(x=>x.status!=='closed');
+  h+=`<h2>${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span></h2>`+((ui.isMgr?open:list).map(incCard).join('')||'<div class="card empty">No incident reports.</div>');
+  if(ui.isMgr){const cl=list.filter(x=>x.status==='closed');if(cl.length)h+=`<h2>Reviewed</h2>`+cl.slice(0,20).map(incCard).join('')}
+  return h}
+function incPrint(id){const x=byId('incidents',id);if(!x)return;const c=byId('children',x.childId)||{};
+  openPrint('Incident '+(c.name||'')+' '+x.date,`<h1>Incident report</h1><div class="m">Aldeia NeuroBehaviour Institute · ${esc(nm('branches',c.branchId))}</div>
+  <h2>${esc(c.name||'')} · ${esc(fmt(x.date))} ${esc(x.time||'')}</h2><div class="box"><b>Where:</b> ${esc(x.where||'—')}</div><div class="box"><b>What happened:</b><br>${esc(x.what)}</div>
+  <div class="box"><b>Injury:</b> ${esc(x.injury||'')}<br><b>First aid:</b> ${esc(x.aid||'—')}</div><div class="box"><b>Parent informed:</b> ${esc(x.parent||'Not yet')}${x.parentAt?' · '+esc(fmtAt(x.parentAt)):''}</div>
+  <div class="box"><b>Reported by:</b> ${esc(x.by==='manager'?'Manager':nm('staff',x.by))}${x.witness?' · <b>Witness:</b> '+esc(nm('staff',x.witness)):''}</div>${x.mgrNote?`<div class="box"><b>Manager note:</b> ${esc(x.mgrNote)}</div>`:''}
+  <p style="margin-top:40px">Staff signature: ____________________ &nbsp; Parent signature: ____________________ &nbsp; Date: __________</p>`)}
+
+/* 38 maintenance */
+const MT_PRI=['Normal','Urgent','Low'];
+function vMaint(){const br=ui.isMgr?(ui.f.branch||''):myBranch();const list=S.maint.filter(x=>!br||!x.branchId||x.branchId===br).sort((a,b)=>(a.status==='fixed')-(b.status==='fixed')||(b.priority==='Urgent')-(a.priority==='Urgent')||(b.at||'').localeCompare(a.at||''));
+  let h=`<div class="card"><h3>Report something to fix</h3><label class="fld"><span>What is wrong?</span><input type="text" id="tf-mt-item" placeholder="e.g. Tap in the Grade R bathroom is leaking"></label>
+    <div class="grid2"><label class="fld"><span>Where</span><input type="text" id="tf-mt-where" placeholder="e.g. Bathroom 2"></label><label class="fld"><span>How urgent</span><select id="tf-mt-pri">${MT_PRI.map(x=>`<option>${x}</option>`).join('')}</select></label></div>
+    <div class="actions"><button class="btn primary" data-act="mtsave">Report</button></div></div>`;
+  const open=list.filter(x=>x.status!=='fixed');
+  h+=`<h2>Open <span class="count">${open.length}</span></h2>`+(open.length?`<div class="list">${open.map(mtRow).join('')}</div>`:'<div class="card empty">Nothing to fix. Well done.</div>');
+  const fx=list.filter(x=>x.status==='fixed').slice(0,15);if(fx.length)h+=`<h2>Fixed</h2><div class="list">${fx.map(mtRow).join('')}</div>`;
+  return h}
+function mtRow(x){return `<div class="li"><div class="lt"><b>${esc(x.item)}</b>${x.priority==='Urgent'?' <span class="pill missed">Urgent</span>':''}<div class="muted small">${esc([x.where,x.branchId&&nm('branches',x.branchId),'by '+(x.by==='manager'?'Manager':nm('staff',x.by)),fmtAt(x.at)].filter(Boolean).join(' · '))}${x.status==='fixed'&&x.fixedAt?' · fixed '+esc(fmtAt(x.fixedAt)):''}</div>${thumbs(x.photos)}</div>
+  <div class="acts"><span class="pill ${x.status==='fixed'?'done':x.status==='busy'?'upcoming':'due'}">${x.status==='fixed'?'Fixed':x.status==='busy'?'Busy with it':'Reported'}</span>${photoOk?`<button class="btn sm" data-act="photopick" data-kind="maint" data-k="${x.id}" aria-label="Add photo">+ Photo</button>`:''}${ui.isMgr&&x.status!=='fixed'?`${x.status!=='busy'?`<button class="btn sm" data-act="mtset" data-id="${x.id}" data-s="busy">Busy</button>`:''}<button class="btn sm primary" data-act="mtset" data-id="${x.id}" data-s="fixed">Fixed</button>`:''}</div></div>`}
+
+/* Today bars for round 3 */
+function pilotBars3(){let h='';const t=todayIso();
+  if(PILOT&&'Notification' in window&&Notification.permission==='default'&&!lsGet('ntfask'))h+=`<div class="hal hal-info hal-row"><span><b>Get phone notifications</b><span> · new messages, approvals and reminders pop up on this phone</span></span><span class="acts"><button class="btn sm primary" data-act="ntfon">Turn on</button><button class="btn sm" data-act="ntfno">Not now</button></span></div>`;
+  if(!navigator.onLine)h+=`<div class="hal hal-bad"><span class="hal-t"><b>You're offline</b><span>Ticks and comments are saved on this phone and sent when you're back online.</span></span></div>`;
+  if(ui.isMgr){
+    const pap=S.papprove.filter(r=>r.status==='submitted').length;if(pap)h+=`<button class="hal hal-info" data-act="ibgo" data-v="appr"><b>${pap} weekly plan${pap>1?'s':''} waiting for approval</b><span> · tap to review</span></button>`;
+    const lv=S.leavereq.filter(r=>r.status==='pending').length;if(lv)h+=fullTab('leave',`${lv} leave request${lv>1?'s':''} waiting`,'tap to approve');
+    const inc=S.incidents.filter(x=>x.status!=='closed');if(inc.length)h+=`<button class="hal hal-bad" data-act="tab" data-t="inc"><span class="hal-t"><b>${inc.length} incident report${inc.length>1?'s':''} to review</b><span>${esc(nm('children',inc[0].childId))}${inc.some(x=>!x.parent)?' · parent not informed yet':''}</span></span></button>`;
+    const mt=S.maint.filter(x=>x.status!=='fixed'&&(!ui.f.branch||!x.branchId||x.branchId===ui.f.branch)),ur=mt.filter(x=>x.priority==='Urgent').length;if(mt.length)h+=fullTab('maint',`${mt.length} maintenance issue${mt.length>1?'s':''} open`,ur?ur+' urgent':'tap to see');
+  }else if(ui.me){
+    const ws=iso(addDays(mondayOf(new Date()),7)),dw=new Date().getDay(),nx=byId('papprove',papId(ui.me,ws));
+    if((dw>=4||dw===0||dw===6)&&!nx)h+=`<button class="hal hal-info" data-act="plnext"><b>Submit next week's planning</b><span> · your manager needs to approve it before Monday</span></button>`;
+    const ch=S.papprove.find(r=>r.staffId===ui.me&&r.status==='changes');if(ch)h+=`<button class="hal hal-bad" data-act="plweek" data-ws="${ch.ws}"><span class="hal-t"><b>Changes asked to week ${isoWeek(parse(ch.ws))} planning</b><span>${esc(ch.note||'')}</span></span></button>`;
+    const lseen=seenAt('leave'),ld=S.leavereq.filter(r=>r.staffId===ui.me&&r.decidedAt&&r.decidedAt>lseen);if(ld.length)h+=fullTab('leave',`Leave ${ld[0].status==='approved'?'approved':'declined'}`,esc(fmt(ld[0].from)));
+    const np=S.incidents.filter(x=>x.by===ui.me&&!x.parent);if(np.length)h+=`<button class="hal hal-bad" data-act="tab" data-t="inc"><span class="hal-t"><b>Tell the parent about the incident</b><span>${esc(nm('children',np[0].childId))} · ${esc(fmt(np[0].date))}</span></span></button>`;
+  }
+  const ab=absAlerts();if(ab.length)h+=`<button class="hal hal-bd" data-act="goto" data-k="child" data-v="${ab[0].cid}"><b>${ab[0].mood?'Mood':'Absence'} pattern</b><span> · ${esc(ab[0].txt)}${ab.length>1?` · +${ab.length-1} more`:''}</span></button>`;
+  return h}
+
+/* 48 notifications while the app is running */
+function ntfItems(){const out=[],me=ui.me;
+  if(ui.isMgr){S.feedback.forEach(f=>{if(f.to==='manager'&&f.from&&!f.deleted)out.push([f.at,nm('staff',f.from)+': '+(f.kind==='unlock'?'unlock request':f.text)])});
+    S.replies.forEach(r=>{if(r.by!=='manager')out.push([r.at,nm('staff',r.by)+' replied: '+r.text])});
+    S.leavereq.forEach(r=>out.push([r.at,nm('staff',r.staffId)+' asked for '+r.type.toLowerCase()]));
+    S.incidents.forEach(x=>out.push([x.at,'Incident report: '+nm('children',x.childId)]));
+    S.maint.forEach(x=>{if(x.priority==='Urgent')out.push([x.at,'Urgent: '+x.item])});
+    S.papprove.forEach(r=>{if(r.status==='submitted')out.push([r.at,nm('staff',r.staffId)+' submitted week '+isoWeek(parse(r.ws))+' planning'])});
+    S.requests.forEach(r=>out.push([r.at,nm('staff',r.by)+' needs: '+r.item]))}
+  else if(me){S.feedback.forEach(f=>{if((f.to===me||f.to==='*')&&(!f.from||f.from==='manager')&&!f.deleted)out.push([f.at,'Manager: '+f.text])});
+    const mine=new Set(S.feedback.filter(f=>f.from===me).map(f=>f.id));S.replies.forEach(r=>{if(mine.has(r.fid)&&r.by==='manager')out.push([r.at,'Manager replied: '+r.text])});
+    S.leavereq.forEach(r=>{if(r.staffId===me&&r.decidedAt)out.push([r.decidedAt,'Leave '+r.status])});
+    S.papprove.forEach(r=>{if(r.staffId===me&&r.decidedAt)out.push([r.decidedAt,'Week '+isoWeek(parse(r.ws))+' planning '+(r.status==='approved'?'approved':'needs changes')])});
+    S.announce.forEach(a=>out.push([a.at,'Announcement: '+a.title]))}
+  return out.filter(x=>x[0])}
+function ntfCheck(){if(!PILOT||!loaded||!signedIn()||!('Notification' in window)||Notification.permission!=='granted')return;
+  const k='ntflast_'+meKey(),last=lsGet(k);const items=ntfItems().sort((a,b)=>b[0].localeCompare(a[0]));const top=items[0]?items[0][0]:new Date().toISOString();
+  if(!last){lsSet(k,top);return}const nw=items.filter(x=>x[0]>last);if(!nw.length)return;lsSet(k,nw[0][0]);
+  if(!document.hidden)return;
+  const body=nw[0][1]+(nw.length>1?` (+${nw.length-1} more)`:'');
+  const show=r=>r.showNotification('Aldeia Staff Desk',{body,tag:'staffdesk',icon:'../icon-192.png',badge:'../icon-192.png'});
+  if(navigator.serviceWorker&&navigator.serviceWorker.controller)navigator.serviceWorker.ready.then(show).catch(()=>{try{new Notification('Aldeia Staff Desk',{body})}catch(e){}});else try{new Notification('Aldeia Staff Desk',{body})}catch(e){}}
+if(PILOT){setInterval(ntfCheck,15000);window.addEventListener('online',()=>{render();toast('Back online · saving your changes')});window.addEventListener('offline',()=>render())}
+
+/* chat delete helpers */
+const ibHidden=sid=>byId('ibhide',sid)||{};
+function ibVisible(sid,e){const h=ibHidden(sid);if(h.clearedAt&&e.at&&e.at<=h.clearedAt)return false;return !(h.hidden||[]).includes(ibKey(e))}
+const ibKey=e=>e.t==='f'?'f:'+e.f.id:e.t==='r'?'r:'+e.r.id:e.t==='d'?'d:'+e.f.id:'p:'+e.at;
 
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
@@ -1094,7 +1271,7 @@ function vHome(){
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
     <div class="hprog"><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div></div>`;
-  h+=`<div class="halerts">${backupDue()}${PILOT?pilotBars():''}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
+  h+=`<div class="halerts">${backupDue()}${PILOT?homeBarsP():''}${fbNotice()}${homeMissed()}${homeBday()}${PILOT?'':reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
   pls.forEach(p=>{const lk=p.staffId!=='*'&&plocked(p.staffId,p.date);rows.push({type:'plan',key:'p:'+p.id,id:p.id,s:oStart(p),e:oEnd(p),t:p.text,o:p,done:!!p.done,who:p.staffId,lock:lk&&!ui.mgr,comment:p.comment,photos:p.photos,cover:coverOf(p)?p.staffId:''})});
@@ -1162,8 +1339,9 @@ function vReg(){const d=focusDay(),kids=regKids(),rec=c=>byId('attendance',d+'_'
   if(ui.isMgr)h+=`<div class="card"><div class="grid2"><label class="fld"><span>Branch</span><select data-uiset="regBranch">${opt('branches',ui.regBranch||'','All branches')}</select></label></div></div>`;
   h+=`<div class="row spread"><div class="stats"><span class="pill upcoming">${d===todayIso()?'Today':fmt(d)}</span><span class="pill done">Present ${p}</span><span class="pill missed">Absent ${a}</span><span class="pill">Not marked ${kids.length-p-a}</span></div><button class="btn sm" data-act="attall" data-d="${d}">Mark the rest present</button></div>`;
   if(!kids.length)return h+`<div class="card empty">No children in this branch yet. Add them in Setup → Children.</div>`;
+  if(PILOT){const ab=absAlerts().filter(a=>kids.some(k=>k.id===a.cid));if(ab.length)h+=`<div class="banner warnb"><b>Patterns to look at</b>${ab.map(a=>`<span class="small">${esc(a.txt)}</span>`).join('')}</div>`}
   h+=`<div class="list">${kids.map(c=>{const r=rec(c);return `<div class="li"><div class="lt"><b>${esc(c.name)}</b>${c.medical?` <button type="button" class="tag medtag" data-act="medview" data-id="${c.id}">Medical alert</button>`:''}<div class="muted small">${esc(nm('grades',c.gradeId))}${r?' · marked by '+esc(nm('staff',r.by)):''}</div></div>
-    <div class="acts"><button class="btn sm ${r&&r.present?'primary':''}" data-act="att" data-d="${d}" data-c="${c.id}" data-v="1">Present</button><button class="btn sm ${r&&!r.present?'danger attabs':''}" data-act="att" data-d="${d}" data-c="${c.id}" data-v="0">Absent</button></div></div>`}).join('')}</div>`;
+    <div class="acts"><button class="btn sm ${r&&r.present?'primary':''}" data-act="att" data-d="${d}" data-c="${c.id}" data-v="1">Present</button><button class="btn sm ${r&&!r.present?'danger attabs':''}" data-act="att" data-d="${d}" data-c="${c.id}" data-v="0">Absent</button></div>${PILOT&&r&&r.present?moodBtns(d,c):''}</div>`}).join('')}</div>`;
   return h}
 function backupDue(){if(!ui.isMgr||!loaded)return '';const lb=(S.settings.lastBackup||'').slice(0,10),t=todayIso();
   const due=!lb||daysBetween(lb,t)>=7||(new Date().getDay()===5&&lb<t);if(!due)return '';
@@ -1231,9 +1409,10 @@ async function absExcel(){if(typeof XLSX==='undefined'){toast('Excel export coul
   await save(`Aldeia-absences-${r.from}-to-${r.to}.xlsx`,new Uint8Array(XLSX.write(wb,{type:'array',bookType:'xlsx'})))}
 function parentSummary(asText){const c=byId('children',ui.kid);if(!c)return;const d=ui.psDate||todayIso(),a=byId('attendance',d+'_'+c.id);
   const tasks=[];S.resp.forEach(r=>{if(r.childId!==c.id||!applies(r,d))return;staffFor(r).forEach(sid=>{const e=entryMap[ekey(r,d,sid)];if(e&&(e.done||e.comment))tasks.push({t:r.text,done:!!(e&&e.done),cm:e&&e.comment,ph:(e&&e.photos)||[],tm:timeLabel(r)})})});
-  const plans=S.plans.filter(p=>p.childId===c.id&&p.date===d).map(p=>({t:p.text,done:!!p.done,ph:p.photos||[],tm:timeLabel(p),sub:tName(p.topicId)}));
+  const plans=S.plans.filter(p=>(PILOT?covers(p,c.id):p.childId===c.id)&&p.date===d).map(p=>({t:p.text,done:!!p.done,ph:p.photos||[],tm:timeLabel(p),sub:tName(p.topicId)}));
   const did=[...plans.filter(p=>p.done),...tasks.filter(t=>t.done)];
-  if(asText){const txt=`${c.name} – ${fmt(d)}\n${a?(a.present?'Present today':'Absent today'):''}\n\nToday we:\n${did.length?did.map(x=>'• '+x.t+(x.sub?' ('+x.sub+')':'')).join('\n'):'• (nothing recorded yet)'}${tasks.filter(t=>t.cm).length?'\n\nNotes:\n'+tasks.filter(t=>t.cm).map(t=>'• '+t.cm).join('\n'):''}\n\nAldeia NeuroBehaviour Institute`;
+  if(asText){const txt=`${c.name} – ${fmt(d)}\n${a?(a.present?'Present today':'Absent today'):''}${PILOT&&moodOf(d,c.id)?'\nMood: '+MOODS.find(k=>k[0]===moodOf(d,c.id).mood)[2]:''}\n\nToday we:\n${did.length?did.map(x=>'• '+x.t+(x.sub?' ('+x.sub+')':'')).join('\n'):'• (nothing recorded yet)'}${tasks.filter(t=>t.cm).length?'\n\nNotes:\n'+tasks.filter(t=>t.cm).map(t=>'• '+t.cm).join('\n'):''}${PILOT?S.incidents.filter(x=>x.childId===c.id&&x.date===d).map(x=>'\n\nIncident today: '+x.what+(x.aid?' (first aid: '+x.aid+')':'')).join(''):''}\n\nAldeia NeuroBehaviour Institute`;
+    if(asText==='wa'){window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');return}
     navigator.clipboard?.writeText(txt).then(()=>toast('Summary copied. Paste it into WhatsApp.'),()=>toast('Could not copy. Try Print instead.'));return}
   const photos=[...plans,...tasks].flatMap(x=>x.ph).map(p=>purl(p)).filter(Boolean);
   openPrint(`${c.name} ${d}`,`<h1>${esc(c.name)} · ${fmt(d)}</h1><div class="m">${esc(nm('grades',c.gradeId))}${a?' · '+(a.present?'Present':'Absent'):''}</div>
@@ -1422,9 +1601,9 @@ function vKids(){
   const c=byId('children',ui.kid)||{}, recs=records({child:ui.kid,since:iso(addDays(new Date(),-56))});
   h+=`<div class="card"><h2>${esc(c.name)}</h2><div class="muted small">${[nm('grades',c.gradeId),nm('branches',c.branchId)].filter(Boolean).map(esc).join(' · ')}${ui.mgr?'':' · your records only'}</div>
     <div class="stats"><span class="pill done">${recs.filter(r=>r.kind==='Task'&&r.done).length} tasks done</span><span class="pill upcoming">${recs.filter(r=>r.kind==='Plan').length} plans</span><span class="pill">${recs.filter(r=>r.comment).length} comments</span><span class="pill">${recs.reduce((a,r)=>a+(r.photos||[]).length,0)} photos</span></div></div>`;
-  if(PILOT)h+=contactCard(ui.kid);
+  if(PILOT){h+=contactCard(ui.kid)+moodCard(ui.kid);absAlerts().filter(a=>a.cid===ui.kid).forEach(a=>h+=`<div class="banner warnb"><span class="small">${esc(a.txt)}</span></div>`);const inc=S.incidents.filter(x=>x.childId===ui.kid&&(ui.isMgr||x.by===ui.me));if(inc.length)h+='<h2>Incidents</h2>'+inc.map(incCard).join('')}
   h+=`<div class="card"><h3>Parent daily summary</h3><div class="grid2"><label class="fld"><span>Day</span><input type="date" data-uiset="psDate" value="${ui.psDate||todayIso()}"></label></div>
-    <div class="actions"><button class="btn primary" data-act="psprint">Print or save PDF</button><button class="btn" data-act="pscopy">Copy as text (WhatsApp)</button></div></div>`;
+    <div class="actions"><button class="btn primary" data-act="psprint">Print or save PDF</button><button class="btn" data-act="pscopy">Copy as text (WhatsApp)</button>${PILOT?'<button class="btn" data-act="pswa">Send on WhatsApp</button>':''}</div></div>`;
   h+=`<h2>Curriculum covered</h2>`+covTable(recs,childCur(ui.kid,recs))+`<h2>Timeline</h2>`+timeline(recs);
   return h;
 }
@@ -1722,6 +1901,7 @@ async function addPhoto(kind,key,file){
   toast('Uploading photo…');
   try{const res=await assets.upload(await compress(file)), ph={id:res.id,url:res.url,at:new Date().toISOString(),by:ui.mgr?'manager':ui.me};
     if(kind==='entry'){const [rid,date,sid]=key.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid);await setEntry(id,rid,date,sid,{photos:[...((entryMap[id]||{}).photos||[]),ph]})}
+    else if(['leavereq','incidents','maint'].includes(kind)){const x=byId(kind,key);if(!x)return;const {id,...rest}=x;await put(kind,id,{...rest,photos:[...(x.photos||[]),ph]})}
     else{const p=byId('plans',key);if(!p)return;const {id,...rest}=p;await put('plans',id,{...rest,photos:[...(p.photos||[]),ph]})}
     toast('Photo added')}catch(e){toast(e&&e.code==='not_granted'?'Photo uploads need edit access to this page.':'Photo upload failed. Try again with a smaller photo.')}
 }
@@ -1736,7 +1916,7 @@ async function signOff(sids,on){
   render();toast(on?'Signed off':'Reopened');
 }
 const acts={
-  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.ibChat='';ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
+  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
   theme:()=>{const n=effTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=n;lsSet('theme',n);renderChrome()},
   who:()=>{if(!signedIn())return;ui.acct=!ui.acct;render();window.scrollTo(0,0)},
   logout:()=>{ui.me='';ui.mgr=false;ui.acct=false;lsSet('me',null);lsSet('mgr',null);ui.f.staff='';render()},
@@ -1936,9 +2116,52 @@ const acts={
   ibtab:b=>{ui.ibTab=b.dataset.v;render()},
   ibfilt:b=>{ui.ibFilt=b.dataset.v;render()},
   ibopen:b=>{ui.ibChat=b.dataset.s;render();window.scrollTo(0,document.body.scrollHeight)},
-  ibback:()=>{ui.ibChat='';render()},
+  ibback:()=>{ui.ibChat='';ui.ibSel=null;render()},
   ibsend:async b=>{const sid=b.dataset.s,text=val('tf-ibc');if(!text){toast('Type a message first.');return}
     if(await put('feedback',newId(),{to:sid,text,from:'manager',at:new Date().toISOString()})){logAct('Sent message to '+nm('staff',sid));ui.clear.add('tf-ibc');lsSet(ibSeenK(sid),new Date().toISOString());render();window.scrollTo(0,document.body.scrollHeight)}},
+  pltest:b=>{ui.tab='plan';ui.ws=mondayOf(parse(b.dataset.d));ui.plDay=b.dataset.d;render();window.scrollTo(0,0)},
+  plnext:()=>{ui.tab='plan';ui.ws=addDays(mondayOf(new Date()),7);ui.plDay='';render();window.scrollTo(0,0)},
+  plweek:b=>{ui.tab='plan';ui.ws=parse(b.dataset.ws);ui.plDay='';render();window.scrollTo(0,0)},
+  ibgo:b=>{ui.tab='inbox';ui.ibTab=b.dataset.v;ui.ibChat='';render();window.scrollTo(0,0)},
+  ibplan:b=>{ui.tab='plan';ui.f.staff=b.dataset.s;ui.ws=parse(b.dataset.ws);ui.plDay='';render();window.scrollTo(0,0)},
+  papsend:async()=>{const sid=ui.me,ws=iso(ui.ws);if(!sid)return;const id=papId(sid,ws),d={staffId:sid,ws,status:'submitted',at:new Date().toISOString(),note:''};
+    S.papprove=[...S.papprove.filter(x=>x.id!==id),{id,...d}];render();if(await put('papprove',id,d)){logAct(`Submitted week ${isoWeek(ui.ws)} planning for approval`);toast('Sent to your manager for approval')}},
+  papok:async b=>{const r=byId('papprove',b.dataset.id);if(!r)return;const {id,...rest}=r;r.status='approved';r.decidedAt=new Date().toISOString();render();
+    await put('papprove',id,{...rest,status:'approved',decidedAt:r.decidedAt});logAct(`Approved week ${isoWeek(parse(r.ws))} planning for ${nm('staff',r.staffId)}`);toast('Planning approved')},
+  papchg:async b=>{const r=byId('papprove',b.dataset.id);if(!r)return;const note=val('tf-pch-'+r.id);if(!note){toast('Type what should change.');return}const {id,...rest}=r,at=new Date().toISOString();
+    r.status='changes';r.note=note;r.decidedAt=at;render();await put('papprove',id,{...rest,status:'changes',note,decidedAt:at});
+    await put('feedback',newId(),{to:r.staffId,from:'manager',text:`Changes needed to week ${isoWeek(parse(r.ws))} planning: ${note}`,at});logAct(`Asked ${nm('staff',r.staffId)} for planning changes`);toast('Sent back with your note')},
+  moodset:async b=>{const d=b.dataset.d,c=b.dataset.c,v=Number(b.dataset.v),id=d+'_'+c,cur=byId('mood',id);
+    if(cur&&cur.mood===v){S.mood=S.mood.filter(x=>x.id!==id);render();await remove('mood',id);return}
+    const data={date:d,childId:c,mood:v,by:ui.me||'manager',at:new Date().toISOString()};S.mood=[...S.mood.filter(x=>x.id!==id),{id,...data}];render();await put('mood',id,data)},
+  lvsend:async()=>{const type=val('tf-lv-type')||LV_TYPES[0],from=val('tf-lv-from'),to=val('tf-lv-to')||from,note=val('tf-lv-note');
+    if(!from){toast('Choose the first day.');return}if(to<from){toast('The last day is before the first day.');return}
+    if(await put('leavereq',newId(),{staffId:ui.me,type,from,to,note,status:'pending',at:new Date().toISOString(),photos:[]})){ui.clear.add('tf-lv-');render();toast('Leave request sent to your manager')}},
+  lvok:async b=>{const r=byId('leavereq',b.dataset.id);if(!r)return;const cov=val('tf-lv-cov-'+r.id),mn=val('tf-lv-mn-'+r.id),at=new Date().toISOString(),{id,...rest}=r;
+    await put('leave','lr_'+id,{staffId:r.staffId,from:r.from,to:r.to||r.from,note:r.type+(r.note?': '+r.note:''),coverId:cov});
+    if(await put('leavereq',id,{...rest,status:'approved',decidedAt:at,coverId:cov,mgrNote:mn})){logAct(`Approved ${r.type.toLowerCase()} for ${nm('staff',r.staffId)} (${fmt(r.from)})`);toast('Leave approved'+(cov?' · '+nm('staff',cov)+' covers':''))}},
+  lvno:async b=>{const r=byId('leavereq',b.dataset.id);if(!r)return;const mn=val('tf-lv-mn-'+r.id),{id,...rest}=r;
+    if(await put('leavereq',id,{...rest,status:'declined',decidedAt:new Date().toISOString(),mgrNote:mn})){logAct(`Declined leave for ${nm('staff',r.staffId)}`);toast('Leave declined')}},
+  insave:async()=>{const childId=val('tf-in-child'),what=val('tf-in-what');if(!childId){toast('Choose the child.');return}if(!what){toast('Describe what happened.');return}
+    const par=val('tf-in-par'),at=new Date().toISOString();
+    if(await put('incidents',newId(),{childId,date:val('tf-in-date')||todayIso(),time:val('tf-in-time'),where:val('tf-in-where'),what,injury:val('tf-in-inj')||INJ[0],aid:val('tf-in-aid'),parent:par,parentAt:par?at:'',witness:val('tf-in-wit'),by:ui.me||'manager',at,status:'open',photos:[]})){logAct('Incident report for '+nm('children',childId));ui.clear.add('tf-in-');render();toast('Incident report saved'+(par?'':' · remember to tell the parent'))}},
+  inpar:async b=>{const x=byId('incidents',b.dataset.id);if(!x)return;const {id,...rest}=x;await put('incidents',id,{...rest,parent:val('tf-in-p-'+id)||'Phone call',parentAt:new Date().toISOString()});toast('Marked: parent informed')},
+  inclose:async b=>{const x=byId('incidents',b.dataset.id);if(!x)return;const {id,...rest}=x;await put('incidents',id,{...rest,status:'closed',mgrNote:val('tf-in-mn-'+id),closedAt:new Date().toISOString()});logAct('Reviewed incident report for '+nm('children',x.childId));toast('Marked as reviewed')},
+  inprint:b=>incPrint(b.dataset.id),
+  mtsave:async()=>{const item=val('tf-mt-item');if(!item){toast('Type what needs fixing.');return}
+    if(await put('maint',newId(),{branchId:ui.isMgr?(ui.f.branch||''):myBranch(),item,where:val('tf-mt-where'),priority:val('tf-mt-pri')||'Normal',status:'reported',by:ui.me||'manager',at:new Date().toISOString(),photos:[]})){ui.clear.add('tf-mt-');render();toast('Reported')}},
+  mtset:async b=>{const x=byId('maint',b.dataset.id);if(!x)return;const {id,...rest}=x,st=b.dataset.s;await put('maint',id,{...rest,status:st,...(st==='fixed'?{fixedAt:new Date().toISOString()}:{})});logAct(`Maintenance "${x.item}" marked ${st}`);toast(st==='fixed'?'Marked as fixed':'Marked as busy')},
+  ntfon:()=>{if(!('Notification' in window))return;Notification.requestPermission().then(p=>{lsSet('ntfask','1');toast(p==='granted'?'Notifications are on for this phone':'Notifications are blocked. You can allow them in your browser settings.');render()})},
+  ntfno:()=>{lsSet('ntfask','1');render()},
+  pswa:()=>parentSummary('wa'),
+  ibselon:()=>{ui.ibSel=new Set();render()},
+  ibselx:()=>{ui.ibSel=null;ui.confirmDel=null;render()},
+  ibsel:b=>{const k=b.dataset.k;if(!ui.ibSel)return;ui.ibSel.has(k)?ui.ibSel.delete(k):ui.ibSel.add(k);ui.confirmDel=null;render()},
+  ibseldel:async b=>{const sid=b.dataset.s;if(!ui.ibSel||!ui.ibSel.size)return;if(ui.confirmDel!=='ibsel'+sid){ui.confirmDel='ibsel'+sid;render();return}
+    const cur=ibHidden(sid),d={clearedAt:cur.clearedAt||'',hidden:[...new Set([...(cur.hidden||[]),...ui.ibSel])]},n=ui.ibSel.size;
+    S.ibhide=[...S.ibhide.filter(x=>x.id!==sid),{id:sid,...d}];ui.ibSel=null;ui.confirmDel=null;render();await put('ibhide',sid,d);logAct(`Deleted ${n} message${n>1?'s':''} from the chat with ${nm('staff',sid)}`);toast(`${n} message${n>1?'s':''} deleted`)},
+  ibclear:async b=>{const sid=b.dataset.s;if(ui.confirmDel!=='ibchat'+sid){ui.confirmDel='ibchat'+sid;render();return}
+    const d={clearedAt:new Date().toISOString(),hidden:[]};S.ibhide=[...S.ibhide.filter(x=>x.id!==sid),{id:sid,...d}];ui.confirmDel=null;ui.ibChat='';render();await put('ibhide',sid,d);logAct('Deleted the chat with '+nm('staff',sid));toast('Chat deleted')},
   hidenudge:()=>{ui.nudgeHide=true;render()},
   shownudge:()=>{ui.tab='check';ui.ws=mondayOf(new Date());ui.day='all';ui.openDays=new Set(['carry']);render();document.querySelector('[data-k="carry"]')?.scrollIntoView({behavior:'smooth',block:'start'})},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
@@ -2043,7 +2266,7 @@ function saveComment(key,text){
   if(((entryMap[id]||{}).comment||'')===text){render();return}
   setEntry(id,rid,date,sid,{comment:text,cby:ui.me||'manager'});toast('Comment saved');
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
 document.addEventListener('submit',e=>{e.preventDefault();acts[e.target.dataset.act]?.(e.target)});
 document.addEventListener('change',e=>{const t=e.target;
   if(t.dataset.filter!==undefined){ui.f[t.dataset.filter]=t.value;if(t.dataset.filter==='cur')ui.f.topic='';
@@ -2106,12 +2329,12 @@ acts.logout=()=>{firebase.auth().signOut().then(()=>location.reload())};
 </script>
 <script>
 (function(){try{const q=new URLSearchParams(location.search);if(q.get('clockin')){sessionStorage.setItem('asd_clock',q.get('clockin')+'|'+(q.get('k')||''));history.replaceState(null,'',location.pathname)}}catch(e){}})();
-
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.__installPrompt=e});
 const FB_CONFIG={apiKey:"AIzaSyAtaaaOhrdN-3Nk5JATkIs34USa8DL4h9s",authDomain:"aldeia-staff-desk.firebaseapp.com",projectId:"aldeia-staff-desk",storageBucket:"aldeia-staff-desk.firebasestorage.app",messagingSenderId:"191592119419",appId:"1:191592119419:web:f8b7a024df307ad65c76de"};
 const MANAGERS=['rscsnb@gmail.com'];
 firebase.initializeApp(FB_CONFIG);
-const fsdb=firebase.firestore(), fauth=firebase.auth();
+const fsdb=firebase.firestore(), fauth=firebase.auth();try{fsdb.enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
 window.fbAuth=fauth;
 async function shrinkPhoto(blob){
   try{const img=await createImageBitmap(blob);let max=1000,q=.72,out='';
@@ -2121,7 +2344,7 @@ async function shrinkPhoto(blob){
 }
 const MIME={xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',json:'application/json',html:'text/html',jpg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif'};
 window.claude={use:async n=>{
-  if(n==='db')return {collection:c=>fsdb.collection('pilot_'+c),doc:p=>fsdb.doc('pilot_'+p)};
+  if(n==='db'){const q=p=>navigator.onLine?p:(p.catch(()=>{}),Promise.resolve());const wd=r=>({get:()=>r.get(),set:d=>q(r.set(d)),delete:()=>q(r.delete()),onSnapshot:(...a)=>r.onSnapshot(...a)});return {collection:c=>{const col=fsdb.collection('pilot_'+c);return {onSnapshot:(...a)=>col.onSnapshot(...a),doc:id=>wd(col.doc(id))}},doc:p=>wd(fsdb.doc('pilot_'+p))}}
   if(n==='downloads')return {save:async({filename,data})=>{const ext=(filename.split('.').pop()||'').toLowerCase();
     const blob=data instanceof Blob?data:new Blob([data],{type:MIME[ext]||'application/octet-stream'});const u=URL.createObjectURL(blob),a=document.createElement('a');
     a.href=u;a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},1500);return {status:'saved'}}};
