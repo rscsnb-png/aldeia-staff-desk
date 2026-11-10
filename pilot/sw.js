@@ -1,5 +1,5 @@
 // Staff Desk TEST PILOT service worker: network first, saved copy when offline, and notification taps.
-const CACHE='staff-desk-pilot-v1';
+const CACHE='staff-desk-pilot-v2';
 const HOSTS=['www.gstatic.com','cdnjs.cloudflare.com'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html']).catch(()=>{})))});
 self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())});
