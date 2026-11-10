@@ -327,6 +327,57 @@ body::before{background:var(--hdr)}
 .newhd{display:flex;align-items:center;gap:8px;padding:4px 2px}
 .linkbtn{background:none;border:0;color:var(--accent);text-decoration:underline;padding:0;font-size:13px;align-self:flex-start;cursor:pointer}
 .pilotbar{background:#fff3c4;color:#5a4300;border:1px solid #e6cf7a;border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:10px}.halerts .pilotbar{margin:0}.hal-info{background:var(--accent-soft);color:var(--fg);cursor:pointer;display:block}.hal-info b{color:var(--accent)}
+.wk5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.wkd{min-height:62px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:inherit;cursor:pointer;padding:4px 2px;min-width:0}
+.wkd span{font-size:12px;font-weight:600}.wkd b{font-size:18px;line-height:1.1}.wkd small{font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.wkd.empty small{color:var(--bad)}
+.wkd.on{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}.wkd.on small{color:var(--accent-fg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chiprow{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.chiprow::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:38px;border-radius:19px;border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);font:inherit;font-size:13px;padding:0 13px;cursor:pointer;white-space:nowrap}
+.chip small{opacity:.75;font-size:11px}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-fg);font-weight:700}
+.plbar{display:flex;flex-wrap:wrap;gap:8px}
+.tl{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:8px;row-gap:8px;align-items:start}
+.tlt{font-size:12px;font-weight:700;color:var(--muted);padding-top:13px}
+.tlc{min-width:0}.tlc>.item,.tlc>.brk{margin:0}
+.slotadd{width:100%;min-height:44px;border-radius:10px;border:1.5px dashed var(--accent);background:transparent;color:var(--accent);font:inherit;font-weight:700;text-align:left;padding:0 12px;cursor:pointer}
+.psheet{position:fixed;inset:0;z-index:50;background:rgba(15,42,58,.45);display:flex;align-items:flex-end;justify-content:center}
+.psheet .in{background:var(--surface);width:100%;max-width:640px;max-height:90vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px;box-sizing:border-box}
+.psheet input[type=text]{min-height:44px}
+.pss{display:flex;flex-direction:column;gap:6px}.psl{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.iconx{width:40px;height:40px;border-radius:20px;border:0;background:var(--off-bg);color:var(--fg);font-size:22px;line-height:1;cursor:pointer;flex:none}
+.btn.big{min-height:50px;font-size:15px;font-weight:800}
+.warnb{background:var(--warn-bg)}
+.pbl{padding:0;gap:0}.pbr{display:grid;grid-template-columns:22px 40px minmax(0,1fr) minmax(0,40%);gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line)}.pbr:last-child{border-bottom:0}
+.pbr input[type=checkbox]{width:20px;height:20px;margin:0}.pbt{font-size:12px;font-weight:700;color:var(--muted)}.pbx{display:flex;flex-direction:column;min-width:0}.pbx b{overflow-wrap:anywhere}.pbx small{color:var(--muted);font-size:12px}.pbr select{font-size:13px;min-height:38px;width:100%}.brkr{background:var(--off-bg)}
+.ibtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.ibtabs button{min-height:46px;border:0;border-bottom:3px solid transparent;background:none;color:var(--fg);font:inherit;font-weight:600;cursor:pointer}
+.ibtabs button.on{border-bottom-color:var(--accent);color:var(--accent);font-weight:800}
+.ibn{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--accent);color:var(--accent-fg);font-size:11px;font-weight:800;box-sizing:border-box}
+.iblist{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ibrow{display:grid;grid-template-columns:46px minmax(0,1fr) auto;column-gap:12px;align-items:center;padding:10px 12px;border:0;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left;font:inherit;color:var(--fg);cursor:pointer;box-sizing:border-box}
+.ibrow:last-child{border-bottom:0}
+.ibap{cursor:default;grid-template-columns:46px minmax(0,1fr)}.ibap .acts{grid-column:2;display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:16px;flex:none}
+.ibm{min-width:0;display:flex;flex-direction:column;gap:1px}.ibm>span{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ibm>span.ub{color:var(--fg);font-weight:600}
+.ibap .ibm>span{white-space:normal}
+.ibr{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:12px;color:var(--muted)}.ibr .tn{color:var(--accent);font-weight:700}
+.ibhead{display:flex;align-items:center;gap:10px;background:var(--hdr);color:var(--hdr-fg);border-radius:12px;padding:8px 10px}
+.ibhead .iconx{background:var(--hdr-btn);color:var(--hdr-fg)}.ibhead .av{width:40px;height:40px;font-size:14px}
+.ibchat{display:flex;flex-direction:column;gap:6px;background:var(--off-bg);border-radius:12px;padding:10px;min-height:240px}
+.dpill{align-self:center;background:var(--surface);color:var(--muted);font-size:12px;font-weight:600;border-radius:8px;padding:3px 10px;margin:4px 0}
+.bub{align-self:flex-start;max-width:84%;background:var(--surface);border-radius:4px 12px 12px 12px;padding:6px 10px;box-shadow:0 1px 1px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:4px;font-size:14px;min-width:0}
+.bub.me{align-self:flex-end;background:var(--accent-soft);border-radius:12px 4px 12px 12px}
+.bub.gone{opacity:.75}
+.bub .bl{font-size:11px;font-weight:700;color:var(--accent)}.bub .bt{white-space:pre-wrap;overflow-wrap:anywhere}
+.bub .bq{border-left:3px solid var(--accent);background:var(--off-bg);border-radius:4px;padding:2px 7px;font-size:12px;color:var(--muted)}
+.bub .bm{font-size:11px;color:var(--muted);text-align:right}
+.bub .thumbs{margin:0}
+.ibcomp{display:flex;gap:8px;position:sticky;bottom:calc(68px + env(safe-area-inset-bottom,0px));background:var(--bg);padding:8px 0;z-index:4}
+.ibcomp input{flex:1;min-height:46px;border-radius:23px;padding:0 16px;min-width:0}
+.ibcomp .btn{border-radius:23px;min-height:46px;padding:0 18px}
+.pwnav{display:flex;align-items:center;gap:8px}.pwnav .wl{flex:1;min-width:0;text-align:center;font-size:14px}.pwnav .iconx{background:var(--surface);border:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -377,7 +428,7 @@ window.__PILOT=true;
 window.startApp=function(){
 const PILOT=!!window.__PILOT;
 const VERSION='2.3.0-pilot';
-const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log'];
+const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log'];
 const S={settings:{}}; COLLS.forEach(c=>S[c]=[]);
 let entryMap={}, soMap={}, db=null, dl=null, assets=null, photoOk=false, loaded=false, dbState='loading';
 const lsGet=k=>{try{return localStorage.getItem('asd_'+k)}catch(e){return null}};
@@ -484,7 +535,7 @@ function matchCommon(o,sid){
   const f=ui.f, st=byId('staff',sid);
   if(f.staff && sid!==f.staff && sid!=='*') return false;
   if(f.branch && sid!=='*' && (!st||st.branchId!==f.branch)) return false;
-  if(f.child && o.childId!==f.child) return false;
+  if(f.child && o.childId!==f.child && !(o.childIds||[]).includes(f.child) && !o.wholeClass) return false;
   if(f.grade && o.gradeId!==f.grade && childGrade(o.childId)!==f.grade) return false;
   if(f.cur && o.curriculumId!==f.cur && !(f.child&&!o.curriculumId)) return false;
   if(f.topic && o.topicId!==f.topic) return false;
@@ -511,7 +562,7 @@ function testsOnDate(date){
 }
 function tagsFor(o,sid,noTime){
   const t=noTime?[]:[timeLabel(o)];
-  if(o.childId) t.push('Child: '+nm('children',o.childId));
+  if(o.childIds&&o.childIds.length>1) t.push(whoLabel(o)); else if(o.childId) t.push('Child: '+nm('children',o.childId));
   if(o.gradeId) t.push(nm('grades',o.gradeId));
   if(o.curriculumId) t.push(nm('curriculum',o.curriculumId));
   if(o.topicId) t.push(tName(o.topicId));
@@ -573,7 +624,7 @@ let pending=false;
 const isEditing=()=>{const a=document.activeElement;return a&&panel.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!['checkbox','radio','file'].includes(a.type)};
 function scheduleRender(){if(isEditing()){pending=true;return}render()}
 document.addEventListener('focusout',()=>{if(pending)setTimeout(()=>{if(!isEditing()){pending=false;render()}},60)});
-const VIEWS={news:vNews,req:vReq,home:vHome,reg:vReg,bday:vBday,inbox:vInbox,search:vSearch,time:vTime,check:vCheck,plan:vPlan,over:vOver,kids:vKids,cover:vCover,fb:vFb,resp:vResp,setup:vSetup};
+const VIEWS={news:vNews,req:vReq,home:vHome,reg:vReg,bday:vBday,inbox:PILOT?vInboxP:vInbox,search:vSearch,time:vTime,check:vCheck,plan:PILOT?vPlanP:vPlan,over:vOver,kids:vKids,cover:vCover,fb:vFb,resp:vResp,setup:vSetup};
 function render(){
   pending=false;
   try{
@@ -888,6 +939,151 @@ function contactCard(cid){const c=byId('children',cid);if(!c)return '';const par
     <div class="actions"><button class="btn primary" data-act="ctsave">Log contact</button></div>
     ${l.length?`<div class="list">${l.map(x=>{const due=x.followUp&&!x.fuDone;return `<div class="li"><div class="lt"><b>${esc(x.type)}</b> · ${fmt(x.date)}${x.with?' · '+esc(x.with):''}<div class="small" style="white-space:pre-wrap">${esc(x.summary)}</div><div class="muted small">by ${x.by==='manager'?'Manager':esc(nm('staff',x.by))}${x.followUp?` · follow up ${fmt(x.followUp)}`:''}</div></div>
       <div class="acts">${due?`<span class="pill ${x.followUp<=todayIso()?'missed':'due'}">${x.followUp<=todayIso()?'Follow-up due':'Follow-up '+fmt(x.followUp)}</span><button class="btn sm" data-act="ctdone" data-id="${x.id}">Done</button>`:x.followUp?'<span class="pill done">Followed up</span>':''}${ui.isMgr||x.by===ui.me?`<button class="btn sm danger" data-act="del" data-c="contacts" data-id="${x.id}">${ui.confirmDel==='contacts'+x.id?'Tap again':'Delete'}</button>`:''}</div></div>`}).join('')}</div>`:'<div class="muted small">No contacts logged yet.</div>'}</div>`}
+
+/* ---------- pilot: shared avatar helpers ---------- */
+const ini=s=>{const w=String(s||'?').trim().split(/\s+/).filter(Boolean);return (w.length>1?w[0][0]+w[1][0]:(w[0]||'?').slice(0,2)).toUpperCase()};
+const AVC=['#cfe6f3|#1a5a7e','#f5dbe5|#8a2a4f','#dcebdc|#2f6a3e','#f3e6c4|#6e4d10','#e6def3|#4f3a7a','#d8efeb|#1d6b62','#f6dfcf|#8a3f10','#e3eaee|#3c4a52'];
+const hashI=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h};
+const av=(id,name)=>{const [b,f]=AVC[hashI(id)%AVC.length].split('|');return `<span class="av" style="background:${b};color:${f}" aria-hidden="true">${esc(ini(name))}</span>`};
+const dayWord=d=>fmt(d).split(' ')[0];
+const relDay=d=>d===todayIso()?'Today':d===iso(addDays(parse(todayIso()),-1))?'Yesterday':fmt(d);
+
+/* ---------- pilot: class planning ---------- */
+function plBranch(){return ui.isMgr?(ui.f.branch||(ui.f.staff?(byId('staff',ui.f.staff)||{}).branchId:'')||''):myBranch()}
+function classKids(){const br=plBranch();return sortByName('children').filter(c=>(!br||!c.branchId||c.branchId===br)&&(!ui.f.grade||c.gradeId===ui.f.grade))}
+function classGroups(){const br=plBranch();return [...S.groups].filter(g=>!g.archived&&(!br||!g.branchId||g.branchId===br)).sort((a,b)=>(a.name||'').localeCompare(b.name||'',undefined,{numeric:true}))}
+const kidsOf=p=>p.childIds&&p.childIds.length?p.childIds:(p.childId?[p.childId]:[]);
+const grpKids=id=>((byId('groups',id)||{}).childIds||[]);
+function whoLabel(p){const k=kidsOf(p);if(p.wholeClass)return 'Whole class';if(p.groupId&&byId('groups',p.groupId))return nm('groups',p.groupId)+' · '+k.length;if(k.length>1)return k.length+' children: '+k.map(c=>(nm('children',c)||'').split(' ')[0]).join(', ');return k.length?nm('children',k[0]):''}
+const covers=(p,cid)=>p.wholeClass||kidsOf(p).includes(cid)||(!!p.groupId&&grpKids(p.groupId).includes(cid));
+function plWhoMatch(p){const w=ui.plWho||'';if(!w)return true;
+  if(w.startsWith('g:')){const g=byId('groups',w.slice(2));if(!g)return true;return p.groupId===g.id||p.wholeClass||kidsOf(p).some(c=>(g.childIds||[]).includes(c))}
+  if(w.startsWith('c:'))return covers(p,w.slice(2));return true}
+function plDaySel(){const ds=weekDates(ui.ws);if(!ds.includes(ui.plDay))ui.plDay=ds.includes(todayIso())?todayIso():ds[0];return ui.plDay}
+function vPlanP(){
+  if(ui.editing.plan) return vPlan();
+  if(!S.staff.length&&loaded) return reminders()+setupFirst();
+  if(ui.plBatch) return vPlanBatch();
+  const ds=weekDates(ui.ws),d=plDaySel(),kids=classKids(),grps=classGroups(),w=ui.plWho||'';
+  let h=reminders()+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">Today</button></div>`;
+  if(ui.mgr) h+=filtersCard();
+  h+=`<div class="wk5">${ds.map(x=>{const ps=plansFor([x]),dn=ps.filter(p=>p.done).length,lab=ps.length?(dn===ps.length?dn+' ✓':ps.length+' planned'):'empty';
+    return `<button class="wkd${x===d?' on':''}${ps.length?'':' empty'}" data-act="plday" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small></button>`}).join('')}</div>`;
+  if(kids.length>1) h+=`<div class="chiprow" role="group" aria-label="Show planning for">${[['','All '+kids.length],...grps.map(g=>['g:'+g.id,g.name]),...kids.map(c=>['c:'+c.id,(c.name||'').split(' ')[0]])].map(([v,l])=>`<button class="chip${v===w?' on':''}" data-act="plwho" data-v="${v}" aria-pressed="${v===w}">${esc(l)}</button>`).join('')}</div>`;
+  h+=`<div class="plbar"><button class="btn primary" data-act="psopen" data-d="${d}">+ Add activity</button><button class="btn" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="copyweek">Copy last week</button></div>`;
+  if(!w&&kids.length>1){const wk=plansFor(ds),miss=kids.filter(c=>!wk.some(p=>covers(p,c.id)));
+    if(miss.length&&miss.length<kids.length) h+=`<div class="banner warnb"><span class="small"><b>No planning this week yet for:</b> ${miss.map(c=>esc((c.name||'').split(' ')[0])).join(', ')}</span></div>`}
+  const ps=plansFor([d]).filter(plWhoMatch),bs=breaksFor(),ts=testsOnDate(d),tk=w?[]:itemsFor([d]);
+  h+=`<div class="row spread"><h2 style="margin:0">${esc(fmt(d))}${d===todayIso()?' · Today':''}</h2><span class="muted small">${ps.length} planned${tk.length?` · ${tk.length} task${tk.length>1?'s':''}`:''}</span></div>`;
+  h+=planLockBanner(d);ts.forEach(t=>h+=testBanner(t));
+  const used=new Set(ps.map(p=>p.periodId).filter(Boolean)),usedSt=new Set(ps.map(p=>oStart(p)));
+  const free=periodsSorted().filter(x=>!used.has(x.id)&&!usedSt.has(x.start||'~'));
+  const rows=[...tk.map(i=>({s:oStart(i.r),html:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:planHtml(p)})),
+    ...bs.map(x=>({s:x.start||'99',html:`<div class="brk"><span class="pill">Break</span><span>${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}</span></div>`})),
+    ...free.map(x=>({s:x.start||'99',html:`<button class="slotadd" data-act="psopen" data-d="${d}" data-slot="${x.id}">+ Add activity · ${esc(periodLabel(x))}</button>`}))].sort((a,b)=>a.s.localeCompare(b.s));
+  h+=ps.length||tk.length?`<div class="tl">${rows.map(r=>`<div class="tlt">${r.s==='99'?'':esc(r.s)}</div><div class="tlc">${r.html}</div>`).join('')}</div>`
+    :`<div class="card empty">Nothing planned for ${esc(fmt(d))} yet.<div class="plbar" style="justify-content:center"><button class="btn primary" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="psopen" data-d="${d}">+ Add one activity</button></div></div>`;
+  h+=extraForms()+psSheet();
+  return h}
+function psInit(d,slot){const p=byId('periods',slot);ui.ps={date:d,slot:p?p.id:'',start:p?p.start||'':'',end:p?p.end||'':'',who:'',kids:[],topicId:'',curriculumId:'',text:'',rep:false,staff:ui.isMgr?(ui.f.staff||''):ui.me,gname:''};ui.clash=null;ui.clear.add('tf-ps-')}
+function psGrab(){const s=ui.ps;if(!s)return;const g=id=>document.getElementById(id);
+  if(g('tf-ps-text'))s.text=g('tf-ps-text').value;if(g('tf-ps-start'))s.start=g('tf-ps-start').value;if(g('tf-ps-end'))s.end=g('tf-ps-end').value;
+  if(g('tf-ps-rep'))s.rep=g('tf-ps-rep').checked;if(g('tf-ps-staff'))s.staff=g('tf-ps-staff').value;if(g('tf-ps-gname'))s.gname=g('tf-ps-gname').value}
+function psKids(){const s=ui.ps;if(s.who==='class')return classKids().map(c=>c.id);if(s.who.startsWith('g:'))return grpKids(s.who.slice(2));return s.kids}
+function psSheet(){const s=ui.ps;if(!s)return '';const ds=weekDates(ui.ws),kids=classKids(),grps=classGroups(),sel=psKids();
+  const chip=(act,v,l,on,extra='')=>`<button type="button" class="chip${on?' on':''}" data-act="${act}" data-v="${esc(v)}" aria-pressed="${!!on}"${extra}>${l}</button>`;
+  const sid=ui.isMgr?s.staff:ui.me,used=new Set(S.plans.filter(p=>p.date===s.date&&(!sid||p.staffId===sid)).map(p=>p.periodId).filter(Boolean));
+  const tops=[...S.topics].sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  const sugg=[...new Set(S.plans.filter(p=>(!s.topicId||p.topicId===s.topicId)&&p.text).sort((a,b)=>(b.updated||'').localeCompare(a.updated||'')).map(p=>p.text.trim()))].slice(0,8);
+  const whoTxt=s.who==='class'?'Whole class':s.who.startsWith('g:')?nm('groups',s.who.slice(2)):sel.length===1?(nm('children',sel[0])||'').split(' ')[0]:sel.length?sel.length+' children':'';
+  const tm=s.start?s.start:'',lab=[tm,s.text&&(s.text.length>22?s.text.slice(0,22)+'…':s.text)||tName(s.topicId),whoTxt].filter(Boolean).join(' · ');
+  return `<div class="psheet"><div class="in" role="dialog" aria-modal="true" aria-label="Add activity">
+  <div class="row spread"><h3 style="margin:0">Add activity · ${esc(fmt(s.date))}</h3><button type="button" class="iconx" data-act="psclose" aria-label="Close">×</button></div>
+  ${ui.isMgr?`<label class="fld"><span>Staff member</span><select id="tf-ps-staff">${opt('staff',s.staff,'Choose staff')}</select></label>`:''}
+  <div class="pss"><div class="psl">Day</div><div class="chips">${ds.map(x=>chip('psday',x,esc(fmt(x).split(' ').slice(0,2).join(' ')),x===s.date)).join('')}</div></div>
+  <div class="pss"><div class="psl">1 · Time slot</div><div class="chips">${periodsSorted().map(x=>chip('psslot',x.id,esc(x.start?(x.start+(x.end?'–'+x.end:'')):(x.name||'Period'))+(used.has(x.id)?' <small>· used</small>':''),x.id===s.slot)).join('')}${chip('psslot','own','Own time',s.slot==='own')}</div>
+  ${s.slot==='own'?`<div class="grid2"><label class="fld"><span>From</span><select id="tf-ps-start">${timeOpts(s.start,'—')}</select></label><label class="fld"><span>To</span><select id="tf-ps-end">${timeOpts(s.end,'—')}</select></label></div>`:''}</div>
+  <div class="pss"><div class="psl">2 · Who</div>
+    <div class="chips">${kids.length>1?chip('pswho','class',`Whole class <small>${kids.length}</small>`,s.who==='class'):''}${grps.map(g=>chip('pswho','g:'+g.id,`${esc(g.name)} <small>${(g.childIds||[]).length}</small>`,s.who==='g:'+g.id)).join('')}</div>
+    ${kids.length?`<div class="small muted">${kids.length>1?'Or tap names:':''}</div><div class="chips">${kids.map(c=>chip('pskid',c.id,(sel.includes(c.id)?'✓ ':'')+esc((c.name||'').split(' ')[0]),sel.includes(c.id))).join('')}</div>`:'<span class="muted small">No children for this branch yet. Add them in Setup → Children.</span>'}
+    ${sel.length?`<div class="small"><b>${sel.length} selected</b></div>`:''}
+    ${sel.length>1&&!s.who?`<div class="addnew"><input type="text" id="tf-ps-gname" placeholder="Save these ${sel.length} as a group, e.g. Group A" aria-label="Group name"><button type="button" class="btn sm" data-act="psgroup">Save group</button></div>`:''}</div>
+  <div class="pss"><div class="psl">3 · Subject</div><div class="chips">${tops.map(t=>chip('pstopic',t.id,esc(t.name),t.id===s.topicId)).join('')||'<span class="muted small">Add subjects in Setup → Subjects.</span>'}</div></div>
+  <div class="pss"><div class="psl">4 · Activity</div>${sugg.length?`<div class="chips">${sugg.map(x=>chip('pstext',x,esc(x.length>28?x.slice(0,28)+'…':x),x===s.text)).join('')}</div>`:''}
+    <input type="text" id="tf-ps-text" value="${esc(s.text)}" placeholder="What will you do? e.g. Phonics with picture cards" aria-label="Activity"></div>
+  <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-rep"${s.rep?' checked':''}> Repeat every ${esc(dayWord(s.date))} this term</label>
+  ${clashBox('ps')}
+  <button type="button" class="btn primary big" data-act="pssave">${ui.clash&&ui.clash.f==='ps'?'Save anyway':'Save'+(lab?' · '+esc(lab):'')}</button>
+  </div></div>`}
+function pbSrcDate(d,src){const dt=parse(d);if(src==='last')return iso(addDays(dt,-7));if(src==='mon')return iso(addDays(dt,-((dt.getDay()+6)%7)));
+  if(src==='prev'){let p=addDays(dt,-1);while(p.getDay()===0||p.getDay()===6)p=addDays(p,-1);return iso(p)}return ''}
+function vPlanBatch(){const d=ui.plBatch,b=ui.pb||(ui.pb={src:'last'}),sid=ui.isMgr?(ui.pbStaff!==undefined?ui.pbStaff:(ui.f.staff||'')):ui.me;
+  const sd=pbSrcDate(d,b.src),src=sd?S.plans.filter(p=>p.date===sd&&(!sid||p.staffId===sid)).sort((x,y)=>oStart(x).localeCompare(oStart(y))):[];
+  b.rows=src.map(p=>p.id);const kids=classKids(),grps=classGroups(),bs=breaksFor(),exists=S.plans.filter(p=>p.date===d&&(!sid||p.staffId===sid));
+  const whoOpts=p=>{const k=kidsOf(p),cur=p.wholeClass?'class':p.groupId?'g:'+p.groupId:k.length===1?'c:'+k[0]:k.length?'keep':'';
+    return [...(cur===''?[['','—']]:[]),...(cur==='keep'?[['keep',k.length+' children (as before)']]:[]),['class','Whole class'],...grps.map(g=>['g:'+g.id,g.name]),...kids.map(c=>['c:'+c.id,c.name])].map(([v,l])=>`<option value="${v}"${v===cur?' selected':''}>${esc(l)}</option>`).join('')};
+  let h=`<div class="card"><div class="row spread"><button class="btn sm" data-act="pbclose">‹ Back to planning</button><span class="muted small">${exists.length} already planned</span></div>
+    <h2 style="margin:0">Plan ${esc(fmt(d))}</h2><span class="small muted">Fill the whole day and save once.</span>
+    ${ui.isMgr?`<label class="fld"><span>Staff member</span><select data-uiset="pbStaff">${opt('staff',sid,'All staff')}</select></label>`:''}
+    <div class="psl">Start from</div><div class="chips">${[['last','Last '+dayWord(d)],['prev','Day before'],['mon','This Monday'],['empty','Empty day']].filter(x=>!(x[0]==='mon'&&parse(d).getDay()===1)).map(([v,l])=>`<button class="chip${b.src===v?' on':''}" data-act="pbsrc" data-v="${v}" aria-pressed="${b.src===v}">${esc(l)}</button>`).join('')}</div></div>`;
+  if(b.src==='empty') h+=`<div class="card empty">Start with an empty day and add activities one by one.<button class="btn primary" data-act="psopen" data-d="${d}">+ Add activity</button></div>`;
+  else if(!src.length) h+=`<div class="card empty">Nothing was planned on ${esc(fmt(sd))} to copy. Try another start, or add activities one by one.<button class="btn" data-act="psopen" data-d="${d}">+ Add activity</button></div>`;
+  else{h+=`<div class="small muted">Copied from ${esc(fmt(sd))}. Untick what you don't want and change who takes part.</div><div class="card pbl">`+
+    [...src.map((p,i)=>({s:oStart(p),h:`<div class="pbr"><input type="checkbox" id="tf-pb-c-${i}" checked aria-label="Include ${esc(p.text)}"><span class="pbt">${esc(oStart(p)==='99'?'':oStart(p))}</span><span class="pbx"><b>${esc(p.text)}</b><small>${esc([p.topicId&&tName(p.topicId),!sid&&nm('staff',p.staffId)].filter(Boolean).join(' · '))}</small></span><select id="tf-pb-w-${i}" aria-label="Who takes part in ${esc(p.text)}">${whoOpts(p)}</select></div>`})),
+     ...bs.map(x=>({s:x.start||'99',h:`<div class="pbr brkr"><span></span><span class="pbt">${esc(x.start||'')}</span><span class="pbx small muted">${esc(x.name||'Break')}</span><span></span></div>`}))]
+    .sort((a,c)=>a.s.localeCompare(c.s)).map(r=>r.h).join('')+`</div>
+    <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-pb-rep"> Also plan this for every ${esc(dayWord(d))} this term</label>
+    <button class="btn primary big" data-act="pbsave">Save ticked activities for ${esc(fmt(d))}</button>`}
+  return h+psSheet()}
+
+/* ---------- pilot: WhatsApp-style inbox ---------- */
+const ibSeenK=sid=>'ibt_'+meKey()+'_'+sid;
+const ibSeen=sid=>lsGet(ibSeenK(sid))||lsGet(seenKey('inbox'))||'';
+function ibEvents(sid){const ev=[];
+  S.feedback.filter(f=>f.from===sid||((f.to===sid||f.to==='*')&&(!f.from||f.from==='manager'))).forEach(f=>{
+    if(f.to!=='*'||f.from===sid)ev.push({t:'f',at:f.at||'',f,me:isMine(f)});
+    S.replies.filter(r=>r.fid===f.id&&(r.by==='manager'||r.by===sid)).forEach(r=>ev.push({t:'r',at:r.at||'',r,f,me:r.by==='manager'}));
+    if(!f.from||f.from==='manager'){const t=(f.doneBy||{})[sid];if(t)ev.push({t:'d',at:t,f,me:false})}});
+  photoRecs().filter(x=>x.sid===sid&&x.staffPh).forEach(x=>ev.push({t:'p',at:x.at||x.date||'',x,me:false}));
+  return ev.sort((a,b)=>a.at.localeCompare(b.at))}
+function ibThreads(){return liveStaff().map(s=>{const ev=ibEvents(s.id),seen=ibSeen(s.id);return {sid:s.id,ev,last:ev[ev.length-1],unread:ev.filter(e=>!e.me&&e.at>seen&&!(e.t==='f'&&e.f.deleted)).length}})
+  .filter(t=>t.ev.length).sort((a,b)=>(b.last.at||'').localeCompare(a.last.at||''))}
+function ibPrev(e){if(!e)return '';if(e.t==='p')return 'Photo · '+e.x.text;if(e.t==='d')return 'Marked done · '+e.f.text;if(e.t==='r')return (e.me?'You: ':'')+e.r.text;
+  const f=e.f;if(f.deleted)return 'Deleted a message';const k=fbKind(f);return (e.me?'You: ':'')+(k==='fb'||k==='staff'?'':KIND_LABEL[k]+' · ')+f.text}
+const hhmm=at=>{try{return new Date(at).toTimeString().slice(0,5)}catch(e){return ''}};
+const ibTime=at=>{if(!at)return '';const d=at.slice(0,10);return d===todayIso()?hhmm(at):relDay(d)==='Yesterday'?'Yesterday':fmt(d).split(' ').slice(1,3).join(' ')};
+function ibApprovals(){const out=[];
+  S.feedback.forEach(f=>{if(f.deleted)return;
+    if(f.kind==='unlock'){const open=(f.scope==='plan'?plocked(f.from,f.date):signed(f.from,f.date))&&!f.closed;
+      if(open)out.push({at:f.at,sid:f.from,txt:(f.scope==='plan'?'Unlock planning · ':'Unlock checklist · ')+fmt(f.date),note:f.text,btn:`<button class="btn sm primary" data-act="${f.scope==='plan'?'unlockplan':'unlockday'}" data-s="${f.from}" data-d="${f.date}">Unlock</button>`})}
+    else if(!f.from||f.from==='manager')Object.entries(f.doneBy||{}).forEach(([k,t])=>{if(!(f.approvedFor||{})[k])out.push({at:t,sid:k,txt:'Done · '+f.text,btn:`<button class="btn sm primary" data-act="fbapprove" data-id="${f.id}" data-s="${k}">Approve</button><button class="btn sm" data-act="fbreopen" data-id="${f.id}" data-s="${k}">Not yet</button>`})})});
+  return out.sort((a,b)=>(b.at||'').localeCompare(a.at||''))}
+function vInboxP(){if(ui.ibChat&&byId('staff',ui.ibChat))return ibThread(ui.ibChat);
+  const tab=ui.ibTab||'chats',ap=ibApprovals(),th=ibThreads(),ph=photoRecs().filter(x=>x.staffPh);
+  let h=`<div class="ibtabs" role="tablist" aria-label="Inbox">${[['chats','Chats',th.filter(t=>t.unread).length],['appr','Approvals',ap.length],['photos','Photos',0]].map(([k,l,n])=>`<button role="tab" aria-selected="${k===tab}" class="${k===tab?'on':''}" data-act="ibtab" data-v="${k}">${l}${n?` <span class="ibn">${n}</span>`:''}</button>`).join('')}</div>`;
+  if(tab==='chats'){const f=ui.ibFilt||'',list=th.filter(t=>!f||t.unread);
+    h+=`<div class="chips">${[['','All'],['u','Unread']].map(([v,l])=>`<button class="chip${v===f?' on':''}" data-act="ibfilt" data-v="${v}" aria-pressed="${v===f}">${l}</button>`).join('')}</div>`;
+    h+=list.length?`<div class="iblist">${list.map(t=>{const s=byId('staff',t.sid);return `<button class="ibrow" data-act="ibopen" data-s="${t.sid}">${av(t.sid,staffLabel(s))}<span class="ibm"><b>${esc(staffLabel(s))}</b><span class="${t.unread?'ub':''}">${esc(ibPrev(t.last))}</span></span><span class="ibr"><span class="${t.unread?'tn':''}">${esc(ibTime(t.last.at))}</span>${t.unread?`<span class="ibn">${t.unread}</span>`:''}</span></button>`}).join('')}</div>`
+      :`<div class="card empty">${f?'No unread chats.':'No messages yet.'}</div>`}
+  else if(tab==='appr') h+=ap.length?`<div class="iblist">${ap.map(a=>`<div class="ibrow ibap">${av(a.sid,nm('staff',a.sid))}<span class="ibm"><b>${esc(nm('staff',a.sid))} <small class="muted">· ${esc(ibTime(a.at))}</small></b><span class="ub">${esc(a.txt)}</span>${a.note?`<span>${esc(a.note)}</span>`:''}</span><span class="acts">${a.btn}</span></div>`).join('')}</div>`:'<div class="card empty">Nothing waiting for approval.</div>';
+  else h+=ph.length?ph.slice(0,40).map(x=>`<div class="card"><div class="row spread small muted"><span><b>${esc(nm('staff',x.sid))}</b> · ${x.kind} · ${esc(x.text)}</span><span>${esc(fmt(x.date))}</span></div>${thumbs(x.photos)}</div>`).join(''):'<div class="card empty">No photos from staff yet.</div>';
+  return h}
+function ibThread(sid){const s=byId('staff',sid),ev=ibEvents(sid);
+  if(ev.length&&ev[ev.length-1].at>ibSeen(sid))lsSet(ibSeenK(sid),new Date().toISOString());
+  let h=`<div class="ibhead"><button class="iconx" data-act="ibback" aria-label="Back to chats">‹</button>${av(sid,staffLabel(s))}<div><b>${esc(staffLabel(s))}</b><div class="small">${esc([nm('branches',(s||{}).branchId),s&&s.role].filter(Boolean).join(' · '))}</div></div></div><div class="ibchat">`;
+  let day='';
+  ev.forEach(e=>{const d=(e.at||'').slice(0,10);if(d&&d!==day){day=d;h+=`<div class="dpill">${esc(relDay(d))}</div>`}
+    let body='',cls=e.me?'bub me':'bub';
+    if(e.t==='f'){const f=e.f,k=fbKind(f),lab=f.to==='*'?'To all staff':k==='fb'?'':k==='staff'?'To '+nm('staff',f.to):KIND_LABEL[k]+(f.date?' · '+fmt(f.date):'');
+      if(f.deleted){cls+=' gone';body=`<s>${esc(f.text)}</s><div class="small muted">Deleted by ${esc(nm('staff',f.deletedBy))}</div>`}
+      else body=`${lab?`<div class="bl">${esc(lab)}</div>`:''}<div class="bt">${esc(f.text)}</div>${f.kind==='unlock'?fbStatus(f):''}`}
+    else if(e.t==='r') body=`<div class="bq">${esc((e.f.text||'').slice(0,90))}</div><div class="bt">${esc(e.r.text)}</div>`;
+    else if(e.t==='d'){const ok=(e.f.approvedFor||{})[sid];body=`<div class="bl">Marked as done</div><div class="bt">${esc(e.f.text)}</div>${ok?'<span class="pill done">Approved</span>':`<div class="row" style="gap:6px"><button class="btn sm primary" data-act="fbapprove" data-id="${e.f.id}" data-s="${sid}">Approve</button><button class="btn sm" data-act="fbreopen" data-id="${e.f.id}" data-s="${sid}">Not yet</button></div>`}`}
+    else if(e.t==='p'){cls+=' ph';body=`${thumbs(e.x.photos)}<div class="bl">${esc(e.x.kind)} · ${esc(e.x.text)}</div>`}
+    h+=`<div class="${cls}">${body}<div class="bm">${esc(hhmm(e.at))}</div></div>`});
+  if(!ev.length)h+='<div class="muted small" style="text-align:center;padding:20px">No messages yet.</div>';
+  h+=`</div><form class="ibcomp" data-act="ibsend" data-s="${sid}"><input type="text" id="tf-ibc" placeholder="Message ${esc((staffLabel(s)||'').split(' ')[0])}" autocomplete="off" aria-label="Message to ${esc(staffLabel(s))}"><button class="btn primary" type="submit">Send</button></form>`;
+  return h}
 
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
@@ -1380,6 +1576,7 @@ const SETUP=[
  {c:'grades',t:'Grades',f:[{k:'name',l:'Grade',ph:'e.g. Grade R'}],show:x=>esc(x.name)},
  {c:'children',t:'Children',f:[{k:'name',l:'Child name and surname'},{k:'gradeId',l:'Grade',s:'grades'},{k:'branchId',l:'Branch',s:'branches'},{k:'dob',l:'Birthday',type:'date'},{k:'medical',l:'Medical or allergy alert (optional)',ph:'e.g. Peanut allergy, epilepsy'},{k:'p1',l:'Parent 1 name'},{k:'p1dob',l:'Parent 1 birthday',type:'date'},{k:'p2',l:'Parent 2 name'},{k:'p2dob',l:'Parent 2 birthday',type:'date'},{k:'curIds',l:'Curriculum for this child',multi:'curriculum'}],
    show:x=>`${esc(x.name)}${x.medical?' <span class="pill missed">Medical alert</span>':''}<div class="muted small">${[nm('grades',x.gradeId),nm('branches',x.branchId),...(x.curIds||[]).map(i=>nm('curriculum',i)),x.dob&&'Birthday '+fmt(x.dob).slice(4)].filter(Boolean).map(esc).join(' · ')}</div>`},
+ ...(PILOT?[{c:'groups',t:'Groups (for class planning)',f:[{k:'name',l:'Group name',ph:'e.g. Group A'},{k:'branchId',l:'Branch',s:'branches'},{k:'childIds',l:'Children in this group',multi:'children'}],show:x=>`${esc(x.name)}<div class="muted small">${[nm('branches',x.branchId),(x.childIds||[]).map(i=>(nm('children',i)||'').split(' ')[0]).join(', ')||'No children yet'].filter(Boolean).map(esc).join(' · ')}</div>`}]:[]),
  {c:'curriculum',t:'Curriculum',f:[{k:'name',l:'Curriculum',ph:'e.g. Impaq'}],show:x=>`${esc(x.name)}<div class="muted small">${S.topics.filter(t=>t.subjectId===x.id).map(t=>esc(t.name)).join(', ')||'No subjects yet'}</div>`},
  {c:'topics',t:'Subjects',f:[{k:'subjectId',l:'Curriculum',s:'curriculum'},{k:'name',l:'Subject',ph:'e.g. Maths'}],show:x=>`${esc(x.name)}<div class="muted small">${esc(nm('curriculum',x.subjectId))}</div>`},
  {c:'periods',t:'Time periods',f:[{k:'name',l:'Name',ph:'e.g. Period 1'},{k:'start',l:'Start',type:'timesel'},{k:'end',l:'End',type:'timesel'}],show:x=>esc(periodLabel(x))},
@@ -1402,7 +1599,7 @@ const SETUP=[
 function secForm(sec){
   const ed=ui.editing[sec.c]?byId(sec.c,ui.editing[sec.c]):null;
   const fields=sec.f.map(f=>{const id=`sf-${sec.c}-${f.k}`,v=ed?(ed[f.k]??''):(f.def||'');
-    if(f.multi){const arr=Array.isArray(v)?v:[];return `<div class="fld" style="grid-column:1/-1"><span>${f.l}</span><div class="chk">${sortByName(f.multi).map(x=>`<label><input type="checkbox" id="${id}-${x.id}"${arr.includes(x.id)?' checked':''}> ${esc(x.name)}</label>`).join('')||'<span class="muted small">Add curriculum first</span>'}</div></div>`}
+    if(f.multi){const arr=Array.isArray(v)?v:[];return `<div class="fld" style="grid-column:1/-1"><span>${f.l}</span><div class="chk">${sortByName(f.multi).map(x=>`<label><input type="checkbox" id="${id}-${x.id}"${arr.includes(x.id)?' checked':''}> ${esc(x.name)}</label>`).join('')||`<span class="muted small">Add ${f.multi==='children'?'children':'curriculum'} first</span>`}</div></div>`}
     if(f.opts){return `<label class="fld"><span>${f.l}</span><select id="${id}">${f.opts.map(([k,l])=>`<option value="${k}"${k===(v||f.opts[0][0])?' selected':''}>${esc(l)}</option>`).join('')}</select></label>`}
     const inp=f.type==='timesel'?`<select id="${id}">${timeOpts(v,'—')}</select>`:f.s?`<select id="${id}">${opt(f.s,v,'—')}</select>`:`<input type="${f.type||'text'}" id="${id}" value="${esc(v)}" placeholder="${esc(f.ph||'')}"${f.k==='pin'?' inputmode="numeric"':''}>`;
     return `<label class="fld"><span>${f.l}</span>${inp}</label>`}).join('');
@@ -1539,7 +1736,7 @@ async function signOff(sids,on){
   render();toast(on?'Signed off':'Reopened');
 }
 const acts={
-  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
+  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.ibChat='';ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
   theme:()=>{const n=effTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=n;lsSet('theme',n);renderChrome()},
   who:()=>{if(!signedIn())return;ui.acct=!ui.acct;render();window.scrollTo(0,0)},
   logout:()=>{ui.me='';ui.mgr=false;ui.acct=false;lsSet('me',null);lsSet('mgr',null);ui.f.staff='';render()},
@@ -1693,6 +1890,55 @@ const acts={
     const d={childId:cid,date:val('tf-ct-date')||todayIso(),type:val('tf-ct-type')||'Call',with:val('tf-ct-with'),summary:sum,followUp:val('tf-ct-fu'),fuDone:false,by:ui.me||'manager',at:new Date().toISOString()};
     if(await put('contacts',newId(),d)){ui.clear.add('tf-ct');render();toast('Contact logged')}},
   ctdone:async b=>{const c=byId('contacts',b.dataset.id);if(!c)return;const {id,...rest}=c;c.fuDone=true;render();await put('contacts',id,{...rest,fuDone:true,fuDoneAt:new Date().toISOString()});toast('Follow-up done')},
+  plday:b=>{ui.plDay=b.dataset.d;render()},
+  pltoday:b=>{acts.today(b);ui.plDay=todayIso();render()},
+  plwho:b=>{ui.plWho=b.dataset.v;render()},
+  psopen:b=>{psInit(b.dataset.d||plDaySel(),b.dataset.slot||'');render()},
+  psclose:()=>{ui.ps=null;ui.clash=null;render()},
+  psday:b=>{psGrab();ui.ps.date=b.dataset.v;ui.clash=null;render()},
+  psslot:b=>{psGrab();const s=ui.ps,v=b.dataset.v;s.slot=s.slot===v?'':v;const p=byId('periods',v);if(p){s.start=p.start||'';s.end=p.end||''}ui.clash=null;render()},
+  pswho:b=>{psGrab();const s=ui.ps;s.who=s.who===b.dataset.v?'':b.dataset.v;if(s.who)s.kids=[];render()},
+  pskid:b=>{psGrab();const s=ui.ps,cur=psKids(),id=b.dataset.v;s.who='';s.kids=cur.includes(id)?cur.filter(x=>x!==id):[...cur,id];render()},
+  pstopic:b=>{psGrab();const s=ui.ps,t=byId('topics',b.dataset.v);if(!t||s.topicId===t.id){s.topicId='';s.curriculumId=''}else{s.topicId=t.id;s.curriculumId=t.subjectId||''}render()},
+  pstext:b=>{psGrab();ui.ps.text=b.dataset.v;const el=document.getElementById('tf-ps-text');if(el)el.value=b.dataset.v;render()},
+  psgroup:async()=>{psGrab();const s=ui.ps,name=(s.gname||'').trim();if(!name){toast('Type a name for the group.');return}
+    const kids=psKids(),id=newId(),g={name,branchId:plBranch(),childIds:kids};
+    if(await put('groups',id,g)){if(!byId('groups',id))S.groups.push({id,...g});s.who='g:'+id;s.kids=[];s.gname='';ui.clear.add('tf-ps-gname');logAct('Created group '+name);render();toast('Group "'+name+'" saved')}},
+  pssave:async()=>{psGrab();const s=ui.ps;if(!s)return;const staffId=ui.isMgr?s.staff:ui.me;
+    if(!staffId){toast('Choose the staff member.');return}
+    if(!s.slot){toast('Choose a time slot.');return}
+    if(s.slot==='own'&&!s.start){toast('Choose the start time.');return}
+    const kids=psKids();if(!kids.length){toast('Choose who it is for.');return}
+    if(!s.text&&!s.topicId){toast('Choose or type the activity.');return}
+    const per=s.slot!=='own'?byId('periods',s.slot):null;
+    const d={staffId,date:s.date,session:'',periodId:per?per.id:'',start:per?per.start||'':s.start,end:per?per.end||'':s.end,text:(s.text||'').trim()||tName(s.topicId),
+      childIds:kids,childId:kids.length===1?kids[0]:'',groupId:s.who.startsWith('g:')?s.who.slice(2):'',wholeClass:s.who==='class',gradeId:'',curriculumId:s.curriculumId,topicId:s.topicId,
+      done:false,photos:[],by:ui.me||'manager',updated:new Date().toISOString()};
+    if(checkClash('ps',d,[staffId],[d.date]))return;
+    const pid=newId();if(s.rep)d.series=pid;
+    if(await put('plans',pid,d)){let n=0;if(s.rep){const until=repUntilDefault();for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd});n++}}
+      ui.ps=null;ui.clash=null;ui.plDay=d.date;ui.clear.add('tf-ps-');render();toast(n?`Saved and repeated for ${n} more week${n===1?'':'s'}`:'Activity saved')}},
+  pbopen:b=>{ui.plBatch=b.dataset.d;ui.pb={src:'last'};ui.ps=null;ui.clear.add('tf-pb-');render();window.scrollTo(0,0)},
+  pbclose:()=>{ui.plBatch=null;ui.ps=null;render()},
+  pbsrc:b=>{ui.pb.src=b.dataset.v;ui.clear.add('tf-pb-');render()},
+  pbsave:async()=>{const d=ui.plBatch,b=ui.pb;if(!d||!b)return;const ids=b.rows||[],rep=!!document.getElementById('tf-pb-rep')?.checked,until=repUntilDefault(),kids=classKids();let n=0,sk=0;
+    for(let i=0;i<ids.length;i++){if(!document.getElementById('tf-pb-c-'+i)?.checked)continue;const p=byId('plans',ids[i]);if(!p)continue;const w=val('tf-pb-w-'+i);
+      const {id,photos,done,series,...rest}=p;const nd={...rest,date:d,done:false,photos:[],copiedFrom:id,updated:new Date().toISOString()};
+      if(w==='class'){nd.wholeClass=true;nd.groupId='';nd.childIds=kids.map(c=>c.id)}
+      else if(w.startsWith('g:')){nd.wholeClass=false;nd.groupId=w.slice(2);nd.childIds=grpKids(nd.groupId)}
+      else if(w.startsWith('c:')){nd.wholeClass=false;nd.groupId='';nd.childIds=[w.slice(2)]}
+      nd.childId=(nd.childIds||[]).length===1?nd.childIds[0]:(nd.childIds&&nd.childIds.length?'':(nd.childId||''));
+      if(S.plans.some(q=>q.date===d&&q.staffId===nd.staffId&&q.text===nd.text&&oStart(q)===oStart(nd))){sk++;continue}
+      const pid=newId();if(rep)nd.series=pid;
+      if(await put('plans',pid,nd)){n++;if(rep)for(let k=1;k<=52;k++){const dd=iso(addDays(parse(d),7*k));if(dd>until)break;await put('plans',newId(),{...nd,date:dd})}}}
+    if(n)logAct(`Planned ${n} activities for ${fmt(d)} in one go`);
+    ui.plBatch=null;ui.plDay=d;ui.clear.add('tf-pb-');render();toast(n?`${n} activit${n>1?'ies':'y'} saved for ${fmt(d)}${sk?` · ${sk} already there`:''}`:(sk?'Those are already planned.':'Nothing ticked to save.'))},
+  ibtab:b=>{ui.ibTab=b.dataset.v;render()},
+  ibfilt:b=>{ui.ibFilt=b.dataset.v;render()},
+  ibopen:b=>{ui.ibChat=b.dataset.s;render();window.scrollTo(0,document.body.scrollHeight)},
+  ibback:()=>{ui.ibChat='';render()},
+  ibsend:async b=>{const sid=b.dataset.s,text=val('tf-ibc');if(!text){toast('Type a message first.');return}
+    if(await put('feedback',newId(),{to:sid,text,from:'manager',at:new Date().toISOString()})){logAct('Sent message to '+nm('staff',sid));ui.clear.add('tf-ibc');lsSet(ibSeenK(sid),new Date().toISOString());render();window.scrollTo(0,document.body.scrollHeight)}},
   hidenudge:()=>{ui.nudgeHide=true;render()},
   shownudge:()=>{ui.tab='check';ui.ws=mondayOf(new Date());ui.day='all';ui.openDays=new Set(['carry']);render();document.querySelector('[data-k="carry"]')?.scrollIntoView({behavior:'smooth',block:'start'})},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
