@@ -338,9 +338,9 @@ body::before{background:var(--hdr)}
 .chip small{opacity:.75;font-size:11px}
 .chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-fg);font-weight:700}
 .plbar{display:flex;flex-wrap:wrap;gap:8px}
-.tl{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:8px;row-gap:8px;align-items:start}
-.tlt{font-size:12px;font-weight:700;color:var(--muted);padding-top:13px}
-.tlc{min-width:0}.tlc>.item,.tlc>.brk{margin:0}
+.ptl{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:8px;row-gap:8px;align-items:start}
+.ptlt{font-size:12px;font-weight:700;color:var(--muted);padding-top:13px}
+.ptlc{min-width:0}.ptlc>.item,.ptlc>.brk{margin:0}
 .slotadd{width:100%;min-height:44px;border-radius:10px;border:1.5px dashed var(--accent);background:transparent;color:var(--accent);font:inherit;font-weight:700;text-align:left;padding:0 12px;cursor:pointer}
 .psheet{position:fixed;inset:0;z-index:50;background:rgba(15,42,58,.45);display:flex;align-items:flex-end;justify-content:center}
 .psheet .in{background:var(--surface);width:100%;max-width:640px;max-height:90vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px;box-sizing:border-box}
@@ -399,6 +399,21 @@ body::before{background:var(--hdr)}
 .hal-notice{background:var(--accent-soft);color:var(--fg);cursor:pointer;align-items:center;border:1.5px solid var(--accent)}.hal-notice b{color:var(--accent)}
 .nbell{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;flex:none}.nbell svg{width:18px;height:18px}
 .ncount{margin-left:auto;min-width:26px;height:26px;padding:0 7px;border-radius:13px;background:#b23a2e;color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;box-sizing:border-box}
+.tline.thin{row-gap:5px}.tline.thin .tlhit{padding:5px 10px}.tline.thin .tlh{align-items:center}.tline.thin .tlh>span:first-child{display:flex;flex-wrap:wrap;column-gap:10px;align-items:baseline;min-width:0}
+.tline.thin .tlt{font-size:13px}.tline.thin .tlsub{font-size:11.5px;margin:0}.tline.thin .tltime{padding-top:6px;font-size:11px}.tline.thin .tlbody{padding:0 10px 6px}.tline.thin .tlc{border-radius:8px}
+.tlbday{border-left-color:#e0a43a;background:#fdf1dc}.tlbday .tlhit{cursor:default}.bdrow{background:#fdf1dc}
+.ntc{display:flex;align-items:center;gap:8px;cursor:pointer;border-radius:12px;position:relative}.ntcb{flex:1;min-width:0}.ntcb>*{margin:0}
+.ntc.read .ntcb>*{opacity:.65}.ntc.read b{font-weight:500}.ntc.read{cursor:default}
+.ntcdot{position:absolute;left:-5px;top:-3px;width:11px;height:11px;border-radius:6px;background:#b23a2e;border:2px solid var(--bg);z-index:1}
+.ntcopen{flex:none}.hal-notice.allread b{font-weight:600;color:var(--fg)}
+.mood{position:relative}.mood i{position:absolute;right:-3px;bottom:-3px;min-width:15px;height:15px;border-radius:8px;background:var(--surface);border:1px solid var(--line-strong);font-style:normal;font-size:10px;font-weight:800;color:var(--fg);display:grid;place-items:center}
+.ms .mr{font-size:10px}
+.phw{position:relative;display:inline-block}.phdel{position:absolute;top:-6px;right:-6px;min-width:24px;height:24px;border-radius:12px;border:0;background:#b23a2e;color:#fff;font-weight:800;font-size:13px;cursor:pointer;padding:0 6px}.phdel.on{font-size:11px}
+.thumb .phbad{display:none}.thumb.bad .phbad{display:grid;place-items:center;width:64px;height:64px;font-size:10px;color:var(--muted);text-align:center;background:var(--off-bg);border-radius:8px}
+.ihist summary{cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;min-height:32px;display:flex;align-items:center}.ihist .li{padding:6px 8px}
+.ibtabs.two{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:6px}
+.bnav .bn span:not(.bnb){font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.moodstrip{gap:2px}.ms small{line-height:1.2;white-space:normal}.ms .mr{display:block;min-height:14px}
 </style>
 </head>
 <body>
@@ -607,13 +622,13 @@ function syncPlans(rid,date,sid,done){const r=byId('resp',rid);if(!r)return;cons
 
 /* ---------- render core ---------- */
 const panel=document.getElementById('panel');
-function tabsFor(){if(ui.isMgr)return [['home','Today'],...(PILOT?[['notices','Notices']]:[]),['check','Checklist'],['reg','Register'],['plan','Planning'],['resp','Responsibilities'],['time','Timetable'],['over','Overview'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Resources'],['leave','Leave'],['inc','Incidents'],['maint','Maintenance']]:[]),['fb','Messages'],['inbox','Inbox'],['setup','Setup']];
+function tabsFor(){if(ui.isMgr)return [['home','Today'],...(PILOT?[['notices','Notices']]:[]),['check','Checklist'],['reg','Register'],['plan','Planning'],['resp','Responsibilities'],['time','Timetable'],['over','Overview'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Requests & repairs'],['leave','Leave'],['inc','Incidents']]:[]),['fb','Messages'],['inbox','Inbox'],['setup','Setup']];
   const P=myPerms(),t=[['home','Today'],...(PILOT?[['notices','Notices']]:[]),['check','Checklist'],['reg','Register'],['plan','Planning']];if(P.includes('resp'))t.push(['resp','Responsibilities']);
-  t.push(['time','Timetable'],['over',P.includes('overview')?'Overview':'My progress'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Resources'],['leave','Leave'],['inc','Incidents'],['maint','Maintenance']]:[]),['fb','Messages']);
+  t.push(['time','Timetable'],['over',P.includes('overview')?'Overview':'My progress'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Requests & repairs'],['leave','Leave'],['inc','Incidents']]:[]),['fb','Messages']);
   if(P.includes('inbox'))t.push(['inbox','Inbox']);if(P.includes('setup'))t.push(['setup','Setup']);return t}
 const signedIn=()=>!!(ui.me||ui.mgr);
-const NAVICO={home:'<path d="M3 11 12 4l9 7v9H3z"/>',plan:'<path d="M4 20h16M6 16l9-9 3 3-9 9H6z"/>',reg:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11l2 2 4-4"/>',fb:'<path d="M4 5h16v11H8l-4 4z"/>',inbox:'<path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
-function navItems(){return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
+const NAVICO={resp:'<path d="M9 4h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="M8 13l2.5 2.5L16 10"/>',time:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M13 14h3M8 17h3"/>',home:'<path d="M3 11 12 4l9 7v9H3z"/>',plan:'<path d="M4 20h16M6 16l9-9 3 3-9 9H6z"/>',reg:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11l2 2 4-4"/>',fb:'<path d="M4 5h16v11H8l-4 4z"/>',inbox:'<path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
+function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return [['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
 function renderChrome(){
   const bn=document.getElementById('bnav'),tabs=document.getElementById('tabs');if(tabs){tabs.hidden=true}
   const me=byId('staff',ui.me);
@@ -623,7 +638,7 @@ function renderChrome(){
   if(!signedIn()){bn.hidden=true;bn.innerHTML='';return}
   applyTheme();
   if(PILOT){const bc=document.getElementById('bellC'),bb=document.getElementById('bellBtn');if(bb){bb.hidden=false;bb.classList.toggle('on',ui.tab==='notices')}if(bc){const n=noticeCount();bc.hidden=!n;bc.textContent=n>9?'9+':n}}
-  bn.hidden=false;const nav=navItems(),inNav=nav.map(x=>x[0]),n=unread(),ni=unreadInbox();
+  bn.hidden=false;const nav=navItems();bn.style.gridTemplateColumns=`repeat(${nav.length},minmax(0,1fr))`;const inNav=nav.map(x=>x[0]),n=unread(),ni=unreadInbox();
   const moreOn=!inNav.slice(0,4).includes(ui.tab);
   bn.innerHTML=nav.map(([k,l])=>{const on=k==='more'?moreOn||ui.moreOpen:ui.tab===k&&!ui.moreOpen,b=k==='fb'?n:k==='inbox'?ni:k==='more'&&(ni||n)&&!inNav.includes('fb')?n:0;
     return `<button class="bn${on?' on':''}" data-act="${k==='more'?'moretog':'tab'}" data-t="${k}" aria-label="${l}"${on?' aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${on?2.1:1.8}" aria-hidden="true">${NAVICO[k]}</svg><span>${l}</span>${b?`<span class="bnb">${b}</span>`:''}</button>`}).join('');
@@ -646,7 +661,7 @@ let pending=false;
 const isEditing=()=>{const a=document.activeElement;return a&&panel.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!['checkbox','radio','file'].includes(a.type)};
 function scheduleRender(){if(isEditing()){pending=true;return}render()}
 document.addEventListener('focusout',()=>{if(pending)setTimeout(()=>{if(!isEditing()){pending=false;render()}},60)});
-const VIEWS={notices:vNotices,news:vNews,req:vReq,leave:vLeave,inc:vInc,maint:vMaint,home:vHome,reg:vReg,bday:vBday,inbox:PILOT?vInboxP:vInbox,search:vSearch,time:vTime,check:vCheck,plan:PILOT?vPlanP:vPlan,over:vOver,kids:vKids,cover:vCover,fb:vFb,resp:vResp,setup:vSetup};
+const VIEWS={notices:vNotices,news:vNews,req:PILOT?vReqCombo:vReq,leave:vLeave,inc:vInc,maint:vMaint,home:vHome,reg:vReg,bday:vBday,inbox:PILOT?vInboxP:vInbox,search:vSearch,time:vTime,check:vCheck,plan:PILOT?vPlanP:vPlan,over:vOver,kids:vKids,cover:vCover,fb:vFb,resp:vResp,setup:vSetup};
 function render(){
   pending=false;
   try{
@@ -955,7 +970,7 @@ function vReq(){let h=`<div class="card"><h3>Request resources</h3><div class="g
 function contactCard(cid){const c=byId('children',cid);if(!c)return '';const parents=[c.p1,c.p2].filter(Boolean);
   const l=S.contacts.filter(x=>x.childId===cid).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.at||'').localeCompare(a.at||''));
   return `<div class="card"><h3>Parent contact log</h3><div class="grid2"><label class="fld"><span>Date</span><input type="date" id="tf-ct-date" value="${todayIso()}"></label>
-    <label class="fld"><span>Type</span><select id="tf-ct-type">${['Call','Meeting','WhatsApp','Email','Other'].map(x=>`<option>${x}</option>`).join('')}</select></label>
+    <label class="fld"><span>Type</span><select id="tf-ct-type">${['Call','Meeting (in person)','Meeting (on Zoom)','WhatsApp','Email','Other'].map(x=>`<option>${x}</option>`).join('')}</select></label>
     <label class="fld"><span>With</span><select id="tf-ct-with">${parents.map(p=>`<option>${esc(p)}</option>`).join('')}<option value="Parent">Parent (other)</option><option value="Guardian">Guardian</option></select></label>
     <label class="fld"><span>Follow up on (optional)</span><input type="date" id="tf-ct-fu"></label></div>
     <label class="fld"><span>What was discussed</span><textarea id="tf-ct-sum" rows="2" placeholder="e.g. Discussed Cayno's progress with counting; mom will practise at home"></textarea></label>
@@ -1004,8 +1019,9 @@ function vPlanP(){
   const free=periodsSorted().filter(x=>!used.has(x.id)&&!usedSt.has(x.start||'~'));
   const rows=[...tk.map(i=>({s:oStart(i.r),html:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:planHtml(p)})),
     ...bs.map(x=>({s:x.start||'99',html:`<div class="brk"><span class="pill">Break</span><span>${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}</span></div>`})),
+    ...bdRows(d).map(x=>({s:'06:55',html:`<div class="brk bdrow"><span class="pill due">Birthday</span><span>${esc(x.t)}</span></div>`})),
     ...free.map(x=>({s:x.start||'99',html:`<button class="slotadd" data-act="psopen" data-d="${d}" data-slot="${x.id}">+ Add activity · ${esc(periodLabel(x))}</button>`}))].sort((a,b)=>a.s.localeCompare(b.s));
-  h+=ps.length||tk.length?`<div class="tl">${rows.map(r=>`<div class="tlt">${r.s==='99'?'':esc(r.s)}</div><div class="tlc">${r.html}</div>`).join('')}</div>`
+  h+=ps.length||tk.length||bdRows(d).length?`<div class="ptl">${rows.map(r=>`<div class="ptlt">${r.s==='99'?'':esc(r.s)}</div><div class="ptlc">${r.html}</div>`).join('')}</div>`
     :`<div class="card empty">Nothing planned for ${esc(fmt(d))} yet.<div class="plbar" style="justify-content:center"><button class="btn primary" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="psopen" data-d="${d}">+ Add one activity</button></div></div>`;
   h+=extraForms()+psSheet();
   return h}
@@ -1093,7 +1109,7 @@ function vInboxP(){if(ui.ibChat&&byId('staff',ui.ibChat))return ibThread(ui.ibCh
     h+=list.length?`<div class="iblist">${list.map(t=>{const s=byId('staff',t.sid);return `<button class="ibrow" data-act="ibopen" data-s="${t.sid}">${av(t.sid,staffLabel(s))}<span class="ibm"><b>${esc(staffLabel(s))}</b><span class="${t.unread?'ub':''}">${esc(ibPrev(t.last))}</span></span><span class="ibr"><span class="${t.unread?'tn':''}">${esc(ibTime(t.last.at))}</span>${t.unread?`<span class="ibn">${t.unread}</span>`:''}</span></button>`}).join('')}</div>`
       :`<div class="card empty">${f?'No unread chats.':'No messages yet.'}</div>`}
   else if(tab==='appr') h+=ap.length?`<div class="iblist">${ap.map(a=>`<div class="ibrow ibap">${av(a.sid,nm('staff',a.sid))}<span class="ibm"><b>${esc(nm('staff',a.sid))} <small class="muted">· ${esc(ibTime(a.at))}</small></b><span class="ub">${esc(a.txt)}</span>${a.note?`<span>${esc(a.note)}</span>`:''}</span><span class="acts">${a.btn}</span></div>`).join('')}</div>`:'<div class="card empty">Nothing waiting for approval.</div>';
-  else h+=ph.length?ph.slice(0,40).map(x=>`<div class="card"><div class="row spread small muted"><span><b>${esc(nm('staff',x.sid))}</b> · ${x.kind} · ${esc(x.text)}</span><span>${esc(fmt(x.date))}</span></div>${thumbs(x.photos)}</div>`).join(''):'<div class="card empty">No photos from staff yet.</div>';
+  else h+=ph.length?ph.slice(0,40).map(x=>`<div class="card"><div class="row spread small muted"><span><b>${esc(nm('staff',x.sid))}</b> · ${x.kind} · ${esc(x.text)}</span><span>${esc(fmt(x.date))}</span></div>${phGrid(x)}</div>`).join(''):'<div class="card empty">No photos from staff yet.</div>';
   return h}
 function ibThread(sid){const s=byId('staff',sid),ev=ibEvents(sid);
   if(ev.length&&ev[ev.length-1].at>ibSeen(sid))lsSet(ibSeenK(sid),new Date().toISOString());
@@ -1106,7 +1122,7 @@ function ibThread(sid){const s=byId('staff',sid),ev=ibEvents(sid);
       else body=`${lab?`<div class="bl">${esc(lab)}</div>`:''}<div class="bt">${esc(f.text)}</div>${f.kind==='unlock'?fbStatus(f):''}`}
     else if(e.t==='r') body=`<div class="bq">${esc((e.f.text||'').slice(0,90))}</div><div class="bt">${esc(e.r.text)}</div>`;
     else if(e.t==='d'){const ok=(e.f.approvedFor||{})[sid];body=`<div class="bl">Marked as done</div><div class="bt">${esc(e.f.text)}</div>${ok?'<span class="pill done">Approved</span>':`<div class="row" style="gap:6px"><button class="btn sm primary" data-act="fbapprove" data-id="${e.f.id}" data-s="${sid}">Approve</button><button class="btn sm" data-act="fbreopen" data-id="${e.f.id}" data-s="${sid}">Not yet</button></div>`}`}
-    else if(e.t==='p'){cls+=' ph';body=`${thumbs(e.x.photos)}<div class="bl">${esc(e.x.kind)} · ${esc(e.x.text)}</div>`}
+    else if(e.t==='p'){cls+=' ph';body=`${phGrid(e.x)}<div class="bl">${esc(e.x.kind)} · ${esc(e.x.text)}</div>`}
     const k=ibKey(e),sl=!!(ui.ibSel&&ui.ibSel.has(k));
     h+=`<div class="${cls}${sl?' sel':''}">${ui.ibSel?`<button class="bsel" data-act="ibsel" data-k="${esc(k)}" aria-pressed="${sl}" aria-label="Select message">${sl?'✓':''}</button>`:''}${body}<div class="bm">${esc(hhmm(e.at))}</div></div>`});
   if(!ev.length)h+='<div class="muted small" style="text-align:center;padding:20px">No messages yet.</div>';
@@ -1122,9 +1138,6 @@ const fullTab=(t,label,h)=>`<button class="hal hal-info" data-act="tab" data-t="
 
 const BELL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>';
 function noticesHtml(){const pb=pilotBars(),i=pb.indexOf('</div>')+6;return backupDue()+testBars()+pb.slice(i)+pilotBars3()+fbNotice()+homeMissed()+homeBday()}
-function noticeCount(){try{const d=document.createElement('div');d.innerHTML=noticesHtml();return d.children.length}catch(e){return 0}}
-function homeNoticeLine(){const n=noticeCount();return `<div class="halerts"><div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>${n?`<button class="hal hal-notice" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n} notice${n>1?'s':''}</b><span>Tests, reminders, approvals and more · tap to see</span></span><span class="ncount">${n}</span></button>`:''}</div>`}
-function vNotices(){const h=noticesHtml();return `<div class="row spread"><h2 style="margin:0">Notices</h2><button class="btn sm" data-act="tab" data-t="home">Back to Today</button></div>`+(h?`<div class="halerts">${h}</div>`:'<div class="card empty">No notices right now. All caught up.</div>')}
 /* test reminders on Today */
 function testBars(){const t=todayIso();
   const list=ui.isMgr?S.tests.filter(x=>x.date&&x.date>=t&&daysBetween(t,x.date)<=(Number(x.lead)||3)&&(!ui.f.branch||!x.branchId||x.branchId===ui.f.branch)).sort((a,b)=>a.date.localeCompare(b.date)):(ui.me?testsFor(ui.me):[]);
@@ -1144,11 +1157,11 @@ function papBox(){const sid=ui.isMgr?ui.f.staff:ui.me;if(!sid||sid==='*')return 
   return `<div class="banner info"><span class="small"><b>${wk} planning submitted</b> · waiting for your manager · ${esc(fmtAt(r.at))}</span></div>`}
 
 /* 9 mood check-in */
-const MOODS=[[1,'😢','Very upset'],[2,'🙁','Upset'],[3,'😐','Okay'],[4,'🙂','Good'],[5,'😄','Great']];
+const MOODS=[[1,'😢','1 · Sad or upset'],[2,'🙁','2 · Unhappy'],[3,'😐','3 · Okay'],[4,'🙂','4 · Good'],[5,'😄','5 · Happy']];
 const moodOf=(d,cid)=>byId('mood',d+'_'+cid);
-function moodBtns(d,c){const m=moodOf(d,c.id);return `<div class="moodrow" role="group" aria-label="Mood for ${esc(c.name)}"><span class="small muted">Mood</span>${MOODS.map(([v,e,l])=>`<button class="mood${m&&m.mood===v?' on':''}" data-act="moodset" data-d="${d}" data-c="${c.id}" data-v="${v}" aria-label="${l}" aria-pressed="${!!(m&&m.mood===v)}" title="${l}">${e}</button>`).join('')}</div>`}
+function moodBtns(d,c){const m=moodOf(d,c.id);return `<div class="moodrow" role="group" aria-label="Mood for ${esc(c.name)}"><span class="small muted">Mood</span>${MOODS.map(([v,e,l])=>`<button class="mood${m&&m.mood===v?' on':''}" data-act="moodset" data-d="${d}" data-c="${c.id}" data-v="${v}" aria-label="${l}" aria-pressed="${!!(m&&m.mood===v)}" title="${l}">${e}<i>${v}</i></button>`).join('')}</div>`}
 function moodCard(cid){const days=[];let d=parse(todayIso());while(days.length<10){if(d.getDay()&&d.getDay()<6)days.unshift(iso(d));d=addDays(d,-1)}
-  return `<div class="card"><h3>Mood · last 2 weeks</h3><div class="moodstrip">${days.map(x=>{const m=moodOf(x,cid),mo=m&&MOODS.find(k=>k[0]===m.mood);return `<div class="ms"><span class="me" aria-label="${mo?mo[2]:'Not recorded'}">${mo?mo[1]:'·'}</span><small>${esc(fmt(x).split(' ').slice(0,2).join(' '))}</small></div>`}).join('')}</div><span class="small muted">Recorded on the Register each morning.</span></div>`}
+  return `<div class="card"><h3>Mood · last 2 weeks</h3><div class="moodstrip">${days.map(x=>{const m=moodOf(x,cid),mo=m&&MOODS.find(k=>k[0]===m.mood);return `<div class="ms"><span class="me" aria-label="${mo?mo[2]:'Not recorded'}">${mo?mo[1]:'·'}</span><b class="mr">${mo?mo[0]+'/5':'&nbsp;'}</b><small>${esc(fmt(x).split(' ')[0])}<br>${esc(fmt(x).split(' ')[1])}</small></div>`}).join('')}</div><div class="row spread"><span class="small muted">Rated 1 (sad or upset) to 5 (happy) on the Register each morning.${(()=>{const ms=S.mood.filter(m=>m.childId===cid);return ms.length?' Average: <b>'+(Math.round(ms.reduce((a,m)=>a+m.mood,0)/ms.length*10)/10)+' / 5</b> over '+ms.length+' day'+(ms.length>1?'s':''):''})()}</span><button class="btn sm" data-act="moodxl" data-c="${cid}">Export to Excel</button></div></div>`}
 
 /* 27 absence and mood alerts */
 function kidsScope(){const br=ui.isMgr?(ui.f.branch||''):myBranch();return sortByName('children').filter(c=>!br||c.branchId===br)}
@@ -1195,21 +1208,15 @@ function incCard(x){const mgr=ui.isMgr,c=byId('children',x.childId)||{};
   return `<div class="card"><div class="row spread"><span><b>${esc(c.name||'Child')}</b> · ${esc(fmt(x.date))}${x.time?' '+esc(x.time):''}${x.where?' · '+esc(x.where):''}<div class="small muted">Reported by ${esc(x.by==='manager'?'Manager':nm('staff',x.by))}${x.witness?' · witness '+esc(nm('staff',x.witness)):''}</div></span><span class="pill ${x.status==='closed'?'done':'due'}">${x.status==='closed'?'Reviewed':'Open'}</span></div>
     <div class="fbtext">${esc(x.what)}</div>
     <div class="row" style="gap:6px;flex-wrap:wrap"><span class="pill ${x.injury===INJ[2]?'missed':x.injury===INJ[1]?'due':''}">${esc(x.injury||INJ[0])}</span>${x.aid?`<span class="pill">First aid: ${esc(x.aid)}</span>`:''}<span class="pill ${x.parent?'done':'missed'}">${x.parent?'Parent informed · '+esc(x.parent):'Parent not informed yet'}</span></div>
-    ${thumbs(x.photos)}${x.mgrNote?`<div class="small"><b>Manager:</b> ${esc(x.mgrNote)}</div>`:''}
+    ${thumbs(x.photos)}${x.mgrNote?`<div class="small"><b>Manager:</b> ${esc(x.mgrNote)}</div>`:''}${incHistHtml(x)}
     <div class="actions">${!x.parent&&(mgr||x.by===ui.me)?`<select id="tf-in-p-${x.id}" aria-label="How parent was informed"><option>Phone call</option><option>WhatsApp</option><option>In person</option></select><button class="btn sm primary" data-act="inpar" data-id="${x.id}">Parent informed</button>`:''}
-      ${photoOk&&(mgr||x.by===ui.me)?`<button class="btn sm" data-act="photopick" data-kind="incidents" data-k="${x.id}">+ Photo</button>`:''}<button class="btn sm" data-act="inprint" data-id="${x.id}">Print</button></div>
+      ${photoOk&&(mgr||x.by===ui.me)?`<button class="btn sm" data-act="photopick" data-kind="incidents" data-k="${x.id}">+ Photo</button>`:''}<button class="btn sm" data-act="inprint" data-id="${x.id}">PDF report</button></div>
     ${mgr&&x.status!=='closed'?`<div class="addnew"><input type="text" id="tf-in-mn-${x.id}" placeholder="Manager note (optional)" aria-label="Manager note"><button class="btn sm primary" data-act="inclose" data-id="${x.id}">Mark reviewed</button></div>`:''}</div>`}
 function vInc(){const list=S.incidents.filter(x=>ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
-  let h=incForm('');const open=list.filter(x=>x.status!=='closed');
+  let h=incForm('')+`<div class="card"><h3>Incident report for a period (PDF)</h3><div class="grid2"><label class="fld"><span>From</span><input type="date" id="tf-inr-from" value="${iso(addDays(new Date(),-30))}"></label><label class="fld"><span>To</span><input type="date" id="tf-inr-to" value="${todayIso()}"></label></div><div class="actions"><button class="btn" data-act="inrange">Create PDF report</button></div><span class="small muted">Opens the report. Choose Save as PDF in the print window.</span></div>`;const open=list.filter(x=>x.status!=='closed');
   h+=`<h2>${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span></h2>`+((ui.isMgr?open:list).map(incCard).join('')||'<div class="card empty">No incident reports.</div>');
   if(ui.isMgr){const cl=list.filter(x=>x.status==='closed');if(cl.length)h+=`<h2>Reviewed</h2>`+cl.slice(0,20).map(incCard).join('')}
   return h}
-function incPrint(id){const x=byId('incidents',id);if(!x)return;const c=byId('children',x.childId)||{};
-  openPrint('Incident '+(c.name||'')+' '+x.date,`<h1>Incident report</h1><div class="m">Aldeia NeuroBehaviour Institute · ${esc(nm('branches',c.branchId))}</div>
-  <h2>${esc(c.name||'')} · ${esc(fmt(x.date))} ${esc(x.time||'')}</h2><div class="box"><b>Where:</b> ${esc(x.where||'—')}</div><div class="box"><b>What happened:</b><br>${esc(x.what)}</div>
-  <div class="box"><b>Injury:</b> ${esc(x.injury||'')}<br><b>First aid:</b> ${esc(x.aid||'—')}</div><div class="box"><b>Parent informed:</b> ${esc(x.parent||'Not yet')}${x.parentAt?' · '+esc(fmtAt(x.parentAt)):''}</div>
-  <div class="box"><b>Reported by:</b> ${esc(x.by==='manager'?'Manager':nm('staff',x.by))}${x.witness?' · <b>Witness:</b> '+esc(nm('staff',x.witness)):''}</div>${x.mgrNote?`<div class="box"><b>Manager note:</b> ${esc(x.mgrNote)}</div>`:''}
-  <p style="margin-top:40px">Staff signature: ____________________ &nbsp; Parent signature: ____________________ &nbsp; Date: __________</p>`)}
 
 /* 38 maintenance */
 const MT_PRI=['Normal','Urgent','Low'];
@@ -1232,7 +1239,7 @@ function pilotBars3(){let h='';const t=todayIso();
     const pap=S.papprove.filter(r=>r.status==='submitted').length;if(pap)h+=`<button class="hal hal-info" data-act="ibgo" data-v="appr"><b>${pap} weekly plan${pap>1?'s':''} waiting for approval</b><span> · tap to review</span></button>`;
     const lv=S.leavereq.filter(r=>r.status==='pending').length;if(lv)h+=fullTab('leave',`${lv} leave request${lv>1?'s':''} waiting`,'tap to approve');
     const inc=S.incidents.filter(x=>x.status!=='closed');if(inc.length)h+=`<button class="hal hal-bad" data-act="tab" data-t="inc"><span class="hal-t"><b>${inc.length} incident report${inc.length>1?'s':''} to review</b><span>${esc(nm('children',inc[0].childId))}${inc.some(x=>!x.parent)?' · parent not informed yet':''}</span></span></button>`;
-    const mt=S.maint.filter(x=>x.status!=='fixed'&&(!ui.f.branch||!x.branchId||x.branchId===ui.f.branch)),ur=mt.filter(x=>x.priority==='Urgent').length;if(mt.length)h+=fullTab('maint',`${mt.length} maintenance issue${mt.length>1?'s':''} open`,ur?ur+' urgent':'tap to see');
+    const mt=S.maint.filter(x=>x.status!=='fixed'&&(!ui.f.branch||!x.branchId||x.branchId===ui.f.branch)),ur=mt.filter(x=>x.priority==='Urgent').length;if(mt.length)h+=`<button class="hal hal-info" data-act="rqgo" data-v="fix"><b>${mt.length} repair${mt.length>1?'s':''} open</b><span> · ${ur?ur+' urgent':'tap to see'}</span></button>`;
   }else if(ui.me){
     const ws=iso(addDays(mondayOf(new Date()),7)),dw=new Date().getDay(),nx=byId('papprove',papId(ui.me,ws));
     if((dw>=4||dw===0||dw===6)&&!nx)h+=`<button class="hal hal-info" data-act="plnext"><b>Submit next week's planning</b><span> · your manager needs to approve it before Monday</span></button>`;
@@ -1272,6 +1279,76 @@ const ibHidden=sid=>byId('ibhide',sid)||{};
 function ibVisible(sid,e){const h=ibHidden(sid);if(h.clearedAt&&(!e.at||e.at<=h.clearedAt))return false;return !(h.hidden||[]).includes(ibKey(e))}
 const ibKey=e=>e.t==='f'?'f:'+e.f.id:e.t==='r'?'r:'+e.r.id:e.t==='d'?'d:'+e.f.id:'p:'+e.at;
 
+/* ---------- pilot round 4 ---------- */
+const whoName=by=>by==='manager'||!by?'Manager':nm('staff',by);
+/* 4 birthday reminders at 06:55 */
+function bdRows(d){const nx=iso(addDays(parse(d),1)),out=[];
+  kidsScope().forEach(c=>{if(!c.dob)return;const md=c.dob.slice(5),y=Number(c.dob.slice(0,4)),age=dt=>y>1900?Number(dt.slice(0,4))-y:null;
+    if(md===d.slice(5)){const a=age(d);out.push({id:c.id+d,t:`Birthday today: ${c.name}${a?' turns '+a:''}`})}
+    else if(md===nx.slice(5)){const a=age(nx);out.push({id:c.id+nx,t:`Birthday tomorrow: ${c.name}${a?' turns '+a:''}`})}});
+  return out}
+/* 12 birthday parent and child links */
+function bdLink(x){const c=byId('children',x.cid);if(!c)return '';
+  if(x.kind==='Child'){const ps=[['p1','p1dob'],['p2','p2dob']].filter(([n])=>c[n]).map(([n,d])=>esc(c[n])+(c[d]?' · '+esc(fmt(nextBday(c[d]).date)):' · no birthday saved'));return ps.length?`<div class="small">Parents: ${ps.join(' &nbsp;|&nbsp; ')}</div>`:''}
+  if(x.kind==='Parent'){const nb=c.dob&&nextBday(c.dob);return `<div class="small">Child: <b>${esc(c.name)}</b>${nb?' · birthday '+esc(fmt(nb.date)):''}</div>`}return ''}
+
+/* 3 notices: tap to mark read */
+const ntcRead=()=>{try{return JSON.parse(lsGet('ntcread_'+meKey())||'[]')}catch(e){return []}};
+function noticeItems(){const d=document.createElement('div');d.innerHTML=noticesHtml();const rd=ntcRead();
+  return [...d.children].map(el=>{const k='n'+hashI(el.textContent.replace(/\s+/g,' ').trim()).toString(36);return {el,k,read:rd.includes(k)}})}
+function noticeCount(){try{return noticeItems().filter(x=>!x.read).length}catch(e){return 0}}
+function homeNoticeLine(){let all=0,n=0;try{const it=noticeItems();all=it.length;n=it.filter(x=>!x.read).length}catch(e){}
+  return `<div class="halerts"><div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>${all?`<button class="hal hal-notice${n?'':' allread'}" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n?n+' new notice'+(n>1?'s':''):all+' notice'+(all>1?'s':'')+' · all read'}</b><span>Tests, birthdays, approvals and more · tap to see</span></span>${n?`<span class="ncount">${n}</span>`:''}</button>`:''}</div>`}
+function vNotices(){let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
+  let h=`<div class="row spread"><h2 style="margin:0">Notices${n?` <span class="count">${n} new</span>`:''}</h2><span class="actions">${n?'<button class="btn sm" data-act="ntcall">Mark all as read</button>':''}<button class="btn sm" data-act="tab" data-t="home">Back to Today</button></span></div><div class="small muted">Tap a notice to mark it as read. Use Open to go to it.</div>`;
+  if(!items.length)return h+'<div class="card empty">No notices right now. All caught up.</div>';
+  return h+`<div class="halerts">${items.map(({el,k,read})=>{let open='';
+    if(el.tagName==='BUTTON'&&el.dataset.act){const ds=Object.entries(el.dataset).map(([a,v])=>`data-${a.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}="${esc(v)}"`).join(' ');open=`<button class="btn sm ntcopen" ${ds}>Open</button>`;const dv=document.createElement('div');dv.className=el.className;dv.innerHTML=el.innerHTML;el=dv}
+    return `<div class="ntc${read?' read':''}" data-act="ntcread" data-nk="${k}" title="${read?'Read':'Tap to mark as read'}">${read?'':'<span class="ntcdot" aria-label="New"></span>'}<div class="ntcb">${el.outerHTML}</div>${open}</div>`}).join('')}</div>`}
+
+/* 10 mood export */
+async function moodXL(cid){if(typeof XLSX==='undefined'){toast('Excel export could not load.');return}
+  const kids=cid?[byId('children',cid)].filter(Boolean):(ui.kidBr?sortByName('children').filter(c=>c.branchId===ui.kidBr):kidsScope());const ids=new Set(kids.map(c=>c.id));
+  const recs=S.mood.filter(m=>ids.has(m.childId)).sort((a,b)=>a.date.localeCompare(b.date)||nm('children',a.childId).localeCompare(nm('children',b.childId)));
+  if(!recs.length){toast('No moods recorded yet.');return}
+  const rows=recs.map(m=>{const c=byId('children',m.childId)||{},mo=MOODS.find(k=>k[0]===m.mood)||[];return {Date:m.date,Day:DAYS_LONG[parse(m.date).getDay()],Child:c.name||'',Region:nm('branches',c.branchId),'Rating (1-5)':m.mood,Mood:(mo[2]||'').replace(/^\d · /,''),'Recorded by':whoName(m.by)}});
+  const sum=kids.map(c=>{const ms=recs.filter(m=>m.childId===c.id);if(!ms.length)return null;const avg=ms.reduce((a,m)=>a+m.mood,0)/ms.length;
+    return {Child:c.name,Region:nm('branches',c.branchId),'Days recorded':ms.length,'Average (out of 5)':Math.round(avg*10)/10,'Lowest':Math.min(...ms.map(m=>m.mood)),'Highest':Math.max(...ms.map(m=>m.mood)),'Days 1-2 (sad/upset)':ms.filter(m=>m.mood<=2).length}}).filter(Boolean);
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(sum),'Summary');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Daily moods');
+  await save(`Aldeia-moods-${cid?(byId('children',cid)||{}).name.replace(/\s+/g,'-'):'all'}-${todayIso()}.xlsx`,new Uint8Array(XLSX.write(wb,{type:'array',bookType:'xlsx'})))}
+
+/* 2 photos with delete */
+function phGrid(x){return `<div class="thumbs">${(x.photos||[]).map((p,i)=>{const u=purl(p),k='ph'+x.c+x.rid+i;
+  return `<span class="phw"><button type="button" class="thumb" data-act="photoview" data-src="${esc(u)}" aria-label="Open photo"><img src="${esc(u)}" alt="Photo from ${esc(nm('staff',x.sid))}" loading="lazy" onerror="this.parentNode.classList.add('bad');this.remove()"><span class="phbad">Photo not available</span></button>${ui.isMgr&&x.c?`<button type="button" class="phdel${ui.confirmDel===k?' on':''}" data-act="phdel" data-c="${x.c}" data-id="${x.rid}" data-i="${i}" aria-label="Delete photo">${ui.confirmDel===k?'Delete?':'×'}</button>`:''}</span>`}).join('')}</div>`}
+
+/* 14 + 15 incidents: history and reports */
+const incHist=(x,what)=>[...(x.hist||[]),{at:new Date().toISOString(),by:ui.me||'manager',what}];
+function incHistHtml(x){const h=(x.hist&&x.hist.length)?x.hist:[{at:x.at,by:x.by,what:'Report created'}];
+  return `<details class="ihist"><summary>History (${h.length})</summary><div class="list">${h.map(e=>`<div class="li small"><span class="lt">${esc(e.what)}</span><span class="muted">${esc(whoName(e.by))} · ${esc(fmtAt(e.at))}</span></div>`).join('')}</div></details>`}
+const incBody=x=>{const c=byId('children',x.childId)||{},h=(x.hist&&x.hist.length)?x.hist:[{at:x.at,by:x.by,what:'Report created'}];
+  return `<table class="rt"><tr><th>Child</th><td>${esc(c.name||'')}${c.gradeId?' · '+esc(nm('grades',c.gradeId)):''}</td></tr><tr><th>Date and time</th><td>${esc(fmt(x.date))} ${esc(x.time||'')}</td></tr><tr><th>Where</th><td>${esc(x.where||'—')}</td></tr>
+  <tr><th>What happened</th><td>${esc(x.what)}</td></tr><tr><th>Injury</th><td>${esc(x.injury||'')}</td></tr><tr><th>First aid</th><td>${esc(x.aid||'—')}</td></tr>
+  <tr><th>Parent informed</th><td>${esc(x.parent||'Not yet')}${x.parentAt?' · '+esc(fmtAt(x.parentAt)):''}</td></tr><tr><th>Reported by</th><td>${esc(whoName(x.by))}${x.witness?' · witness: '+esc(nm('staff',x.witness)):''}</td></tr>
+  <tr><th>Status</th><td>${x.status==='closed'?'Reviewed':'Open'}${x.mgrNote?' · '+esc(x.mgrNote):''}</td></tr></table>
+  ${(x.photos||[]).length?`<div class="phs">${x.photos.map(p=>`<img src="${esc(purl(p))}" alt="Incident photo">`).join('')}</div>`:''}
+  <h3>History</h3><table class="rt">${h.map(e=>`<tr><td>${esc(fmtAt(e.at))}</td><td>${esc(e.what)}</td><td>${esc(whoName(e.by))}</td></tr>`).join('')}</table>`};
+const RPT_CSS='<style>.rt{width:100%;border-collapse:collapse;margin:6px 0 14px;font-size:12px}.rt th,.rt td{border:1px solid #c0c0b8;padding:5px 7px;text-align:left;vertical-align:top}.rt th{background:#e8e8e0;width:28%}.phs img{max-width:45%;margin:4px;border:1px solid #ccc}.sig{margin-top:36px;display:flex;gap:30px}.sig div{flex:1;border-top:1px solid #333;padding-top:4px;font-size:11px}.pb{page-break-after:always}</style>';
+function incPrint(id){const x=byId('incidents',id);if(!x)return;const c=byId('children',x.childId)||{};
+  openPrint('Incident report '+(c.name||'')+' '+x.date,RPT_CSS+`<h1>Incident report</h1><div class="m">Aldeia NeuroBehaviour Institute · ${esc(nm('branches',c.branchId)||'')} · printed ${esc(fmt(todayIso()))}</div>${incBody(x)}
+  <div class="sig"><div>Staff signature</div><div>Parent signature</div><div>Manager signature</div><div>Date</div></div>`)}
+function incRange(){const f=val('tf-inr-from')||iso(addDays(new Date(),-30)),t=val('tf-inr-to')||todayIso();
+  const list=S.incidents.filter(x=>x.date>=f&&x.date<=t&&(ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me)).sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
+  if(!list.length){toast('No incidents in that period.');return}
+  const cnt=k=>list.filter(x=>x.injury===k).length,inf=list.filter(x=>x.parent).length;
+  openPrint(`Incidents ${f} to ${t}`,RPT_CSS+`<h1>Incident report · ${esc(fmt(f))} – ${esc(fmt(t))}</h1><div class="m">Aldeia NeuroBehaviour Institute${ui.f.branch?' · '+esc(nm('branches',ui.f.branch)):''}</div>
+  <table class="rt"><tr><th>Incidents</th><td>${list.length}</td></tr><tr><th>No injury / minor / needs care</th><td>${cnt(INJ[0])} / ${cnt(INJ[1])} / ${cnt(INJ[2])}</td></tr><tr><th>Parent informed</th><td>${inf} of ${list.length}</td></tr><tr><th>Reviewed</th><td>${list.filter(x=>x.status==='closed').length} of ${list.length}</td></tr></table>
+  <h2>Overview</h2><table class="rt"><tr><th style="width:auto">Date</th><th style="width:auto">Child</th><th style="width:auto">What happened</th><th style="width:auto">Injury</th><th style="width:auto">Parent</th></tr>${list.map(x=>`<tr><td>${esc(fmt(x.date))} ${esc(x.time||'')}</td><td>${esc(nm('children',x.childId))}</td><td>${esc(x.what)}</td><td>${esc(x.injury||'')}</td><td>${esc(x.parent||'Not yet')}</td></tr>`).join('')}</table>
+  <div class="pb"></div>${list.map(x=>`<h2>${esc(nm('children',x.childId))} · ${esc(fmt(x.date))}</h2>${incBody(x)}`).join('<div class="pb"></div>')}`)}
+
+/* 16 requests and repairs in one tab */
+function vReqCombo(){const sec=ui.rqSec||'res',nr=S.requests.filter(r=>r.status==='requested'&&(ui.isMgr||r.by===ui.me)).length,br=ui.isMgr?(ui.f.branch||''):myBranch(),nf=S.maint.filter(x=>x.status!=='fixed'&&(!br||!x.branchId||x.branchId===br)).length;
+  return `<div class="ibtabs two" role="tablist" aria-label="Requests and repairs">${[['res','Resources',nr],['fix','Repairs',nf]].map(([k,l,n])=>`<button role="tab" aria-selected="${k===sec}" class="${k===sec?'on':''}" data-act="rqsec" data-v="${k}">${l}${n?` <span class="ibn">${n}</span>`:''}</button>`).join('')}</div>`+(sec==='fix'?vMaint():vReq())}
+
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1286,6 +1363,7 @@ function vHome(){
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
   pls.forEach(p=>{const lk=p.staffId!=='*'&&plocked(p.staffId,p.date);rows.push({type:'plan',key:'p:'+p.id,id:p.id,s:oStart(p),e:oEnd(p),t:p.text,o:p,done:!!p.done,who:p.staffId,lock:lk&&!ui.mgr,comment:p.comment,photos:p.photos,cover:coverOf(p)?p.staffId:''})});
   breaksFor().forEach(b=>rows.push({type:'brk',key:'b:'+b.id,s:b.start||'99',e:b.end||'',t:b.name||'Break'}));
+  if(PILOT)bdRows(d).forEach(x=>rows.push({type:'bday',key:'bd:'+x.id,s:'06:55',e:'',t:x.t}));
   testsOnDate(d).forEach(x=>rows.push({type:'test',key:'x:'+x.id,s:'99',e:'',t:'Test: '+(x.title||''),o:x}));
   rows.sort((a,b)=>a.s.localeCompare(b.s));
   if(!rows.length)return h+`<div class="card empty">Nothing scheduled for ${d===t?'today':fmt(d)}.<button class="btn primary" data-act="tab" data-t="plan">Add planning</button></div>`;
@@ -1295,6 +1373,7 @@ function vHome(){
   const open=ui.homeOpen==='__none'?null:(ui.homeOpen||(cur&&cur.key));ui.homeOpenEff=open;
   const card=r=>{
     if(r.type==='brk')return `<div class="tlc tlbrk">${esc(r.t)} · ${esc(r.s)}${r.e?'–'+esc(r.e):''}</div>`;
+    if(r.type==='bday')return `<div class="tlc tlbday"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
     if(r.type==='test')return `<div class="tlc tltest"><b>${esc(r.t)}</b><div class="tlsub">${[nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ')}</div></div>`;
     const isNow=cur&&cur.key===r.key,isOpen=open===r.key,o=r.o;
     const sub=[r.s!=='99'?r.s+(r.e?'–'+r.e:''):'Any time',r.type==='task'?'Task':'Plan',o.childId&&nm('children',o.childId),tName(o.topicId)||nm('curriculum',o.curriculumId),(ui.mgr||r.cover)&&nm('staff',r.who)].filter(Boolean).map(esc).join(' · ');
@@ -1309,7 +1388,7 @@ function vHome(){
       else act+='<div class="small muted">This day is locked. Ask your manager to unlock it.</div>';
     }
     return `<div class="tlc ${r.done?'tldone':'tlopen'}${r.miss?' tlmiss':''}${isOpen?' tlx':''}${r.type==='plan'?' tlplan':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}</span><span class="tlsub">${sub}</span></span>${isNow?'<span class="nowb">NOW</span>':''}</span></button>${tags||act?`<div class="tlbody">${tags?`<div class="meta">${tags}</div>`:''}${act}</div>`:''}</div>`};
-  h+=`<div class="tline">${rows.map(r=>`<div class="tltime${cur&&cur.key===r.key?' tlnow':''}">${r.s==='99'?'Any':esc(r.s)}</div>${card(r)}`).join('')}</div>`;
+  h+=`<div class="tline${PILOT&&ui.isMgr?' thin':''}">${rows.map(r=>`<div class="tltime${cur&&cur.key===r.key?' tlnow':''}">${r.s==='99'?'Any':esc(r.s)}</div>${card(r)}`).join('')}</div>`;
   h+=`<div class="hfoot"><button class="btn sm" data-act="tab" data-t="check">Full checklist and week view</button></div>`;
   return h}
 const DAYS_LONG=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],MON_LONG=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -1327,8 +1406,8 @@ function nextBday(dob){if(!dob)return null;const [y,m,d]=dob.split('-').map(Numb
   const mk=yy=>{const last=new Date(yy,m,0).getDate();return new Date(yy,m-1,Math.min(d,last))};let nb=mk(yr);if(nb<t)nb=mk(++yr);
   return {date:iso(nb),days:daysBetween(todayIso(),iso(nb)),age:y>1900?yr-y:null}}
 function bdayList(){const out=[];
-  sortByName('children').forEach(c=>{if(c.dob)out.push({kind:'Child',name:c.name,dob:c.dob,sub:nm('grades',c.gradeId)});
-    [['p1','p1dob'],['p2','p2dob']].forEach(([n,dd])=>{if(c[dd])out.push({kind:'Parent',name:c[n]||'Parent',dob:c[dd],sub:'Parent of '+c.name})})});
+  sortByName('children').forEach(c=>{if(c.dob)out.push({kind:'Child',cid:c.id,name:c.name,dob:c.dob,sub:nm('grades',c.gradeId)});
+    [['p1','p1dob'],['p2','p2dob']].forEach(([n,dd])=>{if(c[dd])out.push({kind:'Parent',cid:c.id,name:c[n]||'Parent',dob:c[dd],sub:'Parent of '+c.name})})});
   sortByName('staff').forEach(x=>{if(x.dob)out.push({kind:'Staff',name:staffLabel(x),dob:x.dob,sub:nm('branches',x.branchId)})});
   return out.map(x=>({...x,...nextBday(x.dob)})).sort((a,b)=>a.days-b.days)}
 function bdayBanner(){const l=bdayList().filter(x=>x.days<=3);if(!l.length)return '';
@@ -1337,7 +1416,7 @@ function vBday(){const f=ui.bdKind||'';const l=bdayList().filter(x=>!f||x.kind==
   let h=`<div class="card"><div class="grid2"><label class="fld"><span>Show</span><select data-uiset="bdKind"><option value="">Everyone</option>${['Child','Staff','Parent'].map(k=>`<option value="${k}"${k===f?' selected':''}>${k==='Child'?'Children':k==='Staff'?'Staff':'Parents'}</option>`).join('')}</select></label></div>
     <span class="muted small">Reminders show on the Checklist 3 days before. Add birthdays in Setup → Children (child and parents) and Setup → Staff.</span></div>`;
   if(!l.length)return h+`<div class="card empty">No birthdays added yet.</div>`;
-  const row=x=>`<div class="li"><div class="lt"><b>${esc(x.name)}</b> <span class="pill">${x.kind}</span><div class="muted small">${esc(x.sub||'')}</div></div><div class="acts" style="text-align:right"><b>${fmt(x.date)}</b><div class="small ${x.days<=3?'bad':'muted'}">${x.days===0?'Today':x.days===1?'Tomorrow':'In '+x.days+' days'}${x.age&&x.kind!=='Parent'?' · turns '+x.age:''}</div></div></div>`;
+  const row=x=>`<div class="li"><div class="lt"><b>${esc(x.name)}</b> <span class="pill">${x.kind}</span><div class="muted small">${esc(x.sub||'')}</div>${PILOT?bdLink(x):''}</div><div class="acts" style="text-align:right"><b>${fmt(x.date)}</b><div class="small ${x.days<=3?'bad':'muted'}">${x.days===0?'Today':x.days===1?'Tomorrow':'In '+x.days+' days'}${x.age&&x.kind!=='Parent'?' · turns '+x.age:''}</div></div></div>`;
   const soon=l.filter(x=>x.days<=30),later=l.filter(x=>x.days>30);
   h+=`<div class="subhd">Next 30 days</div>`+(soon.length?`<div class="list">${soon.map(row).join('')}</div>`:'<div class="muted small">None in the next 30 days.</div>');
   if(later.length)h+=`<div class="subhd">Later this year</div><div class="list">${later.map(row).join('')}</div>`;
@@ -1604,10 +1683,11 @@ function timeline(recs){
 }
 function childCur(id,recs){const c=byId('children',id)||{};return (c.curIds&&c.curIds.length)?c.curIds:[...new Set(recs.map(r=>r.o.curriculumId).filter(Boolean))]}
 function vKids(){
-  let h=`<div class="card"><div class="grid3"><label class="fld"><span>Child</span><select data-uiset="kid">${opt('children',ui.kid,'All children')}</select></label>
+  if(PILOT&&ui.kidBr&&ui.kid&&(byId('children',ui.kid)||{}).branchId!==ui.kidBr)ui.kid='';
+  let h=`<div class="card"><div class="grid3">${PILOT?`<label class="fld"><span>Region</span><select data-uiset="kidBr">${opt('branches',ui.kidBr||'','All regions')}</select></label>`:''}<label class="fld"><span>Child</span><select data-uiset="kid">${PILOT?'<option value="">All children</option>'+sortByName('children').filter(c=>!ui.kidBr||c.branchId===ui.kidBr).map(c=>`<option value="${c.id}"${c.id===ui.kid?' selected':''}>${esc(c.name)}</option>`).join(''):opt('children',ui.kid,'All children')}</select></label>
     ${ui.kid?'':`<label class="fld"><span>Grade</span><select data-uiset="covGrade">${opt('grades',ui.covGrade,'All grades')}</select></label><label class="fld"><span>Since</span><input type="date" data-uiset="covSince" value="${ui.covSince}"></label>`}</div>
     <span class="muted small">${ui.kid?'Every tick, comment, plan and photo for this child over the last 8 weeks.':'Curriculum coverage for all children. Choose a child to see their profile.'}${ui.mgr?'':' Shows your own records only.'}</span></div>`;
-  if(!ui.kid){const recs=records({grade:ui.covGrade,since:ui.covSince||'0000'});return h+`<h2>Curriculum covered</h2>`+covTable(recs,null)}
+  if(!ui.kid){const recs=records({grade:ui.covGrade,since:ui.covSince||'0000'});return h+(PILOT?`<div class="actions"><button class="btn" data-act="moodxl">Export moods to Excel${ui.kidBr?' ('+esc(nm('branches',ui.kidBr))+')':''}</button></div>`:'')+`<h2>Curriculum covered</h2>`+covTable(recs,null)}
   const c=byId('children',ui.kid)||{}, recs=records({child:ui.kid,since:iso(addDays(new Date(),-56))});
   h+=`<div class="card"><h2>${esc(c.name)}</h2><div class="muted small">${[nm('grades',c.gradeId),nm('branches',c.branchId)].filter(Boolean).map(esc).join(' · ')}${ui.mgr?'':' · your records only'}</div>
     <div class="stats"><span class="pill done">${recs.filter(r=>r.kind==='Task'&&r.done).length} tasks done</span><span class="pill upcoming">${recs.filter(r=>r.kind==='Plan').length} plans</span><span class="pill">${recs.filter(r=>r.comment).length} comments</span><span class="pill">${recs.reduce((a,r)=>a+(r.photos||[]).length,0)} photos</span></div></div>`;
@@ -1629,7 +1709,7 @@ function vCover(){
 /* ---------- feedback ---------- */
 const meKey=()=>ui.mgr&&!ui.me?'mgr':ui.me+(ui.mgr?'_a':'');
 const seenKey=t=>'seen_'+meKey()+(t==='inbox'?'_ib':'');
-function fbKind(f){if(f.kind==='unlock')return 'unlock';if(f.kind==='daydone')return 'daydone';if(f.to==='manager')return f.ref?'comment':'note';if(f.from&&f.from!=='manager')return 'staff';return 'fb'}
+function fbKind(f){if(f.kind==='contact'||f.kind==='leave')return f.kind;if(f.kind==='unlock')return 'unlock';if(f.kind==='daydone')return 'daydone';if(f.to==='manager')return f.ref?'comment':'note';if(f.from&&f.from!=='manager')return 'staff';return 'fb'}
 const isMine=f=>ui.mgr?(!f.from||f.from==='manager'):f.from===ui.me;
 function fbVisible(){return S.feedback.filter(f=>ui.mgr||(!f.deleted&&(f.to===ui.me||f.to==='*'||f.from===ui.me))).sort((a,b)=>(b.at||'').localeCompare(a.at||''))}
 function unreadIn(list,seen,byOthers){const ids=new Set(list.map(f=>f.id));
@@ -1654,7 +1734,7 @@ function fbStatus(f){
   if(ap[ui.me]) return '<div><span class="pill done">Completed · approved by manager</span></div>';
   return `<label class="row small" style="gap:8px"><input type="checkbox" data-fbdone="${f.id}" ${db_[ui.me]?'checked':''}> Completed${db_[ui.me]?' <span class="pill due">Waiting for approval</span>':''}</label>`;
 }
-const KIND_LABEL={note:'Note',comment:'Task comment',unlock:'Unlock request',daydone:'Planning completed',staff:'Between staff',fb:'Message'};
+const KIND_LABEL={contact:'Parent contact',leave:'Leave request',note:'Note',comment:'Task comment',unlock:'Unlock request',daydone:'Planning completed',staff:'Between staff',fb:'Message'};
 function fbCard(f){
   const from=f.from&&f.from!=='manager'?nm('staff',f.from):'Manager', to=f.to==='manager'?'Manager':nm('staff',f.to);
   const reps=S.replies.filter(r=>r.fid===f.id&&(ui.mgr||r.by==='manager'||r.by===ui.me||f.from===ui.me||f.to===ui.me)).sort((a,b)=>(a.at||'').localeCompare(b.at||''));
@@ -1687,8 +1767,8 @@ function vFb(){
   return h;
 }
 function photoRecs(){const out=[];
-  S.entries.forEach(e=>{if(!(e.photos||[]).length)return;const r=byId('resp',e.rid)||{};out.push({sid:e.sid||r.staffId,kind:'Task',text:r.text||'Task',date:e.date,photos:e.photos,at:e.photos.map(p=>p.at||'').sort().pop()||e.at||'',staffPh:e.photos.some(p=>p.by!=='manager')})});
-  S.plans.forEach(p=>{if(!(p.photos||[]).length)return;out.push({sid:p.staffId,kind:'Plan',text:p.text,date:p.date,photos:p.photos,at:p.photos.map(x=>x.at||'').sort().pop()||p.updated||'',staffPh:p.photos.some(x=>x.by!=='manager')})});
+  S.entries.forEach(e=>{if(!(e.photos||[]).length)return;const r=byId('resp',e.rid)||{};out.push({c:'entries',rid:e.id,sid:e.sid||r.staffId,kind:'Task',text:r.text||'Task',date:e.date,photos:e.photos,at:e.photos.map(p=>p.at||'').sort().pop()||e.at||'',staffPh:e.photos.some(p=>p.by!=='manager')})});
+  S.plans.forEach(p=>{if(!(p.photos||[]).length)return;out.push({c:'plans',rid:p.id,sid:p.staffId,kind:'Plan',text:p.text,date:p.date,photos:p.photos,at:p.photos.map(x=>x.at||'').sort().pop()||p.updated||'',staffPh:p.photos.some(x=>x.by!=='manager')})});
   return out.sort((a,b)=>b.date.localeCompare(a.date))}
 const dOf=f=>((f.deleted&&f.deletedBy!=='manager'?f.deletedAt:f.at)||'').slice(0,10);
 function ibDates(){return [...new Set(fbVisible().filter(f=>fbKind(f)!=='fb'||f.doneBy).map(dOf).filter(Boolean))].sort().reverse()}
@@ -1911,7 +1991,7 @@ async function addPhoto(kind,key,file){
   toast('Uploading photo…');
   try{const res=await assets.upload(await compress(file)), ph={id:res.id,url:res.url,at:new Date().toISOString(),by:ui.mgr?'manager':ui.me};
     if(kind==='entry'){const [rid,date,sid]=key.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid);await setEntry(id,rid,date,sid,{photos:[...((entryMap[id]||{}).photos||[]),ph]})}
-    else if(['leavereq','incidents','maint'].includes(kind)){const x=byId(kind,key);if(!x)return;const {id,...rest}=x;await put(kind,id,{...rest,photos:[...(x.photos||[]),ph]})}
+    else if(['leavereq','incidents','maint'].includes(kind)){const x=byId(kind,key);if(!x)return;const {id,...rest}=x;await put(kind,id,{...rest,photos:[...(x.photos||[]),ph],...(kind==='incidents'?{hist:[...(x.hist||[]),{at:ph.at,by:ph.by,what:'Photo added'}]}:{})})}
     else{const p=byId('plans',key);if(!p)return;const {id,...rest}=p;await put('plans',id,{...rest,photos:[...(p.photos||[]),ph]})}
     toast('Photo added')}catch(e){toast(e&&e.code==='not_granted'?'Photo uploads need edit access to this page.':'Photo upload failed. Try again with a smaller photo.')}
 }
@@ -2078,7 +2158,7 @@ const acts={
     await put('requests',id,{...rest,status:st,statusAt:new Date().toISOString(),statusBy:'manager'});logAct(`Resource request "${r.item}" set to ${st}`);toast('Marked '+st)},
   ctsave:async()=>{const cid=ui.kid,sum=val('tf-ct-sum');if(!cid)return;if(!sum){toast('Write a short summary of the contact.');return}
     const d={childId:cid,date:val('tf-ct-date')||todayIso(),type:val('tf-ct-type')||'Call',with:val('tf-ct-with'),summary:sum,followUp:val('tf-ct-fu'),fuDone:false,by:ui.me||'manager',at:new Date().toISOString()};
-    if(await put('contacts',newId(),d)){ui.clear.add('tf-ct');render();toast('Contact logged')}},
+    if(await put('contacts',newId(),d)){if(!ui.isMgr&&ui.me)put('feedback',newId(),{to:'manager',from:ui.me,kind:'contact',text:`Parent contact logged · ${nm('children',cid)} · ${d.type}${d.with?' with '+d.with:''}: ${sum}${d.followUp?' (follow up '+fmt(d.followUp)+')':''}`,at:d.at});ui.clear.add('tf-ct');render();toast('Contact logged'+(ui.isMgr?'':' · your manager has been told'))}},
   ctdone:async b=>{const c=byId('contacts',b.dataset.id);if(!c)return;const {id,...rest}=c;c.fuDone=true;render();await put('contacts',id,{...rest,fuDone:true,fuDoneAt:new Date().toISOString()});toast('Follow-up done')},
   plday:b=>{ui.plDay=b.dataset.d;render()},
   pltoday:b=>{acts.today(b);ui.plDay=todayIso();render()},
@@ -2146,17 +2226,17 @@ const acts={
     const data={date:d,childId:c,mood:v,by:ui.me||'manager',at:new Date().toISOString()};S.mood=[...S.mood.filter(x=>x.id!==id),{id,...data}];render();await put('mood',id,data)},
   lvsend:async()=>{const type=val('tf-lv-type')||LV_TYPES[0],from=val('tf-lv-from'),to=val('tf-lv-to')||from,note=val('tf-lv-note');
     if(!from){toast('Choose the first day.');return}if(to<from){toast('The last day is before the first day.');return}
-    if(await put('leavereq',newId(),{staffId:ui.me,type,from,to,note,status:'pending',at:new Date().toISOString(),photos:[]})){ui.clear.add('tf-lv-');render();toast('Leave request sent to your manager')}},
+    const at=new Date().toISOString();if(await put('leavereq',newId(),{staffId:ui.me,type,from,to,note,status:'pending',at,photos:[]})){put('feedback',newId(),{to:'manager',from:ui.me,kind:'leave',text:`${type} · ${fmt(from)}${to!==from?' – '+fmt(to):''} (${workDays(from,to)} work day${workDays(from,to)===1?'':'s'})${note?' · '+note:''}`,at});ui.clear.add('tf-lv-');render();toast('Leave request sent to your manager')}},
   lvok:async b=>{const r=byId('leavereq',b.dataset.id);if(!r)return;const cov=val('tf-lv-cov-'+r.id),mn=val('tf-lv-mn-'+r.id),at=new Date().toISOString(),{id,...rest}=r;
     await put('leave','lr_'+id,{staffId:r.staffId,from:r.from,to:r.to||r.from,note:r.type+(r.note?': '+r.note:''),coverId:cov});
-    if(await put('leavereq',id,{...rest,status:'approved',decidedAt:at,coverId:cov,mgrNote:mn})){logAct(`Approved ${r.type.toLowerCase()} for ${nm('staff',r.staffId)} (${fmt(r.from)})`);toast('Leave approved'+(cov?' · '+nm('staff',cov)+' covers':''))}},
+    if(await put('leavereq',id,{...rest,status:'approved',decidedAt:at,coverId:cov,mgrNote:mn})){put('feedback',newId(),{to:r.staffId,from:'manager',text:`Your ${r.type.toLowerCase()} (${fmt(r.from)}${r.to&&r.to!==r.from?' – '+fmt(r.to):''}) is approved.${cov?' '+nm('staff',cov)+' will cover.':''}${mn?' '+mn:''}`,at});logAct(`Approved ${r.type.toLowerCase()} for ${nm('staff',r.staffId)} (${fmt(r.from)})`);toast('Leave approved'+(cov?' · '+nm('staff',cov)+' covers':''))}},
   lvno:async b=>{const r=byId('leavereq',b.dataset.id);if(!r)return;const mn=val('tf-lv-mn-'+r.id),{id,...rest}=r;
-    if(await put('leavereq',id,{...rest,status:'declined',decidedAt:new Date().toISOString(),mgrNote:mn})){logAct(`Declined leave for ${nm('staff',r.staffId)}`);toast('Leave declined')}},
+    if(await put('leavereq',id,{...rest,status:'declined',decidedAt:new Date().toISOString(),mgrNote:mn})){put('feedback',newId(),{to:r.staffId,from:'manager',text:`Your ${r.type.toLowerCase()} (${fmt(r.from)}${r.to&&r.to!==r.from?' – '+fmt(r.to):''}) was declined.${mn?' '+mn:''}`,at:new Date().toISOString()});logAct(`Declined leave for ${nm('staff',r.staffId)}`);toast('Leave declined')}},
   insave:async()=>{const childId=val('tf-in-child'),what=val('tf-in-what');if(!childId){toast('Choose the child.');return}if(!what){toast('Describe what happened.');return}
     const par=val('tf-in-par'),at=new Date().toISOString();
-    if(await put('incidents',newId(),{childId,date:val('tf-in-date')||todayIso(),time:val('tf-in-time'),where:val('tf-in-where'),what,injury:val('tf-in-inj')||INJ[0],aid:val('tf-in-aid'),parent:par,parentAt:par?at:'',witness:val('tf-in-wit'),by:ui.me||'manager',at,status:'open',photos:[]})){logAct('Incident report for '+nm('children',childId));ui.clear.add('tf-in-');render();toast('Incident report saved'+(par?'':' · remember to tell the parent'))}},
-  inpar:async b=>{const x=byId('incidents',b.dataset.id);if(!x)return;const {id,...rest}=x;await put('incidents',id,{...rest,parent:val('tf-in-p-'+id)||'Phone call',parentAt:new Date().toISOString()});toast('Marked: parent informed')},
-  inclose:async b=>{const x=byId('incidents',b.dataset.id);if(!x)return;const {id,...rest}=x;await put('incidents',id,{...rest,status:'closed',mgrNote:val('tf-in-mn-'+id),closedAt:new Date().toISOString()});logAct('Reviewed incident report for '+nm('children',x.childId));toast('Marked as reviewed')},
+    if(await put('incidents',newId(),{childId,date:val('tf-in-date')||todayIso(),time:val('tf-in-time'),where:val('tf-in-where'),what,injury:val('tf-in-inj')||INJ[0],aid:val('tf-in-aid'),parent:par,parentAt:par?at:'',witness:val('tf-in-wit'),by:ui.me||'manager',at,status:'open',photos:[],hist:[{at,by:ui.me||'manager',what:'Report created'+(par?' · parent informed ('+par+')':'')}]})){logAct('Incident report for '+nm('children',childId));ui.clear.add('tf-in-');render();toast('Incident report saved'+(par?'':' · remember to tell the parent'))}},
+  inpar:async b=>{const x=byId('incidents',b.dataset.id);if(!x)return;const {id,...rest}=x;const how=val('tf-in-p-'+id)||'Phone call';await put('incidents',id,{...rest,parent:how,parentAt:new Date().toISOString(),hist:incHist(x,'Parent informed · '+how)});toast('Marked: parent informed')},
+  inclose:async b=>{const x=byId('incidents',b.dataset.id);if(!x)return;const {id,...rest}=x;const mn=val('tf-in-mn-'+id);await put('incidents',id,{...rest,status:'closed',mgrNote:mn,closedAt:new Date().toISOString(),hist:incHist(x,'Reviewed by manager'+(mn?' · '+mn:''))});logAct('Reviewed incident report for '+nm('children',x.childId));toast('Marked as reviewed')},
   inprint:b=>incPrint(b.dataset.id),
   mtsave:async()=>{const item=val('tf-mt-item');if(!item){toast('Type what needs fixing.');return}
     if(await put('maint',newId(),{branchId:ui.isMgr?(ui.f.branch||''):myBranch(),item,where:val('tf-mt-where'),priority:val('tf-mt-pri')||'Normal',status:'reported',by:ui.me||'manager',at:new Date().toISOString(),photos:[]})){ui.clear.add('tf-mt-');render();toast('Reported')}},
@@ -2172,6 +2252,15 @@ const acts={
     S.ibhide=[...S.ibhide.filter(x=>x.id!==sid),{id:sid,...d}];ui.ibSel=null;ui.confirmDel=null;render();await put('ibhide',sid,d);logAct(`Deleted ${n} message${n>1?'s':''} from the chat with ${nm('staff',sid)}`);toast(`${n} message${n>1?'s':''} deleted`)},
   ibclear:async b=>{const sid=b.dataset.s;if(ui.confirmDel!=='ibchat'+sid){ui.confirmDel='ibchat'+sid;render();return}
     const all=ibEvents(sid),lastAt=all.reduce((m,e)=>e.at>m?e.at:m,''),nowI=new Date().toISOString(),d={clearedAt:lastAt>nowI?lastAt:nowI,hidden:[]};S.ibhide=[...S.ibhide.filter(x=>x.id!==sid),{id:sid,...d}];ui.confirmDel=null;ui.ibChat='';render();await put('ibhide',sid,d);logAct('Deleted the chat with '+nm('staff',sid));toast('Chat deleted')},
+  ntcread:b=>{const k=b.dataset.nk,r=ntcRead();if(!r.includes(k)){r.push(k);lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)))}render()},
+  ntcall:()=>{const r=ntcRead();noticeItems().forEach(x=>{if(!r.includes(x.k))r.push(x.k)});lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)));render()},
+  moodxl:b=>moodXL(b.dataset.c||''),
+  phdel:async b=>{const c=b.dataset.c,id=b.dataset.id,i=Number(b.dataset.i),k='ph'+c+id+i;if(ui.confirmDel!==k){ui.confirmDel=k;render();return}ui.confirmDel=null;
+    const x=byId(c,id);if(!x){render();return}const {id:_i,...rest}=x,photos=(x.photos||[]).filter((p,j)=>j!==i);x.photos=photos;render();
+    if(await put(c,id,{...rest,photos})){logAct('Deleted a photo ('+(c==='plans'?'plan: '+x.text:'task')+')');toast('Photo deleted')}},
+  inrange:()=>incRange(),
+  rqsec:b=>{ui.rqSec=b.dataset.v;render()},
+  rqgo:b=>{ui.tab='req';ui.rqSec=b.dataset.v;ui.moreOpen=false;render();window.scrollTo(0,0)},
   hidenudge:()=>{ui.nudgeHide=true;render()},
   shownudge:()=>{ui.tab='check';ui.ws=mondayOf(new Date());ui.day='all';ui.openDays=new Set(['carry']);render();document.querySelector('[data-k="carry"]')?.scrollIntoView({behavior:'smooth',block:'start'})},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
@@ -2276,7 +2365,7 @@ function saveComment(key,text){
   if(((entryMap[id]||{}).comment||'')===text){render();return}
   setEntry(id,rid,date,sid,{comment:text,cby:ui.me||'manager'});toast('Comment saved');
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
 document.addEventListener('submit',e=>{e.preventDefault();acts[e.target.dataset.act]?.(e.target)});
 document.addEventListener('change',e=>{const t=e.target;
   if(t.dataset.filter!==undefined){ui.f[t.dataset.filter]=t.value;if(t.dataset.filter==='cur')ui.f.topic='';
