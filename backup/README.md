@@ -8,3 +8,8 @@
 The same version also stays in the GitHub history as commit `aab6789`.
 
 Staff, children, plans and messages are **not** in these files. They live in Firebase. Export them from the app under Setup → Backup and keep that file safe as well.
+
+## v2.4.0 (all pilot features moved to the live site), 11 Nov 2026
+
+- `Aldeia-Staff-Desk-v2.4.0-source.zip`: the working files for this version. `mkbuild.py live` builds the live page, `mkbuild.py` builds the pilot.
+- To go back to v2.3.0, use the v2.3.0 site zip above.
