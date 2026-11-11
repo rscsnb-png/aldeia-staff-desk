@@ -415,6 +415,8 @@ body::before{background:var(--hdr)}
 .bnav .bn span:not(.bnb){font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .moodstrip{gap:2px}.ms small{line-height:1.2;white-space:normal}.ms .mr{display:block;min-height:14px}
 .hal-bday{background:#fdf1dc;border:1.5px solid #e0a43a;color:#4a3200;align-items:center}.hal-bday b{color:#7a4a00}.tico.bd{background:#d9822b}
+.ricon{display:inline-flex;align-items:center;gap:2px;margin-left:6px;color:var(--accent);font-size:11px;font-weight:700;vertical-align:middle;text-decoration:none}.ricon svg{width:15px;height:15px}
+.tlmgr{display:flex;flex-direction:column;gap:4px;margin-top:8px;border-top:1px solid var(--line);padding-top:8px}.tlmgr .btn{align-self:flex-start}
 </style>
 </head>
 <body>
@@ -774,7 +776,7 @@ function itemHtml({r,date,sid,st,cover:i_cover},showDate){
   return `<div class="item st-${st}"><label class="tick"><input type="checkbox" data-tick="${key}" ${e.done?'checked':''} ${lock?'disabled':''} aria-label="Mark done"></label>
   <div class="ibody"><div class="ihead"><div class="itext">${esc(r.text)}${tl?` <span class="tag ttag">${esc(tl)}</span>`:''}</div><div class="rcol">${i_cover?`<span class="pill due">Cover for ${esc(nm('staff',sid))}</span>`:''}<span class="who ${bcls(i_cover||sid)}">${esc(nm('staff',i_cover||sid))}</span><span class="pill ${st}">${off?esc(off):ST_LABEL[st]}</span>${signed(sid,date)?'<span class="pill done">Signed off</span>':''}</div></div>
   ${meta?`<div class="meta">${meta}</div>`:''}${cmt}${thumbs(e.photos)}
-  ${who||(!lock&&!open)?`<div class="foot">${who?`<span class="muted">${who}</span>`:''}${!lock&&!open?`<span class="iacts"><button class="btn xs" data-act="copen" data-k="${key}">${e.comment?'Edit comment':'+ Comment'}</button>${photoBtn('data-photo',key)}</span>`:''}</div>`:''}</div></div>`;
+  ${who||(!lock&&!open)?`<div class="foot">${who?`<span class="muted">${who}</span>`:''}${!lock&&!open?`<span class="iacts"><button class="btn xs" data-act="copen" data-k="${key}">${e.comment?'Edit comment':'+ Comment'}</button>${photoBtn('data-photo',key)}${PILOT&&ui.isMgr?`<button class="btn xs danger" data-act="del" data-c="resp" data-id="${r.id}">${ui.confirmDel==='resp'+r.id?'Tap again':'Delete'}</button>`:''}</span>`:''}</div>`:''}</div></div>`;
 }
 function syncEnd(st){const en=document.getElementById(st.id.replace(/start$/,'end'));if(!en||en.tagName!=='SELECT')return;
   const keep=en.value,ph=(en.options[0]&&en.options[0].text)||'—';en.innerHTML=timeOpts(keep&&(!st.value||keep>st.value)?keep:'',ph,st.value)}
@@ -1283,6 +1285,7 @@ function ibVisible(sid,e){const h=ibHidden(sid);if(h.clearedAt&&(!e.at||e.at<=h.
 const ibKey=e=>e.t==='f'?'f:'+e.f.id:e.t==='r'?'r:'+e.r.id:e.t==='d'?'d:'+e.f.id:'p:'+e.at;
 
 /* ---------- pilot round 4 ---------- */
+function rIcons(r){const np=(r.photos||[]).length;return (r.comment?'<span class="ricon" title="Has a comment" aria-label="Has a comment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg></span>':'')+(np?`<span class="ricon" title="${np} photo${np>1?'s':''}" aria-label="${np} photo${np>1?'s':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>${np>1?np:''}</span>`:'')}
 const whoName=by=>by==='manager'||!by?'Manager':nm('staff',by);
 /* 4 birthday reminders at 06:55 */
 function bdKids(){if(ui.isMgr)return kidsScope();const br=myBranch(),mine=new Set([...S.plans.filter(p=>p.staffId===ui.me).flatMap(p=>kidsOf(p)),...S.resp.filter(r=>staffFor(r).includes(ui.me)).map(r=>r.childId).filter(Boolean)]);
@@ -1304,7 +1307,7 @@ function noticeItems(){const d=document.createElement('div');d.innerHTML=notices
   return [...d.children].map(el=>{const k='n'+hashI(el.textContent.replace(/\s+/g,' ').trim()).toString(36);return {el,k,read:rd.includes(k)}})}
 function noticeCount(){try{return noticeItems().filter(x=>!x.read).length}catch(e){return 0}}
 function homeNoticeLine(){let all=0,n=0;try{const it=noticeItems();all=it.length;n=it.filter(x=>!x.read).length}catch(e){}
-  return `<div class="halerts">${PILOTNOTE?'<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>':''}${all?`<button class="hal hal-notice${n?'':' allread'}" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n?n+' new notice'+(n>1?'s':''):all+' notice'+(all>1?'s':'')+' · all read'}</b><span>Tests, birthdays, approvals and more · tap to see</span></span>${n?`<span class="ncount">${n}</span>`:''}</button>`:''}</div>`}
+  return `<div class="halerts">${PILOTNOTE?'<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>':''}${n?`<button class="hal hal-notice" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n?n+' new notice'+(n>1?'s':''):all+' notice'+(all>1?'s':'')+' · all read'}</b><span>Tests, birthdays, approvals and more · tap to see</span></span>${n?`<span class="ncount">${n}</span>`:''}</button>`:''}</div>`}
 function vNotices(){let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
   let h=`<div class="row spread"><h2 style="margin:0">Notices${n?` <span class="count">${n} new</span>`:''}</h2><span class="actions">${n?'<button class="btn sm" data-act="ntcall">Mark all as read</button>':''}<button class="btn sm" data-act="tab" data-t="home">Back to Today</button></span></div><div class="small muted">Tap a notice to mark it as read. Use Open to go to it.</div>`;
   if(!items.length)return h+'<div class="card empty">No notices right now. All caught up.</div>';
@@ -1392,8 +1395,9 @@ function vHome(){
         :`<textarea id="pc-${r.id}" rows="2" placeholder="Type your comment">${esc(r.comment||'')}</textarea><div class="actions"><button class="btn sm primary" data-act="pcsave" data-id="${r.id}">Save comment</button><button class="btn sm" data-act="pcclose" data-id="${r.id}">Cancel</button></div>`;
       else if(!r.lock)act+=`<div class="tlacts"><button class="btn ${r.done?'':'primary'} tlgo" data-act="${r.type==='task'?'hdone':'hpdone'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.done?'Undo':'Done'}</button><button class="btn" data-act="${r.type==='task'?'copen':'pcopen'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.comment?'Edit comment':'Comment'}</button>${photoOk?`<button class="btn tlph" aria-label="Add photo" data-act="photopick" data-kind="${r.type==='task'?'entry':'plan'}" data-k="${r.type==='task'?r.k:r.id}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l2-3h4l2 3"/></svg></button>`:''}</div>`;
       else act+='<div class="small muted">This day is locked. Ask your manager to unlock it.</div>';
+      if(PILOT&&ui.isMgr)act+=r.type==='task'?`<div class="tlmgr"><button class="btn sm danger" data-act="del" data-c="resp" data-id="${o.id}">${ui.confirmDel==='resp'+o.id?'Tap again to delete':'Delete this responsibility'}</button>${o.staffId==='*'?'<span class="small muted">This task is for all staff, so it is deleted for everyone. To stop it for one person only, use Re-assign or Archive under Responsibilities.</span>':''}</div>`:`<div class="tlmgr"><button class="btn sm danger" data-act="del" data-c="plans" data-id="${r.id}">${ui.confirmDel==='plans'+r.id?'Tap again to delete':'Delete this plan'}</button></div>`;
     }
-    return `<div class="tlc ${r.done?'tldone':'tlopen'}${r.miss?' tlmiss':''}${isOpen?' tlx':''}${r.type==='plan'?' tlplan':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}</span><span class="tlsub">${sub}</span></span>${isNow?'<span class="nowb">NOW</span>':''}</span></button>${tags||act?`<div class="tlbody">${tags?`<div class="meta">${tags}</div>`:''}${act}</div>`:''}</div>`};
+    return `<div class="tlc ${r.done?'tldone':'tlopen'}${r.miss?' tlmiss':''}${isOpen?' tlx':''}${r.type==='plan'?' tlplan':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}${PILOT?rIcons(r):''}</span><span class="tlsub">${sub}</span></span>${isNow?'<span class="nowb">NOW</span>':''}</span></button>${tags||act?`<div class="tlbody">${tags?`<div class="meta">${tags}</div>`:''}${act}</div>`:''}</div>`};
   h+=`<div class="tline${PILOT&&ui.isMgr?' thin':''}">${rows.map(r=>`<div class="tltime${cur&&cur.key===r.key?' tlnow':''}">${r.s==='99'?'Any':esc(r.s)}</div>${card(r)}`).join('')}</div>`;
   h+=`<div class="hfoot"><button class="btn sm" data-act="tab" data-t="check">Full checklist and week view</button></div>`;
   return h}
