@@ -1029,7 +1029,7 @@ function vPlanP(){
 function psInit(d,slot){const p=byId('periods',slot);ui.ps={date:d,slot:p?p.id:'',start:p?p.start||'':'',end:p?p.end||'':'',who:'',kids:[],topicId:'',curriculumId:'',text:'',rep:false,staff:ui.isMgr?(ui.f.staff||''):ui.me,gname:''};ui.clash=null;ui.clear.add('tf-ps-')}
 function psGrab(){const s=ui.ps;if(!s)return;const g=id=>document.getElementById(id);
   if(g('tf-ps-text'))s.text=g('tf-ps-text').value;if(g('tf-ps-start'))s.start=g('tf-ps-start').value;if(g('tf-ps-end'))s.end=g('tf-ps-end').value;
-  if(g('tf-ps-rep'))s.rep=g('tf-ps-rep').checked;if(g('tf-ps-staff'))s.staff=g('tf-ps-staff').value;if(g('tf-ps-gname'))s.gname=g('tf-ps-gname').value}
+  if(g('tf-ps-rep'))s.rep=g('tf-ps-rep').checked;if(g('tf-ps-test'))s.isTest=g('tf-ps-test').checked;if(g('tf-ps-staff'))s.staff=g('tf-ps-staff').value;if(g('tf-ps-gname'))s.gname=g('tf-ps-gname').value}
 function psKids(){const s=ui.ps;if(s.who==='class')return classKids().map(c=>c.id);if(s.who.startsWith('g:'))return grpKids(s.who.slice(2));return s.kids}
 function psSheet(){const s=ui.ps;if(!s)return '';const ds=weekDates(ui.ws),kids=classKids(),grps=classGroups(),sel=psKids();
   const chip=(act,v,l,on,extra='')=>`<button type="button" class="chip${on?' on':''}" data-act="${act}" data-v="${esc(v)}" aria-pressed="${!!on}"${extra}>${l}</button>`;
@@ -1053,6 +1053,7 @@ function psSheet(){const s=ui.ps;if(!s)return '';const ds=weekDates(ui.ws),kids=
   <div class="pss"><div class="psl">4 · Activity</div>${sugg.length?`<div class="chips">${sugg.map(x=>chip('pstext',x,esc(x.length>28?x.slice(0,28)+'…':x),x===s.text)).join('')}</div>`:''}
     <input type="text" id="tf-ps-text" value="${esc(s.text)}" placeholder="What will you do? e.g. Phonics with picture cards" aria-label="Activity"></div>
   <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-rep"${s.rep?' checked':''}> Repeat every ${esc(dayWord(s.date))} this term</label>
+  <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-test"${s.isTest?' checked':''}> This is a test (adds a test reminder 3 days before, at this time)</label>
   ${clashBox('ps')}
   <button type="button" class="btn primary big" data-act="pssave">${ui.clash&&ui.clash.f==='ps'?'Save anyway':'Save'+(lab?' · '+esc(lab):'')}</button>
   </div></div>`}
@@ -1214,7 +1215,7 @@ function incCard(x){const mgr=ui.isMgr,c=byId('children',x.childId)||{};
       ${photoOk&&(mgr||x.by===ui.me)?`<button class="btn sm" data-act="photopick" data-kind="incidents" data-k="${x.id}">+ Photo</button>`:''}<button class="btn sm" data-act="inprint" data-id="${x.id}">PDF report</button></div>
     ${mgr&&x.status!=='closed'?`<div class="addnew"><input type="text" id="tf-in-mn-${x.id}" placeholder="Manager note (optional)" aria-label="Manager note"><button class="btn sm primary" data-act="inclose" data-id="${x.id}">Mark reviewed</button></div>`:''}</div>`}
 function vInc(){const list=S.incidents.filter(x=>ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
-  let h=incForm('')+`<div class="card"><h3>Incident report for a period (PDF)</h3><div class="grid2"><label class="fld"><span>From</span><input type="date" id="tf-inr-from" value="${iso(addDays(new Date(),-30))}"></label><label class="fld"><span>To</span><input type="date" id="tf-inr-to" value="${todayIso()}"></label></div><div class="actions"><button class="btn" data-act="inrange">Create PDF report</button></div><span class="small muted">Opens the report. Choose Save as PDF in the print window.</span></div>`;const open=list.filter(x=>x.status!=='closed');
+  let h=incForm('')+`<div class="card"><h3>Incident report for a period (PDF)</h3><div class="grid2"><label class="fld"><span>From</span><input type="date" id="tf-inr-from" value="${iso(addDays(new Date(),-30))}"></label><label class="fld"><span>To</span><input type="date" id="tf-inr-to" value="${todayIso()}"></label><label class="fld"><span>Area</span><select id="tf-inr-br">${opt('branches','','All areas')}</select></label><label class="fld"><span>Child</span><select id="tf-inr-child">${opt('children','','All children')}</select></label></div><div class="actions"><button class="btn" data-act="inrange">Create PDF report</button></div><span class="small muted">Opens the report. Choose Save as PDF in the print window.</span></div>`;const open=list.filter(x=>x.status!=='closed');
   h+=`<h2>${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span></h2>`+((ui.isMgr?open:list).map(incCard).join('')||'<div class="card empty">No incident reports.</div>');
   if(ui.isMgr){const cl=list.filter(x=>x.status==='closed');if(cl.length)h+=`<h2>Reviewed</h2>`+cl.slice(0,20).map(incCard).join('')}
   return h}
@@ -1340,11 +1341,11 @@ const RPT_CSS='<style>.rt{width:100%;border-collapse:collapse;margin:6px 0 14px;
 function incPrint(id){const x=byId('incidents',id);if(!x)return;const c=byId('children',x.childId)||{};
   openPrint('Incident report '+(c.name||'')+' '+x.date,RPT_CSS+`<h1>Incident report</h1><div class="m">Aldeia NeuroBehaviour Institute · ${esc(nm('branches',c.branchId)||'')} · printed ${esc(fmt(todayIso()))}</div>${incBody(x)}
   <div class="sig"><div>Staff signature</div><div>Parent signature</div><div>Manager signature</div><div>Date</div></div>`)}
-function incRange(){const f=val('tf-inr-from')||iso(addDays(new Date(),-30)),t=val('tf-inr-to')||todayIso();
-  const list=S.incidents.filter(x=>x.date>=f&&x.date<=t&&(ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me)).sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
-  if(!list.length){toast('No incidents in that period.');return}
+function incRange(){const f=val('tf-inr-from')||iso(addDays(new Date(),-30)),t=val('tf-inr-to')||todayIso(),rb=val('tf-inr-br'),rc=val('tf-inr-child');
+  const list=S.incidents.filter(x=>x.date>=f&&x.date<=t&&(!rc||x.childId===rc)&&(!rb||(byId('children',x.childId)||{}).branchId===rb)&&(ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me)).sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
+  if(!list.length){toast('No incidents for that choice.');return}
   const cnt=k=>list.filter(x=>x.injury===k).length,inf=list.filter(x=>x.parent).length;
-  openPrint(`Incidents ${f} to ${t}`,RPT_CSS+`<h1>Incident report · ${esc(fmt(f))} – ${esc(fmt(t))}</h1><div class="m">Aldeia NeuroBehaviour Institute${ui.f.branch?' · '+esc(nm('branches',ui.f.branch)):''}</div>
+  openPrint(`Incidents ${f} to ${t}`,RPT_CSS+`<h1>Incident report · ${esc(fmt(f))} – ${esc(fmt(t))}</h1><div class="m">Aldeia NeuroBehaviour Institute${rb?' · '+esc(nm('branches',rb)):ui.f.branch?' · '+esc(nm('branches',ui.f.branch)):''}${rc?' · '+esc(nm('children',rc)):''}</div>
   <table class="rt"><tr><th>Incidents</th><td>${list.length}</td></tr><tr><th>No injury / minor / needs care</th><td>${cnt(INJ[0])} / ${cnt(INJ[1])} / ${cnt(INJ[2])}</td></tr><tr><th>Parent informed</th><td>${inf} of ${list.length}</td></tr><tr><th>Reviewed</th><td>${list.filter(x=>x.status==='closed').length} of ${list.length}</td></tr></table>
   <h2>Overview</h2><table class="rt"><tr><th style="width:auto">Date</th><th style="width:auto">Child</th><th style="width:auto">What happened</th><th style="width:auto">Injury</th><th style="width:auto">Parent</th></tr>${list.map(x=>`<tr><td>${esc(fmt(x.date))} ${esc(x.time||'')}</td><td>${esc(nm('children',x.childId))}</td><td>${esc(x.what)}</td><td>${esc(x.injury||'')}</td><td>${esc(x.parent||'Not yet')}</td></tr>`).join('')}</table>
   <div class="pb"></div>${list.map(x=>`<h2>${esc(nm('children',x.childId))} · ${esc(fmt(x.date))}</h2>${incBody(x)}`).join('<div class="pb"></div>')}`)}
@@ -2190,7 +2191,7 @@ const acts={
       done:false,photos:[],by:ui.me||'manager',updated:new Date().toISOString()};
     if(checkClash('ps',d,[staffId],[d.date]))return;
     const pid=newId();if(s.rep)d.series=pid;
-    if(await put('plans',pid,d)){let n=0;if(s.rep){const until=repUntilDefault();for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd});n++}}
+    if(await put('plans',pid,d)){if(s.isTest)await put('tests',newId(),{title:tName(d.topicId)||d.text,topicId:d.topicId,childId:kids.length===1?kids[0]:'',date:d.date,time:d.start||'',gradeId:'',curId:d.curriculumId||'',lead:'3',branchId:ui.isMgr?plBranch():myBranch(),staffId,by:ui.me||'manager'});let n=0;if(s.rep){const until=repUntilDefault();for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd});n++}}
       ui.ps=null;ui.clash=null;ui.plDay=d.date;ui.clear.add('tf-ps-');render();toast(n?`Saved and repeated for ${n} more week${n===1?'':'s'}`:'Activity saved')}},
   pbopen:b=>{ui.plBatch=b.dataset.d;ui.pb={src:'last'};ui.ps=null;ui.clear.add('tf-pb-');render();window.scrollTo(0,0)},
   pbclose:()=>{ui.plBatch=null;ui.ps=null;render()},
