@@ -414,6 +414,7 @@ body::before{background:var(--hdr)}
 .ibtabs.two{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:6px}
 .bnav .bn span:not(.bnb){font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .moodstrip{gap:2px}.ms small{line-height:1.2;white-space:normal}.ms .mr{display:block;min-height:14px}
+.hal-bday{background:#fdf1dc;border:1.5px solid #e0a43a;color:#4a3200;align-items:center}.hal-bday b{color:#7a4a00}.tico.bd{background:#d9822b}
 </style>
 </head>
 <body>
@@ -807,7 +808,7 @@ function vCheckInner(){
     if(ui.f.staff&&signed(ui.f.staff,d)){const req=S.feedback.find(f=>f.kind==='unlock'&&f.scope!=='plan'&&f.date===d&&f.from===ui.f.staff&&!f.closed);
       h+=`<div class="banner info"><div class="row spread"><span><b>Signed off by the manager</b><br><span class="small">Ticks for this day are locked.</span></span>${ui.mgr?`<button class="btn sm primary" data-act="unlockday" data-s="${ui.f.staff}" data-d="${d}">Unlock day</button>`:req?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-d="${d}">Request unlock</button>`}</div></div>`}
     if(hol) h+=`<div class="banner info"><b>Public holiday: ${esc(hol.name||'')}</b></div>`;
-    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test:</b> ${esc(t.title||'')} ${[nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span></div>`);
+    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test${t.time?' · '+esc(t.time):''}:</b> ${esc(t.title||'')} ${[nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span></div>`);
     h+=its.length?its.map(i=>itemHtml(i)).join(''):(dps.length?'':`<div class="muted small" style="padding:4px 2px">Nothing scheduled${Object.values(ui.f).some(Boolean)&&ui.mgr?' for these filters':''}.</div>`);
     if(dps.length) h+=`<div class="subhd">Planned activities</div>`+planLockBanner(d)+dps.map(planHtml).join('');
   });
@@ -862,14 +863,14 @@ const myBranch=()=>(byId('staff',ui.me)||{}).branchId||'';
 function breaksFor(){const br=ui.mgr?(ui.f.branch||(ui.f.staff?(byId('staff',ui.f.staff)||{}).branchId:'')):myBranch();
   return S.breaks.filter(x=>!br||!x.branchId||x.branchId===br)}
 function testBanner(t){const can=ui.mgr||t.by===ui.me;
-  return `<div class="banner"><div class="row spread"><span><b>Test:</b> ${esc(t.title||'')}${[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span>${can?`<button class="btn sm danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div></div>`}
+  return `<div class="banner"><div class="row spread"><span><b>Test${t.time?' · '+esc(t.time):''}:</b> ${esc(t.title||'')}${[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span>${can?`<button class="btn sm danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div></div>`}
 function extraForms(){
   const sd=selDates(), def=sd.includes(todayIso())?todayIso():sd[0];
   return `<details class="card flt" id="testbox"${ui.testOpen?' open':''}><summary><span><span class="pmx"></span> Add a test</span><span class="fsum">Shows as a reminder <span class="chev">▾</span></span></summary>
    <div class="grid2"><label class="fld"><span>Child</span><select id="tf-child">${opt('children','','—')}</select></label></div>
    ${subjTopic('tf',null)}
    <div class="grid2">
-   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${def}"></label>
+   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${def}"></label>${PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
    <label class="fld"><span>Grade</span><select id="tf-grade">${opt('grades','','—')}</select></label>
    ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-branch">${opt('branches','','All branches')}</select></label><label class="fld"><span>Staff</span><select id="tf-staff">${opt('staff','','All staff at branch')}</select></label>`:''}
    <label class="fld"><span>Remind days before</span><input type="number" id="tf-lead" value="3" min="0" max="30"></label></div>
@@ -1143,7 +1144,7 @@ function testBars(){const t=todayIso();
   const list=ui.isMgr?S.tests.filter(x=>x.date&&x.date>=t&&daysBetween(t,x.date)<=(Number(x.lead)||3)&&(!ui.f.branch||!x.branchId||x.branchId===ui.f.branch)).sort((a,b)=>a.date.localeCompare(b.date)):(ui.me?testsFor(ui.me):[]);
   return list.slice(0,4).map(x=>{const d=daysBetween(t,x.date),when=d===0?'Today':d===1?'Tomorrow':'In '+d+' days';
     const what=[tName(x.topicId)||x.title||'Test',x.childId&&nm('children',x.childId),ui.isMgr&&x.staffId&&nm('staff',x.staffId)].filter(Boolean).map(esc).join(' · ');
-    return `<button class="hal hal-test" data-act="pltest" data-d="${x.date}"><span class="tico" aria-hidden="true">✎</span><span class="hal-t"><b>Test ${when.toLowerCase()} · ${esc(fmt(x.date))}</b><span>${what}</span></span></button>`}).join('')}
+    return `<button class="hal hal-test" data-act="pltest" data-d="${x.date}"><span class="tico" aria-hidden="true">✎</span><span class="hal-t"><b>Test ${when.toLowerCase()} · ${esc(fmt(x.date))}${x.time?' at '+esc(x.time):''}</b><span>${what}</span></span></button>`}).join('')}
 
 /* 4 weekly plan approval */
 const papId=(sid,ws)=>sid+'_'+ws;
@@ -1282,8 +1283,11 @@ const ibKey=e=>e.t==='f'?'f:'+e.f.id:e.t==='r'?'r:'+e.r.id:e.t==='d'?'d:'+e.f.id
 /* ---------- pilot round 4 ---------- */
 const whoName=by=>by==='manager'||!by?'Manager':nm('staff',by);
 /* 4 birthday reminders at 06:55 */
+function bdKids(){if(ui.isMgr)return kidsScope();const br=myBranch(),mine=new Set([...S.plans.filter(p=>p.staffId===ui.me).flatMap(p=>kidsOf(p)),...S.resp.filter(r=>staffFor(r).includes(ui.me)).map(r=>r.childId).filter(Boolean)]);
+  return sortByName('children').filter(c=>!br||!c.branchId||c.branchId===br||mine.has(c.id))}
+function bdBar(d){const l=bdRows(d);return l.length?`<div class="halerts">${l.map(x=>`<div class="hal hal-bday"><span class="tico bd" aria-hidden="true">★</span><span class="hal-t"><b>${esc(x.t)}</b><span>Reminder at 06:55 · plan something small for the class</span></span></div>`).join('')}</div>`:''}
 function bdRows(d){const nx=iso(addDays(parse(d),1)),out=[];
-  kidsScope().forEach(c=>{if(!c.dob)return;const md=c.dob.slice(5),y=Number(c.dob.slice(0,4)),age=dt=>y>1900?Number(dt.slice(0,4))-y:null;
+  bdKids().forEach(c=>{if(!c.dob)return;const md=c.dob.slice(5),y=Number(c.dob.slice(0,4)),age=dt=>y>1900?Number(dt.slice(0,4))-y:null;
     if(md===d.slice(5)){const a=age(d);out.push({id:c.id+d,t:`Birthday today: ${c.name}${a?' turns '+a:''}`})}
     else if(md===nx.slice(5)){const a=age(nx);out.push({id:c.id+nx,t:`Birthday tomorrow: ${c.name}${a?' turns '+a:''}`})}});
   return out}
@@ -1358,13 +1362,13 @@ function vHome(){
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
     <div class="hprog"><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div></div>`;
-  h+=PILOT?homeNoticeLine():`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
+  h+=PILOT?homeNoticeLine()+bdBar(d):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
   pls.forEach(p=>{const lk=p.staffId!=='*'&&plocked(p.staffId,p.date);rows.push({type:'plan',key:'p:'+p.id,id:p.id,s:oStart(p),e:oEnd(p),t:p.text,o:p,done:!!p.done,who:p.staffId,lock:lk&&!ui.mgr,comment:p.comment,photos:p.photos,cover:coverOf(p)?p.staffId:''})});
   breaksFor().forEach(b=>rows.push({type:'brk',key:'b:'+b.id,s:b.start||'99',e:b.end||'',t:b.name||'Break'}));
   if(PILOT)bdRows(d).forEach(x=>rows.push({type:'bday',key:'bd:'+x.id,s:'06:55',e:'',t:x.t}));
-  testsOnDate(d).forEach(x=>rows.push({type:'test',key:'x:'+x.id,s:'99',e:'',t:'Test: '+(x.title||''),o:x}));
+  testsOnDate(d).forEach(x=>rows.push({type:'test',key:'x:'+x.id,s:x.time||'99',e:'',t:'Test: '+(x.title||''),o:x}));
   rows.sort((a,b)=>a.s.localeCompare(b.s));
   if(!rows.length)return h+`<div class="card empty">Nothing scheduled for ${d===t?'today':fmt(d)}.<button class="btn primary" data-act="tab" data-t="plan">Add planning</button></div>`;
   const toM=x=>x&&x!=='99'?Number(x.slice(0,2))*60+Number(x.slice(3,5)):null;
@@ -1852,8 +1856,8 @@ const SETUP=[
  {c:'breaks',t:'Break times',f:[{k:'name',l:'Name',ph:'e.g. Tea break'},{k:'start',l:'Start',type:'timesel'},{k:'end',l:'End',type:'timesel'},{k:'branchId',l:'Branch (blank = all)',s:'branches'}],
    show:x=>`${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}<div class="muted small">${esc(nm('branches',x.branchId)||'All branches')}</div>`},
  {c:'RESP',t:'Responsibility block'},
- {c:'tests',t:'Test reminders',f:[{k:'topicId',l:'Subject',s:'topics'},{k:'childId',l:'Child',s:'children'},{k:'date',l:'Date',type:'date'},{k:'branchId',l:'Branch',s:'branches'},{k:'gradeId',l:'Grade',s:'grades'},{k:'curId',l:'Curriculum',s:'curriculum'},{k:'staffId',l:'Staff (blank = all at branch)',s:'staff'},{k:'lead',l:'Remind days before',type:'number',def:'3'}],
-   show:x=>`${esc(x.title)} · <b>${fmt(x.date)}</b><div class="muted small">${[nm('grades',x.gradeId),nm('curriculum',x.curId),x.staffId?nm('staff',x.staffId):'All staff'+(x.branchId?' at '+nm('branches',x.branchId):''),'remind '+(x.lead||3)+' days before'].filter(Boolean).map(esc).join(' · ')}</div>`},
+ {c:'tests',t:'Test reminders',f:[{k:'topicId',l:'Subject',s:'topics'},{k:'childId',l:'Child',s:'children'},{k:'date',l:'Date',type:'date'},...(PILOT?[{k:'time',l:'Time',type:'timesel'}]:[]),{k:'branchId',l:'Branch',s:'branches'},{k:'gradeId',l:'Grade',s:'grades'},{k:'curId',l:'Curriculum',s:'curriculum'},{k:'staffId',l:'Staff (blank = all at branch)',s:'staff'},{k:'lead',l:'Remind days before',type:'number',def:'3'}],
+   show:x=>`${esc(x.title)} · <b>${fmt(x.date)}${x.time?' '+esc(x.time):''}</b><div class="muted small">${[nm('grades',x.gradeId),nm('curriculum',x.curId),x.staffId?nm('staff',x.staffId):'All staff'+(x.branchId?' at '+nm('branches',x.branchId):''),'remind '+(x.lead||3)+' days before'].filter(Boolean).map(esc).join(' · ')}</div>`},
  {c:'leave',t:'Staff leave',f:[{k:'staffId',l:'Staff',s:'staff'},{k:'from',l:'From',type:'date'},{k:'to',l:'To',type:'date'},{k:'note',l:'Note (optional)'},{k:'coverId',l:'Cover person (optional)',s:'staff'}],
    show:x=>`${esc(nm('staff',x.staffId))}<div class="muted small">${fmt(x.from)} – ${fmt(x.to||x.from)}${x.coverId?' · Cover: '+esc(nm('staff',x.coverId)):''}${x.note?' · '+esc(x.note):''}</div>`},
  {c:'terms',t:'School terms',f:[{k:'name',l:'Term',ph:'e.g. Term 4'},{k:'start',l:'Starts',type:'date'},{k:'end',l:'Ends',type:'date'}],show:x=>`${esc(x.name)}<div class="muted small">${fmt(x.start)} – ${fmt(x.end)} ${x.start?parse(x.start).getFullYear():''}</div>`},
@@ -2044,7 +2048,7 @@ const acts={
   dtog:b=>{ui.fltOpen=false;const k=b.dataset.k;if(ui.openDays.has(k))ui.openDays.delete(k);else{if(k.startsWith('ib-'))[...ui.openDays].forEach(x=>{if(x.startsWith('ib-'))ui.openDays.delete(x)});if(/^[cp]\d/.test(k))[...ui.openDays].forEach(x=>{if(x[0]===k[0]&&/^[cp]\d/.test(x))ui.openDays.delete(x)});ui.openDays.add(k);if(/^[cp]\d/.test(k))ui.focusDay=k.slice(1)}render()},
   dall:b=>{const p=b.dataset.p,o=b.dataset.o==='1';selDates().forEach(d=>o?ui.openDays.add(p+d):ui.openDays.delete(p+d));render()},
   tscroll:b=>{const t=document.getElementById('tabs');t.scrollBy({left:Number(b.dataset.n)*t.clientWidth*0.7,behavior:'smooth'})},
-  savetest:async()=>{const sj=readSubj('tf'),d={title:(byId('topics',sj.topicId)||{}).name||'',topicId:sj.topicId,childId:val('tf-child'),date:val('tf-date'),gradeId:val('tf-grade'),curId:sj.curriculumId,lead:val('tf-lead')||'3',branchId:ui.mgr?val('tf-branch'):myBranch(),staffId:ui.mgr?val('tf-staff'):'',by:ui.me||'manager'};
+  savetest:async()=>{const sj=readSubj('tf'),d={title:(byId('topics',sj.topicId)||{}).name||'',topicId:sj.topicId,childId:val('tf-child'),date:val('tf-date'),gradeId:val('tf-grade'),curId:sj.curriculumId,lead:val('tf-lead')||'3',...(PILOT?{time:val('tf-ttime')}:{}),branchId:ui.mgr?val('tf-branch'):myBranch(),staffId:ui.mgr?val('tf-staff'):'',by:ui.me||'manager'};
     fillFromChild(d,'curId');
     if(!d.topicId){toast('Choose the subject for the test.');return} if(!d.date){toast('Pick the test date.');return}
     if(await put('tests',newId(),d)){logAct(`Added test "${d.title}" on ${fmt(d.date)}`);ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
