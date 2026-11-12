@@ -529,6 +529,21 @@ body::before{background:var(--hdr)}
 .bn.on svg{width:26px;height:26px;padding:7px;border-radius:50%;background:#23729f;color:#fff;margin-top:-18px;box-shadow:0 3px 8px rgba(0,0,0,.25);box-sizing:content-box}
 .bn.on span{font-weight:800;color:#23729f}
 @media (max-width:600px){.pslim .crow.cq{grid-template-columns:minmax(0,1fr) auto 30px}.hquick .tabnav{width:100%}}
+/* round 10 */
+.qbar{display:flex;gap:8px;flex-wrap:wrap}.qtop{margin-bottom:2px}
+.hquick .qbar .btn:not(.primary){background:#ecebe5}
+.ntcp{gap:6px;align-items:center}
+.ntcp:not(.read) .ntcb>*{background:#dff1df!important;border-color:#8cc79a!important;color:#1f5a2e!important}
+.ntcp:not(.read) .ntcb>* b,.ntcp:not(.read) .ntcb>* span{color:#1f5a2e!important}
+.ntcp.read .ntcb>*{opacity:1}.ntcp.read b{font-weight:600}
+.ntcctl{display:flex;align-items:center;gap:5px;flex:none}
+.ntcsnz{font:inherit;font-size:11.5px;min-height:26px;height:26px;padding:0 4px;border:1px solid #c4c4bc;border-radius:7px;background:var(--surface);color:#555;width:auto;max-width:108px;cursor:pointer}
+.ntcz{font-size:11.5px;color:#6e4d10;white-space:nowrap}
+.ntcctl .btn.xs{min-height:26px;padding:1px 8px;font-size:11.5px}
+.ntmcard{max-width:640px;width:calc(100% - 24px);max-height:calc(100vh - 40px);overflow:auto;display:flex;flex-direction:column;gap:10px}
+.ntmlist{gap:8px}
+.bdone{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:4px}
+@media (max-width:600px){.ntcp{flex-wrap:wrap}.ntcctl{width:100%;justify-content:flex-end}}
 </style>
 </head>
 <body>
@@ -792,9 +807,9 @@ function render(){
     if(PILOTNOTE&&signedIn()&&ui.tab!=='home') h+=`<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>`;
     if(PILOT&&signedIn()&&ui.tab!=='home'&&!navigator.onLine) h+=`<div class="banner"><b>You're offline</b><span class="small">Changes are saved on this phone and sent when you're back online.</span></div>`;
     if(ui.viewing) h+=`<div class="banner" style="background:var(--accent-soft)"><div class="row spread"><b>Viewing as ${esc(nm('staff',ui.me))}</b><button class="btn sm primary" data-act="viewexit">Back to my view</button></div></div>`;
-    if(!signedIn()) h+=vGate(); else {if(ui.acct)h+=acctCard(); h+=VIEWS[ui.tab]();}
+    if(!signedIn()) h+=vGate(); else {if(ui.acct)h+=acctCard(); if(PILOTNOTE&&['reg','time','inc'].includes(ui.tab))h+=`<div class="qtop">${qBar(ui.tab)}</div>`; h+=VIEWS[ui.tab]();}
     panel.innerHTML=h;
-    setTimeout(ydayModal,0);setTimeout(handleClock,0);
+    setTimeout(PILOTNOTE?()=>{if(!ntcModal())ydayModal()}:ydayModal,0);setTimeout(handleClock,0);
     for(const id in saved){if([...ui.clear].some(p=>id.startsWith(p)))continue;const el=document.getElementById(id);if(!el)continue;
       if(el.type==='checkbox'||el.type==='radio')el.checked=saved[id];else el.value=saved[id]}
     panel.querySelectorAll('select[data-subj]').forEach(sel=>{const p=sel.dataset.subj,tp=document.getElementById(p+'-topic');if(!tp)return;
@@ -1120,7 +1135,7 @@ function vPlanP(){
   if(!S.staff.length&&loaded) return reminders()+setupFirst();
   if(ui.plBatch) return vPlanBatch();
   const ds=weekDates(ui.ws),d=plDaySel(),kids=classKids(),grps=classGroups(),w=ui.plWho||'';
-  let h=reminders()+(PILOTNOTE?`<div class="row spread" style="margin-bottom:-4px"><h2 style="margin:0">Plan</h2>${tabNav('plan')}</div>`:'')+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">${PILOTNOTE?'This week':'Today'}</button></div>`;
+  let h=reminders()+(PILOTNOTE?`<div class="row spread" style="margin-bottom:-4px"><h2 style="margin:0">Plan</h2>${qBar('plan')}</div>`:'')+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">${PILOTNOTE?'This week':'Today'}</button></div>`;
   if(ui.mgr) h+=filtersCard();
   h+=`<div class="wk5">${ds.map(x=>{const ps=plansFor([x]),dn=ps.filter(p=>p.done).length,lab=ps.length?(dn===ps.length?dn+' ✓':ps.length+' planned'):'empty';
     return `<button class="wkd${x===d?' on':''}${ps.length?'':' empty'}" data-act="plday" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small></button>`}).join('')}</div>`;
@@ -1424,7 +1439,7 @@ function noticeItems(){const d=document.createElement('div');d.innerHTML=notices
 function noticeCount(){try{return noticeItems().filter(x=>!x.read).length}catch(e){return 0}}
 function homeNoticeLine(){let all=0,n=0;try{const it=noticeItems();all=it.length;n=it.filter(x=>!x.read).length}catch(e){}
   return `<div class="halerts">${PILOTNOTE?'<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>':''}${n?`<button class="hal hal-notice" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n?n+' new notice'+(n>1?'s':''):all+' notice'+(all>1?'s':'')+' · all read'}</b><span>Tests, birthdays, approvals and more · tap to see</span></span>${n?`<span class="ncount">${n}</span>`:''}</button>`:''}</div>`}
-function vNotices(){let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
+function vNotices(){if(PILOTNOTE)return vNoticesP();let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
   let h=`<div class="row spread"><h2 style="margin:0">Notices${n?` <span class="count">${n} new</span>`:''}</h2><span class="actions">${n?'<button class="btn sm" data-act="ntcall">Mark all as read</button>':''}<button class="btn sm" data-act="tab" data-t="home">Back to Today</button></span></div><div class="small muted">Tap a notice to mark it as read. Use Open to go to it.</div>`;
   if(!items.length)return h+'<div class="card empty">No notices right now. All caught up.</div>';
   return h+`<div class="halerts">${items.map(({el,k,read})=>{let open='';
@@ -1548,7 +1563,7 @@ function vRespP(){const sec=ui.editing.resp?'new':(ui.respSec||'list'),bOf=id=>(
   const list=S.resp.filter(r=>!r.archived&&(!ui.respStaff||r.staffId===ui.respStaff)&&(!ui.respBranch||r.staffId==='*'||bOf(r.staffId)===ui.respBranch));
   const head=(k,l,sub)=>`<button class="rsh" data-act="respsec" data-v="${k}" aria-expanded="${sec===k}"><span class="pmb${sec===k?'':' c'}" aria-hidden="true">${sec===k?'−':'+'}</span><b>${l}</b><span class="rsp"></span><span class="muted small">${sub}</span></button>`;
   const filt=`<div class="rflt"><select data-uiset="respBranch">${opt('branches',ui.respBranch,'All branches')}</select><select data-uiset="respStaff"><option value="">Everyone</option><option value="*"${ui.respStaff==='*'?' selected':''}>Tasks for all staff</option>${sortByName('staff').filter(x=>!ui.respBranch||x.branchId===ui.respBranch).map(x=>`<option value="${x.id}"${x.id===ui.respStaff?' selected':''}>${esc(staffLabel(x))}</option>`).join('')}</select></div>`;
-  let h=`<div class="row spread"><h2 style="margin:0">Responsibilities</h2>${tabNav('resp')}</div>`;
+  let h=`<div class="row spread"><h2 style="margin:0">Responsibilities</h2>${qBar('resp')}</div>`;
   // list
   h+=`<div class="card rsec">${head('list','All responsibilities',`${list.length}${sec==='list'?'':' · tap to open'}`)}`;
   if(sec==='list'){h+=filt;const srt=[...list].sort((a,b)=>oStart(a).localeCompare(oStart(b))||nm('staff',a.staffId).localeCompare(nm('staff',b.staffId)));
@@ -1619,6 +1634,64 @@ function wkGuard(b){if(!PILOTNOTE||ui.mgr||!ui.me)return false;const a=b.dataset
   const r=wkLock(ui.me,d);if(!r)return false;
   toast(`Week ${isoWeek(parse(r.ws))} planning is ${r.status==='approved'?'approved':'with your manager'}. Tap "Request unlock" to change it.`);return true}
 
+/* ---------- pilot round 10 ---------- */
+function qBar(cur){const has=k=>tabsFor().some(t=>t[0]===k),L=[['reg','Register'],['plan','Plan'],['time','Timetable'],['inc','Incidents']].filter(([k])=>has(k));
+  return `<div class="qbar" role="group" aria-label="Go to">${L.map(([k,l])=>`<button class="btn sm${k===cur?' primary':''}" data-act="tab" data-t="${k}"${k===cur?' aria-current="page"':''}>${l}</button>`).join('')}</div>`}
+/* notices: green unread, unread again, remind me */
+const ntcSnz=()=>{try{return JSON.parse(lsGet('ntcsnz_'+meKey())||'{}')}catch(e){return {}}};
+const ntcSave=r=>lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)));
+const SNZ=[[15,'in 15 min'],[30,'in 30 min'],[60,'in 1 hour'],[120,'in 2 hours'],[180,'in 3 hours']];
+function ntcRows(items){const sz=ntcSnz();return items.map(({el,k,read})=>{let open='';
+  if(el.tagName==='BUTTON'&&el.dataset.act){const ds=Object.entries(el.dataset).map(([a,v])=>`data-${a.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}="${esc(v)}"`).join(' ');open=`<button class="btn xs ntcopen" ${ds} data-ntcgo="1">Open</button>`;const dv=document.createElement('div');dv.className=el.className;dv.innerHTML=el.innerHTML;el=dv}
+  const until=sz[k];
+  return `<div class="ntc ntcp${read?' read':''}" data-act="ntcread" data-nk="${k}" title="${read?'Read':'Tap to mark as read'}">${read?'':'<span class="ntcdot" aria-label="New"></span>'}<div class="ntcb">${el.outerHTML}</div><span class="ntcctl">${open}
+    ${until?`<span class="ntcz" title="Reminder set">⏰ ${esc(fmtAt(until).split(' ').pop())}</span><button class="btn xs" data-act="ntcsnzx" data-nk="${k}" aria-label="Cancel reminder">✕</button>`:`<select class="ntcsnz" data-act="noop" data-snz="${k}" aria-label="Remind me later"><option value="">Remind me</option>${SNZ.map(([m,l])=>`<option value="${m}">${l}</option>`).join('')}</select>`}
+    ${read?`<button class="btn xs" data-act="ntcunread" data-nk="${k}">Unread</button>`:''}</span></div>`}).join('')}
+function vNoticesP(){let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
+  let h=`<div class="row spread"><h2 style="margin:0">Notices${n?` <span class="count">${n} new</span>`:''}</h2><span class="actions">${n?'<button class="btn sm" data-act="ntcall">Mark all as read</button>':''}<button class="btn sm" data-act="tab" data-t="home">Back to Today</button></span></div><div class="small muted">Green = new. Tap to mark as read. Use Remind me to see it again later.</div>`;
+  if(!items.length)return h+'<div class="card empty">No notices right now. All caught up.</div>';
+  return h+`<div class="halerts">${ntcRows(items)}</div>`}
+function ntcModal(){if(ui.ntcDone||!loaded||!signedIn()||ui.viewing||ui.tab!=='home')return !!document.getElementById('ntm');ui.ntcDone=true;
+  if(lsGet('ntcpop_'+meKey())===todayIso())return false;let items=[];try{items=noticeItems()}catch(e){}if(!items.some(x=>!x.read))return false;
+  const m=document.createElement('div');m.id='ntm';m.className='modal';document.body.appendChild(m);ntcModalFill();return true}
+function ntcModalFill(){const m=document.getElementById('ntm');if(!m)return;let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
+  m.innerHTML=`<div class="modalcard ntmcard" role="dialog" aria-modal="true" aria-labelledby="ntmh"><div class="row spread"><h2 id="ntmh" style="margin:0">Read your notices first</h2>${n?`<span class="count">${n} new</span>`:''}</div>
+  <p class="small muted" style="margin:0">Tap each notice once you have read it. Then go to your tasks for the day.</p><div class="halerts ntmlist">${ntcRows(items)}</div>
+  <div class="actions"><button class="btn primary" data-act="ntmclose" data-all="1">${n?'Mark all read and see my tasks':'See my tasks'}</button>${n?'<button class="btn" data-act="ntmclose">Later</button>':''}</div></div>`}
+function ntcTick(){if(!signedIn())return;const sz=ntcSnz(),now=new Date().toISOString(),due=Object.keys(sz).filter(k=>sz[k]<=now);if(!due.length)return;
+  const r=ntcRead().filter(k=>!due.includes(k));ntcSave(r);due.forEach(k=>delete sz[k]);lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));
+  let txt='';try{const it=noticeItems().find(x=>due.includes(x.k));if(it)txt=it.el.textContent.replace(/\s+/g,' ').trim()}catch(e){}
+  toast('Reminder: '+(txt||'a notice is waiting'),6000);try{if('Notification' in window&&Notification.permission==='granted')new Notification('Aldeia reminder',{body:txt||'A notice is waiting'})}catch(e){}
+  render()}
+if(PILOTNOTE)setInterval(ntcTick,30000);
+/* staff messages, chat style */
+function stPeers(){const me=ui.me,set=new Set(['manager']);S.feedback.forEach(f=>{if(f.deleted)return;if(f.from===me&&f.to&&f.to!=='manager'&&f.to!=='*')set.add(f.to);if(f.to===me&&f.from&&f.from!=='manager')set.add(f.from)});return [...set]}
+function stEvents(peer){const me=ui.me,ev=[];
+  S.feedback.forEach(f=>{const inT=peer==='manager'?((f.from===me&&f.to==='manager')||((!f.from||f.from==='manager')&&(f.to===me||f.to==='*'))):((f.from===me&&f.to===peer)||(f.from===peer&&f.to===me));if(!inT)return;
+    ev.push({t:'f',at:f.at||'',f,me:f.from===me});S.replies.filter(r=>r.fid===f.id).forEach(r=>ev.push({t:'r',at:r.at||'',r,f,me:r.by===me}))});
+  return ev.sort((a,b)=>a.at.localeCompare(b.at))}
+const stSeenK=p=>'stseen_'+p+'_'+meKey();
+const stName=p=>p==='manager'?'Manager':staffLabel(byId('staff',p)||{})||'Staff';
+function vFbStaffP(){const peer=ui.stChat;if(peer)return stThread(peer);
+  const rows=stPeers().map(p=>{const ev=stEvents(p),last=ev[ev.length-1],seen=lsGet(stSeenK(p))||'';return {p,last,unread:ev.filter(e=>!e.me&&e.at>seen&&!(e.f&&e.f.deleted)).length}}).sort((a,b)=>(b.last?b.last.at:'').localeCompare(a.last?a.last.at:'')||(a.p==='manager'?-1:1));
+  let h=`<div class="row spread"><h2 style="margin:0">Messages</h2></div><div class="iblist">${rows.map(x=>{const t=x.last?(x.last.t==='r'?x.last.r.text:x.last.f.text):'No messages yet';
+    return `<button class="ibrow" data-act="stopen" data-s="${esc(x.p)}">${av(x.p==='manager'?'mgr':x.p,stName(x.p))}<span class="ibm"><b>${esc(stName(x.p))}${x.last?` <small class="muted">· ${esc(ibTime(x.last.at))}</small>`:''}</b><span class="${x.unread?'ub':''}">${x.last&&x.last.me?'You: ':''}${esc((t||'').slice(0,80))}</span></span>${x.unread?`<span class="ibn">${x.unread}</span>`:''}</button>`}).join('')}</div>`;
+  h+=`<div class="card"><div class="addnew"><select id="tf-stnew" aria-label="Start a chat with"><option value="">New chat with…</option>${sortByName('staff').filter(x=>x.id!==ui.me&&!stPeers().includes(x.id)).map(x=>`<option value="${x.id}">${esc(staffLabel(x))}</option>`).join('')}</select><button class="btn sm primary" data-act="stnew">Start chat</button></div></div>`;
+  return h}
+function stThread(peer){const ev=stEvents(peer);if(ev.length)lsSet(stSeenK(peer),new Date().toISOString());
+  let h=`<div class="ibhead"><button class="iconx" data-act="stback" aria-label="Back to chats">‹</button>${av(peer==='manager'?'mgr':peer,stName(peer))}<div style="flex:1;min-width:0"><b>${esc(stName(peer))}</b></div></div><div class="ibchat">`;
+  let day='';ev.forEach(e=>{const d=(e.at||'').slice(0,10);if(d&&d!==day){day=d;h+=`<div class="dpill">${esc(relDay(d))}</div>`}
+    let body='',cls=e.me?'bub me':'bub';
+    if(e.t==='f'){const f=e.f,k=fbKind(f),lab=f.to==='*'?'To all staff':k==='fb'||k==='staff'||k==='note'?'':(KIND_LABEL[k]||'')+(f.date?' · '+fmt(f.date):'');
+      if(f.deleted){cls+=' gone';body=`<s>${esc(f.text)}</s>`}
+      else{const done=(f.doneBy||{})[ui.me],ok=(f.approvedFor||{})[ui.me];
+        body=`${lab?`<div class="bl">${esc(lab)}</div>`:''}<div class="bt">${esc(f.text)}</div>${f.kind==='unlock'?fbStatus(f):''}${!e.me&&(!f.from||f.from==='manager')&&!f.kind?`<label class="bdone"><input type="checkbox" data-fbdone="${f.id}"${done?' checked':''}> Done${ok?' · <span class="ok">approved</span>':done?' · waiting for approval':''}</label>`:''}`}}
+    else body=`<div class="bq">${esc((e.f.text||'').slice(0,90))}</div><div class="bt">${esc(e.r.text)}</div>`;
+    h+=`<div class="${cls}">${body}<div class="bm">${esc(hhmm(e.at))}</div></div>`});
+  if(!ev.length)h+='<div class="muted small" style="text-align:center;padding:20px">No messages yet. Say hello.</div>';
+  h+=`</div><form class="ibcomp" data-act="stsend" data-s="${esc(peer)}"><input type="text" id="tf-stc" placeholder="Message ${esc(stName(peer).split(' ')[0])}" autocomplete="off" aria-label="Message to ${esc(stName(peer))}"><button class="btn primary" type="submit">Send</button></form>`;
+  return h}
+
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1627,7 +1700,7 @@ function vHome(){
   const its=itemsFor([d]).filter(i=>i.st!=='off'),pls=plansFor([d]),tot=its.length+pls.length,dn=its.filter(i=>i.st==='done').length+pls.filter(p=>p.done).length;
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
-    ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick"><button class="btn sm" data-act="tab" data-t="reg">Register</button><button class="btn sm primary" data-act="tab" data-t="plan">Plan</button><button class="btn sm" data-act="tab" data-t="time">Timetable</button><span class="rsp"></span>'+tabNav('home')+'</div>':''}</div>`;
+    ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick">'+qBar('home')+'</div>':''}</div>`;
   h+=PILOT?homeNoticeLine()+bdBar(d):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
@@ -1640,7 +1713,7 @@ function vHome(){
   const toM=x=>x&&x!=='99'?Number(x.slice(0,2))*60+Number(x.slice(3,5)):null;
   let cur=null;if(d===t){const act=rows.filter(r=>(r.type==='task'||r.type==='plan')&&!r.done&&toM(r.s)!=null);
     cur=act.find(r=>toM(r.s)<=nowM&&nowM<(toM(r.e)||toM(r.s)+30))||act.find(r=>toM(r.s)>nowM)||null}
-  const open=ui.homeOpen==='__none'?null:(ui.homeOpen||(cur&&cur.key));ui.homeOpenEff=open;
+  const open=ui.homeOpen==='__none'?null:(ui.homeOpen||(PILOTNOTE?null:cur&&cur.key));ui.homeOpenEff=open;
   const card=r=>{
     if(r.type==='brk')return `<div class="tlc tlbrk">${esc(r.t)} · ${esc(r.s)}${r.e?'–'+esc(r.e):''}</div>`;
     if(r.type==='bday')return `<div class="tlc tlbday"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
@@ -2025,7 +2098,7 @@ function fbCard(f){
 function selBar(){const sel=[...ui.fbSel].filter(id=>{const f=byId('feedback',id);return f&&!f.deleted&&isMine(f)});if(!sel.length)return '';
   return `<div class="banner"><b>${sel.length} message${sel.length>1?'s':''} selected</b><span class="small">Enter your PIN to delete.${ui.mgr?'':' Your manager still sees deleted messages, crossed out.'}</span>
     <form data-act="fbdel" class="addnew"><input type="password" id="fb-delpw" inputmode="numeric" autocomplete="off" placeholder="PIN"><button class="btn sm danger" type="submit">Delete selected</button><button class="btn sm" type="button" data-act="fbselclear">Cancel</button></form></div>`}
-function vFb(){
+function vFb(){if(PILOTNOTE&&!ui.mgr)return vFbStaffP();
   let h='';
   if(ui.mgr) h+=`<div class="card"><h3>Send a message</h3><label class="fld"><span>To</span><select id="fb-to" data-fbto="1">${opt('staff',ui.fbTo,'Choose staff',[['*','All staff']])}</select></label>
     <label class="fld"><span>Message</span><textarea id="fb-text" rows="3" placeholder="e.g. Great work with the sensory room this week"></textarea></label>
@@ -2281,7 +2354,7 @@ async function signOff(sids,on){
   render();toast(on?'Signed off':'Reopened');
 }
 const acts={
-  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
+  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.stChat='';ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
   theme:()=>{const n=effTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=n;lsSet('theme',n);renderChrome()},
   who:()=>{if(!signedIn())return;ui.acct=!ui.acct;render();window.scrollTo(0,0)},
   logout:()=>{ui.me='';ui.mgr=false;ui.acct=false;lsSet('me',null);lsSet('mgr',null);ui.f.staff='';render()},
@@ -2530,7 +2603,15 @@ const acts={
     S.ibhide=[...S.ibhide.filter(x=>x.id!==sid),{id:sid,...d}];ui.ibSel=null;ui.confirmDel=null;render();await put('ibhide',sid,d);logAct(`Deleted ${n} message${n>1?'s':''} from the chat with ${nm('staff',sid)}`);toast(`${n} message${n>1?'s':''} deleted`)},
   ibclear:async b=>{const sid=b.dataset.s;if(ui.confirmDel!=='ibchat'+sid){ui.confirmDel='ibchat'+sid;render();return}
     const all=ibEvents(sid),lastAt=all.reduce((m,e)=>e.at>m?e.at:m,''),nowI=new Date().toISOString(),d={clearedAt:lastAt>nowI?lastAt:nowI,hidden:[]};S.ibhide=[...S.ibhide.filter(x=>x.id!==sid),{id:sid,...d}];ui.confirmDel=null;ui.ibChat='';render();await put('ibhide',sid,d);logAct('Deleted the chat with '+nm('staff',sid));toast('Chat deleted')},
-  ntcread:b=>{const k=b.dataset.nk,r=ntcRead();if(!r.includes(k)){r.push(k);lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)))}render()},
+  ntcread:b=>{const k=b.dataset.nk,r=ntcRead();if(!r.includes(k)){r.push(k);lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)))}render();ntcModalFill()},
+  ntcunread:(b,e)=>{e&&e.stopPropagation();const k=b.dataset.nk;ntcSave(ntcRead().filter(x=>x!==k));render();ntcModalFill()},
+  ntcsnzx:(b,e)=>{e&&e.stopPropagation();const sz=ntcSnz();delete sz[b.dataset.nk];lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));render();ntcModalFill()},
+  ntmclose:b=>{lsSet('ntcpop_'+meKey(),todayIso());if(b.dataset.all){const r=ntcRead();noticeItems().forEach(x=>{if(!r.includes(x.k))r.push(x.k)});ntcSave(r)}document.getElementById('ntm')?.remove();ui.homeOpen='__none';render();setTimeout(ydayModal,0)},
+  stopen:b=>{ui.stChat=b.dataset.s;render();window.scrollTo(0,document.body.scrollHeight)},
+  stback:()=>{ui.stChat='';render()},
+  stnew:()=>{const v=val('tf-stnew');if(!v){toast('Choose who to message.');return}ui.stChat=v;render()},
+  stsend:async b=>{const to=b.dataset.s,text=val('tf-stc');if(!text){toast('Type a message first.');return}
+    if(await put('feedback',newId(),{to,from:ui.me,text,at:new Date().toISOString()})){ui.clear.add('tf-stc');lsSet(stSeenK(to),new Date().toISOString());render();window.scrollTo(0,document.body.scrollHeight)}},
   ntcall:()=>{const r=ntcRead();noticeItems().forEach(x=>{if(!r.includes(x.k))r.push(x.k)});lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)));render()},
   moodxl:b=>moodXL(b.dataset.c||''),
   phdel:async b=>{const c=b.dataset.c,id=b.dataset.id,i=Number(b.dataset.i),k='ph'+c+id+i;if(ui.confirmDel!==k){ui.confirmDel=k;render();return}ui.confirmDel=null;
@@ -2661,9 +2742,9 @@ function saveComment(key,text){
   if(((entryMap[id]||{}).comment||'')===text){render();return}
   setEntry(id,rid,date,sid,{comment:text,cby:ui.me||'manager'});toast('Comment saved');
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(b.dataset.ntcgo&&document.getElementById('ntm')){lsSet('ntcpop_'+meKey(),todayIso());document.getElementById('ntm').remove()}if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
 document.addEventListener('submit',e=>{e.preventDefault();acts[e.target.dataset.act]?.(e.target)});
-document.addEventListener('change',e=>{const t=e.target;
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.snz){const m=Number(t.value);if(!m)return;const k=t.dataset.snz,sz=ntcSnz();sz[k]=new Date(Date.now()+m*60000).toISOString();lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));const r=ntcRead();if(!r.includes(k)){r.push(k);ntcSave(r)}toast('I will remind you '+(SNZ.find(x=>x[0]===m)||[0,''])[1]);render();ntcModalFill();return}
   if(t.dataset.filter!==undefined){ui.f[t.dataset.filter]=t.value;if(t.dataset.filter==='cur')ui.f.topic='';
     if(t.dataset.filter==='child'){const c=byId('children',t.value);ui.f.grade=c?c.gradeId||'':'';ui.f.cur=c&&(c.curIds||[]).length?c.curIds[0]:'';ui.f.topic=''}
     render();return}
