@@ -661,6 +661,8 @@ details[open]>summary .fsh{display:none}details:not([open])>summary .fhd{display
 .thub{background:#f3dcd8;border-color:#e0a59c;color:#7a1f17}
 .cpday .addnew{align-items:flex-end;flex-wrap:wrap}.cpday input[type=date]{min-height:36px}
 select option:disabled{color:#aaa}
+.bdc.par{background:#f3eefc;border-color:#cdb8f0}.bdc.par .bdcs{background:#8a5cd6;box-shadow:0 0 0 4px #e3d6fa}.bdc.par .bdct{color:#5b3497}.bdc.par .bdx{border-color:#cdb8f0;color:#5b3497}.bdc.par .bdmsgbox{border-color:#cdb8f0}
+.tlbday.par{background:#f3eefc;border-color:#cdb8f0;border-left-color:#8a5cd6}
 </style>
 </head>
 <body>
@@ -1549,6 +1551,7 @@ function bdRows(d){const nx=iso(addDays(parse(d),1)),out=[];
   bdKids().forEach(c=>{if(!c.dob)return;const md=c.dob.slice(5),y=Number(c.dob.slice(0,4)),age=dt=>y>1900?Number(dt.slice(0,4))-y:null;
     if(md===d.slice(5)){const a=age(d);out.push({id:c.id+d,boy:c.sex==='boy',t:`Birthday today: ${c.name}${a?' turns '+a:''}`})}
     else if(md===nx.slice(5)){const a=age(nx);out.push({id:c.id+nx,boy:c.sex==='boy',t:`Birthday tomorrow: ${c.name}${a?' turns '+a:''}`})}});
+  if(ISTEST)bdParOn(d).forEach(x=>out.push({id:x.key+d,par:true,t:`Birthday today: ${x.name} (parent of ${x.c.name})`}));
   return out}
 /* 12 birthday parent and child links */
 function bdLink(x){const c=byId('children',x.cid);if(!c)return '';
@@ -1828,11 +1831,17 @@ function bdWa(c){const msg=bdMsg(c);
   const ps=[['p1','p1cell'],['p2','p2cell']].filter(([n,k])=>c[k]);
   if(!ps.length)return `<a class="btn sm wab" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp a greeting</a><div class="small muted">Add a parent cellphone in Setup → Children to send it straight to the parent.</div>`;
   return ps.map(([n,k])=>`<a class="btn sm wab" href="https://wa.me/${waNum(c[k])}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp ${esc(c[n]||'parent')}</a>`).join('')}
+function bdParOn(d){if(!ISTEST)return [];const out=[];bdKids().forEach(c=>[['p1','p1dob','p1cell'],['p2','p2dob','p2cell']].forEach(([n,k,cl])=>{if(c[n]&&c[k]&&c[k].slice(5)===d.slice(5))out.push({key:c.id+'_'+n,name:c[n],c,cell:c[cl]||''})}));return out}
+function parCard(x,d){const first=(x.name||'').split(' ')[0],msg=`Happy birthday ${first}! 🎉 Wishing you a wonderful day, from all of us at Aldeia.`,showM=ui.bdMsg===x.key;
+  if(lsGet('bdmin_'+x.key+'_'+d+'_'+meKey()))return `<div class="bdc soon par"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">${esc(x.name)}'s birthday today</div><button class="bdx" data-act="bdmin" data-c="${x.key}" data-d="${d}" aria-label="Show birthday card" title="Show">+</button></div>`;
+  return `<div class="bdc par"><button class="bdx" data-act="bdmin" data-c="${x.key}" data-d="${d}" aria-label="Minimise birthday card" title="Minimise">−</button><span class="bdcs" aria-hidden="true">★</span><div class="bdct">${esc(x.name)}'s birthday today</div><div class="bdcsub">Parent of ${esc(x.c.name)}</div>
+  <div class="bdcwa"><a class="btn sm wab" href="https://wa.me/${x.cell?waNum(x.cell):''}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp ${esc(first)}</a><button class="btn sm" data-act="bdmsg" data-c="${x.key}" aria-expanded="${showM}">${showM?'Hide message':'Show message'}</button>${x.cell?'':'<div class="small muted">Add their cellphone in Setup → Children to send it straight to them.</div>'}</div>
+  ${showM?`<div class="bdmsgbox"><span id="bdm-${x.key}">${esc(msg)}</span><button class="bdcopy" data-act="bdcopy" data-c="${x.key}" aria-label="Copy message" title="Copy"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div>`:''}</div>`}
 function bdBarP(d){const nx=iso(addDays(parse(d),1)),age=(c,dt)=>{const y=Number((c.dob||'').slice(0,4));return y>1900?Number(dt.slice(0,4))-y:null};
-  const td=bdOn(d),tm=bdOn(nx);if(!td.length&&!tm.length)return '';
+  const td=bdOn(d),tm=bdOn(nx),pt=bdParOn(d),pn=bdParOn(nx);if(!td.length&&!tm.length&&!pt.length&&!pn.length)return '';
   return `<div class="bdcards">${td.map(c=>{const a=age(c,d);if(lsGet(bdMinK(c,d)))return `<div class="bdc soon ${bdCol(c)}"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">${esc(c.name)}${a?` turns ${a}`:''} today</div><button class="bdx" data-act="bdmin" data-c="${c.id}" data-d="${d}" aria-label="Show birthday card" title="Show">+</button></div>`;
     const showM=ui.bdMsg===c.id;return `<div class="bdc ${bdCol(c)}"><button class="bdx" data-act="bdmin" data-c="${c.id}" data-d="${d}" aria-label="Minimise birthday card" title="Minimise">−</button><span class="bdcs" aria-hidden="true">★</span><div class="bdct">${esc(c.name)}${a?` turns ${a}`:''} today</div><div class="bdcsub">${esc([nm('grades',c.gradeId),nm('branches',c.branchId)].filter(Boolean).join(' · '))}</div><div class="bdcwa">${bdWa(c)}<button class="btn sm" data-act="bdmsg" data-c="${c.id}" aria-expanded="${showM}">${showM?'Hide message':'Show message'}</button></div>${showM?`<div class="bdmsgbox"><span id="bdm-${c.id}">${esc(bdMsg(c))}</span><button class="bdcopy" data-act="bdcopy" data-c="${c.id}" aria-label="Copy message" title="Copy"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div>`:''}</div>`}).join('')}
-  ${tm.map(c=>{const a=age(c,nx);return `<div class="bdc soon ${bdCol(c)}"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">Tomorrow: ${esc(c.name)}${a?` turns ${a}`:''}</div></div>`}).join('')}</div>`}
+  ${tm.map(c=>{const a=age(c,nx);return `<div class="bdc soon ${bdCol(c)}"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">Tomorrow: ${esc(c.name)}${a?` turns ${a}`:''}</div></div>`}).join('')}${pt.map(x=>parCard(x,d)).join('')}${pn.map(x=>`<div class="bdc soon par"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">Tomorrow: ${esc(x.name)} (parent of ${esc(x.c.name)})</div></div>`).join('')}</div>`}
 function bdPosterCard(){return `<div class="card"><h3>Birthday poster (PDF)</h3><div class="grid2"><label class="fld"><span>Month</span><input type="month" id="tf-bdp-month" value="${todayIso().slice(0,7)}"></label><label class="fld"><span>Branch</span><select id="tf-bdp-br">${opt('branches',ui.f.branch||'','All branches')}</select></label></div>
   <div class="actions"><button class="btn primary" data-act="bdposter">Print poster</button><span class="muted small">A page for the classroom wall. Choose "Save as PDF" in the print window.</span></div></div>`}
 function bdPoster(){const m=val('tf-bdp-month')||todayIso().slice(0,7),[y,mo]=m.split('-').map(Number),br=val('tf-bdp-br');
@@ -2010,7 +2019,7 @@ function vHome(){
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
   pls.forEach(p=>{const lk=p.staffId!=='*'&&plocked(p.staffId,p.date);rows.push({type:'plan',key:'p:'+p.id,id:p.id,s:oStart(p),e:oEnd(p),t:p.text,o:p,done:!!p.done,who:p.staffId,lock:lk&&!ui.mgr,comment:p.comment,photos:p.photos,cover:coverOf(p)?p.staffId:''})});
   breaksFor().forEach(b=>rows.push({type:'brk',key:'b:'+b.id,s:b.start||'99',e:b.end||'',t:b.name||'Break'}));
-  if(PILOT)bdRows(d).forEach(x=>rows.push({type:'bday',key:'bd:'+x.id,s:'06:55',e:'',t:x.t,boy:x.boy}));
+  if(PILOT)bdRows(d).forEach(x=>rows.push({type:'bday',key:'bd:'+x.id,s:'06:55',e:'',t:x.t,boy:x.boy,par:x.par}));
   testsOnDate(d).forEach(x=>rows.push({type:'test',key:'x:'+x.id,s:x.time||'99',e:x.timeEnd||'',t:'Test: '+(x.title||''),o:x}));
   rows.sort((a,b)=>a.s.localeCompare(b.s));
   if(!rows.length)return h+`<div class="card empty">Nothing scheduled for ${d===t?'today':fmt(d)}.<button class="btn primary" data-act="tab" data-t="plan">Add planning</button></div>`;
@@ -2020,7 +2029,7 @@ function vHome(){
   const open=ui.homeOpen==='__none'?null:(ui.homeOpen||(PILOTNOTE?null:cur&&cur.key));ui.homeOpenEff=open;
   const card=r=>{
     if(r.type==='brk')return `<div class="tlc tlbrk">${esc(r.t)} · ${esc(r.s)}${r.e?'–'+esc(r.e):''}</div>`;
-    if(r.type==='bday')return `<div class="tlc tlbday${PILOTNOTE&&r.boy?' boy':''}"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
+    if(r.type==='bday')return `<div class="tlc tlbday${PILOTNOTE&&r.boy?' boy':''}${ISTEST&&r.par?' par':''}"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
     if(r.type==='test'&&PILOTNOTE)return testCard(r,open===r.key);
     if(r.type==='test')return `<div class="tlc tltest"><b>${esc(r.t)}</b><div class="tlsub">${[nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ')}</div></div>`;
     const isNow=cur&&cur.key===r.key,isOpen=open===r.key,o=r.o;
@@ -2955,7 +2964,7 @@ const acts={
   incsec:b=>{ui.incSec=ui.incSec===b.dataset.v?null:b.dataset.v;render()},
   bdmin:b=>{const k='bdmin_'+b.dataset.c+'_'+b.dataset.d+'_'+meKey();lsGet(k)?lsSet(k,''):lsSet(k,'1');render()},
   bdmsg:b=>{ui.bdMsg=ui.bdMsg===b.dataset.c?null:b.dataset.c;render()},
-  bdcopy:b=>{const c=byId('children',b.dataset.c);if(!c)return;const t=bdMsg(c);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Message copied'),()=>{const r=document.createRange(),el=document.getElementById('bdm-'+c.id);if(el){r.selectNodeContents(el);const sl=getSelection();sl.removeAllRanges();sl.addRange(r);try{document.execCommand('copy');toast('Message copied')}catch(e){toast('Select the text to copy it')}}})},
+  bdcopy:b=>{const el=document.getElementById('bdm-'+b.dataset.c);if(!el)return;const t=el.textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Message copied'),()=>{const r=document.createRange();r.selectNodeContents(el);const sl=getSelection();sl.removeAllRanges();sl.addRange(r);try{document.execCommand('copy');toast('Message copied')}catch(e){toast('Select the text to copy it')}})},
   stf:b=>{ui.stF=b.dataset.v;render()},
   stopenk:b=>{ui.stOpen=ui.stOpen===b.dataset.c?null:b.dataset.c;ui.stCm=null;render()},
   stuw:b=>{const t=byId('tests',b.dataset.t),c=byId('children',b.dataset.c);if(!t||!c)return;const s=stState(t,c),now=new Date().toISOString(),me=ui.me||'manager',k=t.id+'_'+c.id;
