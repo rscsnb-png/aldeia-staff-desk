@@ -445,6 +445,57 @@ body::before{background:var(--hdr)}
 .top .refbtn{width:28px;height:28px;opacity:.9}.top .refbtn svg{width:15px;height:15px}.top .refbtn:hover{opacity:1}
 .bub{padding:3px 9px 2px;gap:0;font-size:13.5px;line-height:1.3;border-radius:3px 10px 10px 10px}.bub.me{border-radius:10px 3px 10px 10px}.bub .bt{font-weight:500;font-size:14px;letter-spacing:0}.bub .bl{font-size:10.5px}.bub .bm{font-size:10px;line-height:1.1;margin-top:-1px}.ibchat{gap:4px}
 .bub .btn{min-height:26px;padding:2px 10px;font-size:12px;border-radius:7px}.bub .actions{gap:6px;margin:2px 0}
+/* round 6 */
+.tabnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.hstrip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:10px}
+.hsd{border:0;border-radius:10px;background:rgba(255,255,255,.45);color:var(--hdr-fg,#0e3550);font:inherit;display:flex;flex-direction:column;align-items:center;padding:4px 2px;gap:0;cursor:pointer;min-width:0}
+.hsd span{font-size:11px;font-weight:700}.hsd b{font-size:15px;line-height:1.15}.hsd small{font-size:10px;font-weight:700;opacity:.85;white-space:nowrap}
+.hsd.empty small{color:#a3322a;opacity:1}.hsd.miss small{color:#a3322a;opacity:1}
+.hsd.on{background:#23729f;color:#fff}.hsd.on small{color:#fff}
+.hsd.tdy:not(.on){box-shadow:inset 0 0 0 2px #23729f}
+.wk5{gap:5px}.wkd{min-height:0;padding:3px 2px;border-radius:10px}.wkd span{font-size:11px}.wkd b{font-size:15px}.wkd small{font-size:9.5px}
+.ptl.thin{row-gap:5px;column-gap:8px}.ptl.thin .ptlt{padding-top:7px;font-size:11px}
+.pslim .crow{grid-template-columns:22px minmax(0,1fr) auto 62px 30px;padding:3px 8px;border:1px solid var(--line);border-left:4px solid var(--hdr);border-radius:8px;background:var(--surface)}
+.pslim .crow.cdone{border-left-color:var(--ok,#2f6a3e)}
+.pslim .ctime{display:none}
+.pslim .ctt{font-size:13px}.pslim .cmeta{font-size:11.5px}
+.pslim .crfull{margin:0}
+.pthin{display:flex;align-items:center;gap:8px;min-height:32px;padding:3px 10px;border-radius:8px;font-size:13px;box-sizing:border-box}
+.ptest{background:var(--warn-bg);border:1px solid var(--line);border-left:4px solid var(--warn)}.ptest .ptx{flex:1;min-width:0}
+.pbd{background:#fff0f6;border:1px solid #ffb3d1;border-left:4px solid #ff2d87;font-weight:600}
+.brk.pthin{border:1px dashed var(--line-strong);background:transparent;color:var(--muted)}
+.ptl.thin .slotadd{min-height:32px;border-radius:8px;font-size:12.5px}
+.rsec{padding:0;overflow:visible}
+.rsh{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;font:inherit;color:var(--fg);padding:12px 14px;cursor:pointer;text-align:left}
+.rsh b{font-size:15px}.rsp{flex:1}
+.pmb{width:24px;height:24px;border-radius:12px;background:#23729f;color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px;flex:none}.pmb.c{background:#c0c0b8;color:#333}
+.rflt{display:flex;gap:8px;padding:0 14px 10px;flex-wrap:wrap}.rflt select{width:auto;max-width:200px}
+.rpad{padding:0 14px 12px}
+.rlist{border-top:1px solid var(--line)}
+.rrow{position:relative;display:grid;grid-template-columns:96px minmax(0,1fr) auto 32px;gap:8px;align-items:center;padding:6px 10px 6px 14px;border-bottom:1px solid var(--line)}
+.rrow:last-child{border-bottom:0}
+.rrow .ctt{font-size:13.5px;font-weight:700}.rrow .cmeta{font-size:12px;color:var(--muted);display:block}
+.rrow .cmenu{top:calc(100% - 4px);right:6px}
+.rrow .cnar{display:none}
+.rwknav{display:flex;align-items:center;gap:8px;padding:0 14px 10px;flex-wrap:wrap}.rwknav .muted{margin-left:auto}
+.rwk{display:grid;grid-template-columns:110px repeat(5,minmax(0,1fr));border-top:1px solid #b0b0a8;font-size:12px;overflow-x:auto}
+.rwh{background:#c0c0b8;padding:6px 8px;font-weight:700;border-right:1px solid #b0b0a8}.rwh:nth-child(6){border-right:0}
+.rwn{padding:6px 8px;border-top:1px solid var(--line);border-right:1px solid var(--line);display:flex;align-items:flex-start}
+.rwc{padding:5px;border-top:1px solid var(--line);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.rwc:nth-child(6n){border-right:0}
+.rwb{all:unset;box-sizing:border-box;cursor:pointer;background:#e3eef5;border-left:3px solid #23729f;border-radius:5px;padding:3px 6px;display:flex;flex-direction:column;min-width:0}
+.rwb b{font-size:11.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rwb small{font-size:10px;color:var(--muted)}
+.rwb:hover{background:#d3e5f0}
+.rwadd{all:unset;cursor:pointer;color:#9a9a92;font-size:15px;line-height:1;padding:2px 4px;border-radius:4px;align-self:flex-start}.rwadd:hover{background:var(--off-bg);color:#23729f}
+.rsec #respform{border:0;box-shadow:none;margin:0;padding-top:0;background:transparent}.rsec #respform>h3{display:none}
+@media (max-width:600px){.pslim .crow{grid-template-columns:22px minmax(0,1fr) 30px}.pslim .crow .who,.pslim .crow .cst{display:none}
+ .rrow{grid-template-columns:minmax(0,1fr) auto 32px}.rrow .ctime{display:none}.rrow .cnar{display:inline}
+ .rwk{grid-template-columns:76px repeat(5,minmax(64px,1fr))}}
+.rrow .who,.rwn .who{max-width:none}.rwn .who{white-space:normal;text-align:left}
+.pslim .ctx{flex-direction:row;flex-wrap:wrap;column-gap:10px;align-items:baseline}
+.pslim .crow{min-height:34px}
+.wk5 .wkd{min-height:0;padding:4px 2px;display:grid;grid-template-columns:auto auto;justify-content:center;column-gap:5px;row-gap:0;align-items:baseline;border-radius:9px}
+.wk5 .wkd span{font-size:12px}.wk5 .wkd b{font-size:14px;line-height:1.2}.wk5 .wkd small{grid-column:1/-1;text-align:center;font-size:10px}
 </style>
 </head>
 <body>
@@ -840,7 +891,7 @@ function vCheckInner(){
     if(ui.f.staff&&signed(ui.f.staff,d)){const req=S.feedback.find(f=>f.kind==='unlock'&&f.scope!=='plan'&&f.date===d&&f.from===ui.f.staff&&!f.closed);
       h+=`<div class="banner info"><div class="row spread"><span><b>Signed off by the manager</b><br><span class="small">Ticks for this day are locked.</span></span>${ui.mgr?`<button class="btn sm primary" data-act="unlockday" data-s="${ui.f.staff}" data-d="${d}">Unlock day</button>`:req?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-d="${d}">Request unlock</button>`}</div></div>`}
     if(hol) h+=`<div class="banner info"><b>Public holiday: ${esc(hol.name||'')}</b></div>`;
-    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test${t.time?' · '+esc(t.time):''}:</b> ${esc(t.title||'')} ${[nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span></div>`);
+    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test${t.time?' · '+tRange(t):''}:</b> ${esc(t.title||'')} ${[nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span></div>`);
     h+=its.length?its.map(i=>itemHtml(i)).join(''):(dps.length?'':`<div class="muted small" style="padding:4px 2px">Nothing scheduled${Object.values(ui.f).some(Boolean)&&ui.mgr?' for these filters':''}.</div>`);
     if(dps.length) h+=`<div class="subhd">Planned activities</div>`+planLockBanner(d)+dps.map(planHtml).join('');
   });
@@ -895,14 +946,14 @@ const myBranch=()=>(byId('staff',ui.me)||{}).branchId||'';
 function breaksFor(){const br=ui.mgr?(ui.f.branch||(ui.f.staff?(byId('staff',ui.f.staff)||{}).branchId:'')):myBranch();
   return S.breaks.filter(x=>!br||!x.branchId||x.branchId===br)}
 function testBanner(t){const can=ui.mgr||t.by===ui.me;
-  return `<div class="banner"><div class="row spread"><span><b>Test${t.time?' · '+esc(t.time):''}:</b> ${esc(t.title||'')}${[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span>${can?`<button class="btn sm danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div></div>`}
+  return `<div class="banner"><div class="row spread"><span><b>Test${t.time?' · '+tRange(t):''}:</b> ${esc(t.title||'')}${[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span>${can?`<button class="btn sm danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div></div>`}
 function extraForms(){
   const sd=selDates(), def=sd.includes(todayIso())?todayIso():sd[0];
   return `<details class="card flt" id="testbox"${ui.testOpen?' open':''}><summary><span><span class="pmx"></span> Add a test</span><span class="fsum">Shows as a reminder <span class="chev">▾</span></span></summary>
    <div class="grid2"><label class="fld"><span>Child</span><select id="tf-child">${opt('children','','—')}</select></label></div>
    ${subjTopic('tf',null)}
    <div class="grid2">
-   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${def}"></label>${PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
+   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${def}"></label>${PILOTNOTE?`<label class="fld"><span>Starts *</span><select id="tf-ttime" required>${timeOpts('','Choose')}</select></label><label class="fld"><span>Ends *</span><select id="tf-tend" required>${timeOpts('','Choose')}</select></label>`:PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
    <label class="fld"><span>Grade</span><select id="tf-grade">${opt('grades','','—')}</select></label>
    ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-branch">${opt('branches','','All branches')}</select></label><label class="fld"><span>Staff</span><select id="tf-staff">${opt('staff','','All staff at branch')}</select></label>`:''}
    <label class="fld"><span>Remind days before</span><input type="number" id="tf-lead" value="3" min="0" max="30"></label></div>
@@ -1036,7 +1087,7 @@ function vPlanP(){
   if(!S.staff.length&&loaded) return reminders()+setupFirst();
   if(ui.plBatch) return vPlanBatch();
   const ds=weekDates(ui.ws),d=plDaySel(),kids=classKids(),grps=classGroups(),w=ui.plWho||'';
-  let h=reminders()+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">Today</button></div>`;
+  let h=reminders()+(PILOTNOTE?`<div class="row spread" style="margin-bottom:-4px"><h2 style="margin:0">Plan</h2>${tabNav('plan')}</div>`:'')+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">${PILOTNOTE?'This week':'Today'}</button></div>`;
   if(ui.mgr) h+=filtersCard();
   h+=`<div class="wk5">${ds.map(x=>{const ps=plansFor([x]),dn=ps.filter(p=>p.done).length,lab=ps.length?(dn===ps.length?dn+' ✓':ps.length+' planned'):'empty';
     return `<button class="wkd${x===d?' on':''}${ps.length?'':' empty'}" data-act="plday" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small></button>`}).join('')}</div>`;
@@ -1047,14 +1098,14 @@ function vPlanP(){
     if(miss.length&&miss.length<kids.length) h+=`<div class="banner warnb"><span class="small"><b>No planning this week yet for:</b> ${miss.map(c=>esc((c.name||'').split(' ')[0])).join(', ')}</span></div>`}
   const ps=plansFor([d]).filter(plWhoMatch),bs=breaksFor(),ts=testsOnDate(d),tk=w?[]:itemsFor([d]);
   h+=`<div class="row spread"><h2 style="margin:0">${esc(fmt(d))}${d===todayIso()?' · Today':''}</h2><span class="muted small">${ps.length} planned${tk.length?` · ${tk.length} task${tk.length>1?'s':''}`:''}</span></div>`;
-  h+=planLockBanner(d);ts.forEach(t=>h+=testBanner(t));
+  h+=planLockBanner(d);if(!PILOTNOTE)ts.forEach(t=>h+=testBanner(t));
   const used=new Set(ps.map(p=>p.periodId).filter(Boolean)),usedSt=new Set(ps.map(p=>oStart(p)));
   const free=periodsSorted().filter(x=>!used.has(x.id)&&!usedSt.has(x.start||'~'));
-  const rows=[...tk.map(i=>({s:oStart(i.r),html:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:planHtml(p)})),
-    ...bs.map(x=>({s:x.start||'99',html:`<div class="brk"><span class="pill">Break</span><span>${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}</span></div>`})),
-    ...bdRows(d).map(x=>({s:'06:55',html:`<div class="brk bdrow"><span class="pill due">Birthday</span><span>${esc(x.t)}</span></div>`})),
+  const rows=[...tk.map(i=>({s:oStart(i.r),html:PILOTNOTE?`<div class="pslim">${chkRowTask(i)}</div>`:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:PILOTNOTE?`<div class="pslim">${chkRowPlan(p)}</div>`:planHtml(p)})),...(PILOTNOTE?ts.map(t=>({s:t.time||'00',html:testRow(t)})):[]),
+    ...bs.map(x=>({s:x.start||'99',html:`<div class="brk${PILOTNOTE?' pthin':''}"><span class="pill">Break</span><span>${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}</span></div>`})),
+    ...bdRows(d).map(x=>({s:'06:55',html:PILOTNOTE?`<div class="pthin pbd"><span class="bstar sm" aria-hidden="true">★</span><span>${esc(x.t)}</span></div>`:`<div class="brk bdrow"><span class="pill due">Birthday</span><span>${esc(x.t)}</span></div>`})),
     ...free.map(x=>({s:x.start||'99',html:`<button class="slotadd" data-act="psopen" data-d="${d}" data-slot="${x.id}">+ Add activity · ${esc(periodLabel(x))}</button>`}))].sort((a,b)=>a.s.localeCompare(b.s));
-  h+=ps.length||tk.length||bdRows(d).length?`<div class="ptl">${rows.map(r=>`<div class="ptlt">${r.s==='99'?'':esc(r.s)}</div><div class="ptlc">${r.html}</div>`).join('')}</div>`
+  h+=ps.length||tk.length||bdRows(d).length||(PILOTNOTE&&ts.length)?`<div class="ptl${PILOTNOTE?' thin':''}">${rows.map(r=>`<div class="ptlt">${r.s==='99'?'':esc(r.s)}</div><div class="ptlc">${r.html}</div>`).join('')}</div>`
     :`<div class="card empty">Nothing planned for ${esc(fmt(d))} yet.<div class="plbar" style="justify-content:center"><button class="btn primary" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="psopen" data-d="${d}">+ Add one activity</button></div></div>`;
   h+=extraForms()+psSheet();
   return h}
@@ -1085,7 +1136,7 @@ function psSheet(){const s=ui.ps;if(!s)return '';const ds=weekDates(ui.ws),kids=
   <div class="pss"><div class="psl">4 · Activity</div>${sugg.length?`<div class="chips">${sugg.map(x=>chip('pstext',x,esc(x.length>28?x.slice(0,28)+'…':x),x===s.text)).join('')}</div>`:''}
     <input type="text" id="tf-ps-text" value="${esc(s.text)}" placeholder="What will you do? e.g. Phonics with picture cards" aria-label="Activity"></div>
   <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-rep"${s.rep?' checked':''}> Repeat every ${esc(dayWord(s.date))} this term</label>
-  <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-test"${s.isTest?' checked':''}> This is a test (adds a test reminder 3 days before, at this time)</label>
+  <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-test"${s.isTest?' checked':''}> This is a test (adds a test reminder 3 days before; needs a start and end time)</label>
   ${clashBox('ps')}
   <button type="button" class="btn primary big" data-act="pssave">${ui.clash&&ui.clash.f==='ps'?'Save anyway':'Save'+(lab?' · '+esc(lab):'')}</button>
   </div></div>`}
@@ -1430,7 +1481,7 @@ function vCheckSlim(){let h=homeNoticeLine().replace(/<div class="pilotbar">.*?<
     if(ui.f.staff&&signed(ui.f.staff,d)){const req=S.feedback.find(f=>f.kind==='unlock'&&f.scope!=='plan'&&f.date===d&&f.from===ui.f.staff&&!f.closed);
       h+=`<div class="banner info"><div class="row spread"><span><b>Signed off by the manager</b><br><span class="small">Ticks for this day are locked.</span></span>${ui.mgr?`<button class="btn sm primary" data-act="unlockday" data-s="${ui.f.staff}" data-d="${d}">Unlock day</button>`:req?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-d="${d}">Request unlock</button>`}</div></div>`}
     if(hol)h+=`<div class="banner info"><b>Public holiday: ${esc(hol.name||'')}</b></div>`;
-    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test${t.time?' · '+esc(t.time):''}:</b> ${esc(t.title||'')}${t.childId?' · '+esc(nm('children',t.childId)):''}</span></div>`);
+    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test${t.time?' · '+tRange(t):''}:</b> ${esc(t.title||'')}${t.childId?' · '+esc(nm('children',t.childId)):''}</span></div>`);
     h+=planLockBanner(d);
     const rows=[...its.map(i=>({s:oStart(i.r),h:chkRowTask(i)})),...dps.map(p=>({s:oStart(p),h:chkRowPlan(p)})),...bdRows(d).map(x=>({s:'06:55',h:`<div class="crow cbd"><span class="bstar sm" aria-hidden="true">★</span><span class="ctime">06:55</span><span class="ctx"><span class="ctt">${esc(x.t)}</span></span></div>`}))].sort((a,b)=>a.s.localeCompare(b.s));
     h+=rows.length?`<div class="clist">${rows.map(r=>r.h).join('')}</div>`:`<div class="muted small" style="padding:4px 2px">Nothing scheduled${Object.values(ui.f).some(Boolean)&&ui.mgr?' for these filters':''}.</div>`});
@@ -1439,6 +1490,52 @@ function vCheckSlim(){let h=homeNoticeLine().replace(/<div class="pilotbar">.*?<
 function addRefresh(){if(!PILOTNOTE||document.getElementById('refBtn'))return;const t=document.querySelector('header.top .tools');if(!t)return;
   t.insertAdjacentHTML('beforeend','<button class="iconbtn refbtn" id="refBtn" data-act="refresh" aria-label="Refresh" title="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button>')}
 try{addRefresh();document.addEventListener('DOMContentLoaded',addRefresh)}catch(e){}
+/* ---------- pilot round 6 ---------- */
+const tRange=t=>t.time?esc(t.time)+(t.timeEnd?'–'+esc(t.timeEnd):''):'';
+function tabNav(cur){const has=k=>tabsFor().some(t=>t[0]===k),L=[['home','Today'],['plan','Plan'],['resp','Responsibilities']].filter(([k])=>k!==cur&&(k==='home'||has(k)));
+  return `<div class="tabnav">${L.map(([k,l])=>`<button class="btn sm" data-act="tab" data-t="${k}">${l}</button>`).join('')}</div>`}
+function homeStrip(d){const ds=weekDates(mondayOf(parse(d))),t=todayIso();
+  return `<div class="hstrip">${ds.map(x=>{const s=dayScore(x),lab=s.tot?`${s.dn}/${s.tot}${s.dn===s.tot?' ✓':''}`:'empty';
+    return `<button class="hsd${x===d?' on':''}${x===t?' tdy':''}${s.tot?'':' empty'}${s.ms?' miss':''}" data-act="hdayset" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small></button>`}).join('')}</div>`}
+function testRow(t){const can=ui.mgr||t.by===ui.me,x=[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(esc).join(' · ');
+  return `<div class="pthin ptest"><span class="ptx"><b>Test: ${esc(t.title||'')}</b>${x?' · '+x:''}${t.time?` · ${tRange(t)}`:' · <span class="bad">no time set</span>'}</span>${can?`<button class="btn xs danger" data-act="del" data-c="tests" data-id="${t.id}" aria-label="Delete test">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div>`}
+function respMeta(r){const when=r.recur==='once'?'Once: '+fmt(r.date):((r.days||[]).length===5?'Mon–Fri':(r.days||[]).map(d=>DAYS[d]).join(', '));
+  return [when,r.childId&&nm('children',r.childId),nm('grades',r.gradeId),nm('curriculum',r.curriculumId),tName(r.topicId)].filter(Boolean).map(esc).join(' · ')}
+function rrow(r){const k='r'+r.id,open=ui.rowMenu===k;
+  const menu=[['editresp',{id:r.id},'Edit'],['reassign',{id:r.id},'Re-assign'],['arch',{c:'resp',id:r.id},'Archive'],['del',{c:'resp',id:r.id},ui.confirmDel==='resp'+r.id?'Tap again to delete':'Delete','danger']];
+  return `<div class="rrow${open?' cmopen':''}"><span class="ctime">${esc(timeLabel(r)||'Any time')}</span><span class="ctx"><span class="ctt">${esc(r.text)}</span><span class="cmeta">${respMeta(r)}<span class="cnar"> · ${esc(timeLabel(r)||'Any time')}</span></span>
+    ${ui.reassign===r.id?`<span class="addnew" style="margin-top:6px"><select id="tf-ra">${opt('staff',r.staffId,'Choose staff',[['*','All staff']])}</select><button class="btn sm primary" data-act="rasave" data-id="${r.id}">Save</button><button class="btn sm" data-act="racancel">Cancel</button></span>`:''}</span>
+    <span class="who ${bcls(r.staffId)}">${esc(r.staffId==='*'?'All staff':nm('staff',r.staffId)||'Unassigned')}</span><button class="cmore" data-act="rowmenu" data-k="${k}" aria-label="Actions for ${esc(r.text)}" aria-expanded="${open}">⋯</button>
+    ${open?`<div class="cmenu" role="menu">${menu.map(([a,ds,l,cls])=>`<button role="menuitem" class="${cls||''}" data-act="${a}" ${Object.entries(ds).map(([k2,v])=>`data-${k2}="${esc(v)}"`).join(' ')}>${esc(l)}</button>`).join('')}</div>`:''}</div>`}
+function vRespP(){const sec=ui.editing.resp?'new':(ui.respSec||'list'),bOf=id=>(byId('staff',id)||{}).branchId;
+  const arch=S.resp.filter(r=>r.archived);
+  const list=S.resp.filter(r=>!r.archived&&(!ui.respStaff||r.staffId===ui.respStaff)&&(!ui.respBranch||r.staffId==='*'||bOf(r.staffId)===ui.respBranch));
+  const head=(k,l,sub)=>`<button class="rsh" data-act="respsec" data-v="${k}" aria-expanded="${sec===k}"><span class="pmb${sec===k?'':' c'}" aria-hidden="true">${sec===k?'−':'+'}</span><b>${l}</b><span class="rsp"></span><span class="muted small">${sub}</span></button>`;
+  const filt=`<div class="rflt"><select data-uiset="respBranch">${opt('branches',ui.respBranch,'All branches')}</select><select data-uiset="respStaff"><option value="">Everyone</option><option value="*"${ui.respStaff==='*'?' selected':''}>Tasks for all staff</option>${sortByName('staff').filter(x=>!ui.respBranch||x.branchId===ui.respBranch).map(x=>`<option value="${x.id}"${x.id===ui.respStaff?' selected':''}>${esc(staffLabel(x))}</option>`).join('')}</select></div>`;
+  let h=`<div class="row spread"><h2 style="margin:0">Responsibilities</h2>${tabNav('resp')}</div>`;
+  // list
+  h+=`<div class="card rsec">${head('list','All responsibilities',`${list.length}${sec==='list'?'':' · tap to open'}`)}`;
+  if(sec==='list'){h+=filt;const srt=[...list].sort((a,b)=>oStart(a).localeCompare(oStart(b))||nm('staff',a.staffId).localeCompare(nm('staff',b.staffId)));
+    h+=srt.length?`<div class="rlist">${srt.map(rrow).join('')}</div>`:'<div class="muted small rpad">No responsibilities yet. Open "New responsibility" to add one.</div>';
+    if(arch.length){h+=`<div class="rpad"><button class="btn sm" data-act="togarch">${ui.showArch?'Hide':'Show'} archived (${arch.length})</button></div>`;
+      if(ui.showArch)h+=`<div class="rlist">${arch.map(r=>`<div class="rrow"><span class="ctime">Archived</span><span class="ctx"><span class="ctt">${esc(r.text)}</span><span class="cmeta">${esc(nm('staff',r.staffId))} · archived ${fmt(r.archivedAt)}</span></span><span class="actions"><button class="btn xs" data-act="restore" data-c="resp" data-id="${r.id}">Restore</button><button class="btn xs danger" data-act="del" data-c="resp" data-id="${r.id}">${ui.confirmDel==='resp'+r.id?'Tap again':'Delete forever'}</button></span></div>`).join('')}</div>`}}
+  h+=`</div>`;
+  // week table
+  const ds=weekDates(ui.ws);
+  h+=`<div class="card rsec">${head('week','Week view',`Week ${isoWeek(ui.ws)}`)}`;
+  if(sec==='week'){const groups={};list.forEach(r=>(groups[r.staffId]=groups[r.staffId]||[]).push(r));
+    const sids=Object.keys(groups).sort((a,b)=>(a==='*'?-1:b==='*'?1:nm('staff',a).localeCompare(nm('staff',b))));
+    h+=filt+`<div class="rwknav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><b>Week ${isoWeek(ui.ws)} · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}</b><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><span class="muted small">Tap a block to edit · + to add</span></div>`;
+    h+=`<div class="rwk"><div class="rwh">Staff</div>${ds.map(d=>`<div class="rwh">${esc(fmt(d).split(' ').slice(0,2).join(' '))}</div>`).join('')}`;
+    sids.forEach(sid=>{h+=`<div class="rwn"><span class="who ${bcls(sid)}">${esc(sid==='*'?'All staff':nm('staff',sid)||'Unassigned')}</span></div>`;
+      ds.forEach(d=>{const rs=groups[sid].filter(r=>applies(r,d)).sort((a,b)=>oStart(a).localeCompare(oStart(b)));
+        h+=`<div class="rwc">${rs.map(r=>`<button class="rwb" data-act="editresp" data-id="${r.id}" title="${esc(r.text)}"><b>${esc(r.text)}</b>${timeLabel(r)?`<small>${esc(timeLabel(r))}</small>`:''}</button>`).join('')}<button class="rwadd" data-act="respadd" data-s="${esc(sid)}" data-n="${parse(d).getDay()}" aria-label="Add for ${esc(nm('staff',sid)||'all staff')} on ${esc(fmt(d))}">+</button></div>`})});
+    h+=`</div>`;if(!sids.length)h+='<div class="muted small rpad">Nothing for these filters.</div>'}
+  h+=`</div>`;
+  // new
+  h+=`<div class="card rsec">${head('new',ui.editing.resp?'Edit responsibility':'New responsibility',ui.editing.resp?'':'tap to add')}${sec==='new'?respForm():''}</div>`;
+  return h}
+
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1447,14 +1544,14 @@ function vHome(){
   const its=itemsFor([d]).filter(i=>i.st!=='off'),pls=plansFor([d]),tot=its.length+pls.length,dn=its.filter(i=>i.st==='done').length+pls.filter(p=>p.done).length;
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
-    <div class="hprog"><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick"><button class="btn sm" data-act="tab" data-t="reg">Register</button><button class="btn sm" data-act="tab" data-t="time">Timetable</button></div>':''}</div>`;
+    ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick"><button class="btn sm" data-act="tab" data-t="reg">Register</button><button class="btn sm" data-act="tab" data-t="time">Timetable</button></div>':''}</div>`;
   h+=PILOT?homeNoticeLine()+bdBar(d):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
   pls.forEach(p=>{const lk=p.staffId!=='*'&&plocked(p.staffId,p.date);rows.push({type:'plan',key:'p:'+p.id,id:p.id,s:oStart(p),e:oEnd(p),t:p.text,o:p,done:!!p.done,who:p.staffId,lock:lk&&!ui.mgr,comment:p.comment,photos:p.photos,cover:coverOf(p)?p.staffId:''})});
   breaksFor().forEach(b=>rows.push({type:'brk',key:'b:'+b.id,s:b.start||'99',e:b.end||'',t:b.name||'Break'}));
   if(PILOT)bdRows(d).forEach(x=>rows.push({type:'bday',key:'bd:'+x.id,s:'06:55',e:'',t:x.t}));
-  testsOnDate(d).forEach(x=>rows.push({type:'test',key:'x:'+x.id,s:x.time||'99',e:'',t:'Test: '+(x.title||''),o:x}));
+  testsOnDate(d).forEach(x=>rows.push({type:'test',key:'x:'+x.id,s:x.time||'99',e:x.timeEnd||'',t:'Test: '+(x.title||''),o:x}));
   rows.sort((a,b)=>a.s.localeCompare(b.s));
   if(!rows.length)return h+`<div class="card empty">Nothing scheduled for ${d===t?'today':fmt(d)}.<button class="btn primary" data-act="tab" data-t="plan">Add planning</button></div>`;
   const toM=x=>x&&x!=='99'?Number(x.slice(0,2))*60+Number(x.slice(3,5)):null;
@@ -1464,7 +1561,7 @@ function vHome(){
   const card=r=>{
     if(r.type==='brk')return `<div class="tlc tlbrk">${esc(r.t)} · ${esc(r.s)}${r.e?'–'+esc(r.e):''}</div>`;
     if(r.type==='bday')return `<div class="tlc tlbday"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
-    if(r.type==='test'&&PILOTNOTE)return `<div class="tlc tltest slim"><span class="tlt">${esc(r.t)}</span>${(()=>{const x=[nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ');return x?`<span class="tlsub"> · ${x}</span>`:''})()}</div>`;
+    if(r.type==='test'&&PILOTNOTE)return `<div class="tlc tltest slim"><span class="tlt">${esc(r.t)}</span>${(()=>{const x=[r.o.time?tRange(r.o):'',nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ');return x?`<span class="tlsub"> · ${x}</span>`:''})()}</div>`;
     if(r.type==='test')return `<div class="tlc tltest"><b>${esc(r.t)}</b><div class="tlsub">${[nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ')}</div></div>`;
     const isNow=cur&&cur.key===r.key,isOpen=open===r.key,o=r.o;
     const sub=[r.s!=='99'?r.s+(r.e?'–'+r.e:''):'Any time',r.type==='task'?'Task':'Plan',o.childId&&nm('children',o.childId),tName(o.topicId)||nm('curriculum',o.curriculumId),(ui.mgr||r.cover)&&nm('staff',r.who)].filter(Boolean).map(esc).join(' · ');
@@ -1909,7 +2006,7 @@ function respDesc(r){
   const when=r.recur==='once'?'Once: '+fmt(r.date):((r.days||[]).length===5?'Mon–Fri':(r.days||[]).map(d=>DAYS[d]).join(', '));
   return [when,timeLabel(r),r.childId&&'Child: '+nm('children',r.childId),nm('grades',r.gradeId),nm('curriculum',r.curriculumId),tName(r.topicId)].filter(Boolean).map(esc).join(' · ');
 }
-function vResp(){
+function vResp(){if(PILOTNOTE)return vRespP();
   let h=respForm();
   const bOf=id=>(byId('staff',id)||{}).branchId;
   const arch=S.resp.filter(r=>r.archived);
@@ -2136,9 +2233,10 @@ const acts={
   dtog:b=>{ui.fltOpen=false;const k=b.dataset.k;if(ui.openDays.has(k))ui.openDays.delete(k);else{if(k.startsWith('ib-'))[...ui.openDays].forEach(x=>{if(x.startsWith('ib-'))ui.openDays.delete(x)});if(/^[cp]\d/.test(k))[...ui.openDays].forEach(x=>{if(x[0]===k[0]&&/^[cp]\d/.test(x))ui.openDays.delete(x)});ui.openDays.add(k);if(/^[cp]\d/.test(k))ui.focusDay=k.slice(1)}render()},
   dall:b=>{const p=b.dataset.p,o=b.dataset.o==='1';selDates().forEach(d=>o?ui.openDays.add(p+d):ui.openDays.delete(p+d));render()},
   tscroll:b=>{const t=document.getElementById('tabs');t.scrollBy({left:Number(b.dataset.n)*t.clientWidth*0.7,behavior:'smooth'})},
-  savetest:async()=>{const sj=readSubj('tf'),d={title:(byId('topics',sj.topicId)||{}).name||'',topicId:sj.topicId,childId:val('tf-child'),date:val('tf-date'),gradeId:val('tf-grade'),curId:sj.curriculumId,lead:val('tf-lead')||'3',...(PILOT?{time:val('tf-ttime')}:{}),branchId:ui.mgr?val('tf-branch'):myBranch(),staffId:ui.mgr?val('tf-staff'):'',by:ui.me||'manager'};
+  savetest:async()=>{const sj=readSubj('tf'),d={title:(byId('topics',sj.topicId)||{}).name||'',topicId:sj.topicId,childId:val('tf-child'),date:val('tf-date'),gradeId:val('tf-grade'),curId:sj.curriculumId,lead:val('tf-lead')||'3',...(PILOT?{time:val('tf-ttime')}:{}),...(PILOTNOTE?{timeEnd:val('tf-tend')}:{}),branchId:ui.mgr?val('tf-branch'):myBranch(),staffId:ui.mgr?val('tf-staff'):'',by:ui.me||'manager'};
     fillFromChild(d,'curId');
     if(!d.topicId){toast('Choose the subject for the test.');return} if(!d.date){toast('Pick the test date.');return}
+    if(PILOTNOTE&&(!d.time||!d.timeEnd)){toast('Choose when the test starts and ends.');return} if(PILOTNOTE&&d.timeEnd<=d.time){toast('The test must end after it starts.');return}
     if(await put('tests',newId(),d)){logAct(`Added test "${d.title}" on ${fmt(d.date)}`);ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
   savebreak:async()=>{const d={name:val('tf-bname')||'Break',start:val('tf-bstart'),end:val('tf-bend'),branchId:ui.mgr?val('tf-bbranch'):myBranch(),by:ui.me||'manager'};
     if(!d.start){toast('Pick the start time.');return}
@@ -2276,9 +2374,10 @@ const acts={
     const d={staffId,date:s.date,session:'',periodId:per?per.id:'',start:per?per.start||'':s.start,end:per?per.end||'':s.end,text:(s.text||'').trim()||tName(s.topicId),
       childIds:kids,childId:kids.length===1?kids[0]:'',groupId:s.who.startsWith('g:')?s.who.slice(2):'',wholeClass:s.who==='class',gradeId:'',curriculumId:s.curriculumId,topicId:s.topicId,
       done:false,photos:[],by:ui.me||'manager',updated:new Date().toISOString()};
+    if(PILOTNOTE&&s.isTest&&(!d.start||!d.end)){toast('A test needs a start and an end time.');return}
     if(checkClash('ps',d,[staffId],[d.date]))return;
     const pid=newId();if(s.rep)d.series=pid;
-    if(await put('plans',pid,d)){if(s.isTest)await put('tests',newId(),{title:tName(d.topicId)||d.text,topicId:d.topicId,childId:kids.length===1?kids[0]:'',date:d.date,time:d.start||'',gradeId:'',curId:d.curriculumId||'',lead:'3',branchId:ui.isMgr?plBranch():myBranch(),staffId,by:ui.me||'manager'});let n=0;if(s.rep){const until=repUntilDefault();for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd});n++}}
+    if(await put('plans',pid,d)){if(s.isTest)await put('tests',newId(),{title:tName(d.topicId)||d.text,topicId:d.topicId,childId:kids.length===1?kids[0]:'',date:d.date,time:d.start||'',timeEnd:d.end||'',gradeId:'',curId:d.curriculumId||'',lead:'3',branchId:ui.isMgr?plBranch():myBranch(),staffId,by:ui.me||'manager'});let n=0;if(s.rep){const until=repUntilDefault();for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd});n++}}
       ui.ps=null;ui.clash=null;ui.plDay=d.date;ui.clear.add('tf-ps-');render();toast(n?`Saved and repeated for ${n} more week${n===1?'':'s'}`:'Activity saved')}},
   pbopen:b=>{ui.plBatch=b.dataset.d;ui.pb={src:'last'};ui.ps=null;ui.clear.add('tf-pb-');render();window.scrollTo(0,0)},
   pbclose:()=>{ui.plBatch=null;ui.ps=null;render()},
@@ -2361,6 +2460,9 @@ const acts={
   hidenudge:()=>{ui.nudgeHide=true;render()},
   shownudge:()=>{ui.tab='check';ui.ws=mondayOf(new Date());ui.day='all';ui.openDays=new Set(['carry']);render();document.querySelector('[data-k="carry"]')?.scrollIntoView({behavior:'smooth',block:'start'})},
   refresh:()=>{toast('Refreshing…');setTimeout(()=>location.reload(),150)},
+  hdayset:b=>{ui.homeDay=b.dataset.d;ui.homeOpen=null;render()},
+  respsec:b=>{const v=b.dataset.v,cur=ui.editing.resp?'new':(ui.respSec||'list');if(cur==='new'&&ui.editing.resp){ui.editing.resp=null;ui.clear.add('rf-')}ui.respSec=cur===v?'none':v;ui.rowMenu=null;render()},
+  respadd:b=>{ui.editing.resp=null;ui.respSec='new';ui.clear.add('rf-');render();const st=document.getElementById('rf-staff');if(st)st.value=b.dataset.s;[1,2,3,4,5].forEach(n=>{const c=document.getElementById('rf-d'+n);if(c)c.checked=String(n)===b.dataset.n});document.getElementById('respform')?.scrollIntoView({behavior:'smooth',block:'start'})},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
