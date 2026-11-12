@@ -1806,21 +1806,24 @@ function stTests(c){return S.tests.filter(t=>t.date&&(t.childId?t.childId===c.id
 function stState(t,c){const r=byId('stutests',t.id+'_'+c.id)||{},w=!!(r.written||t.done);
   return {r,w,wBy:r.written?r.wBy:t.doneBy,wAt:r.written?r.wAt:t.doneAt,hq:w&&!!r.hq,hqBy:r.hqBy,hqAt:r.hqAt}}
 const stSubj=t=>t.title||tName(t.topicId)||'Test';
-function stScope(){const br=ui.isMgr?(ui.stArea||''):myBranch();return {br,kids:sortByName('children').filter(c=>!br||c.branchId===br)}}
+function stScope(){if(ui.isMgr){const br=ui.stArea||'';return {br,kids:sortByName('children').filter(c=>!br||c.branchId===br)}}
+  const mine=new Set(S.tests.filter(t=>t.by===ui.me&&t.childId).map(t=>t.childId)),all=new Map();[...bdKids(),...S.children.filter(c=>mine.has(c.id))].forEach(c=>all.set(c.id,c));
+  const kids=[...all.values()].sort((a,b)=>(a.name||'').localeCompare(b.name||'')),areas=[...new Set(kids.map(c=>c.branchId).filter(Boolean))],br=areas.includes(ui.stArea)?ui.stArea:'';
+  return {br,areas,kids:kids.filter(c=>!br||c.branchId===br)}}
 function stRow(t,c){const s=stState(t,c),k=t.id+'_'+c.id,cm=ui.stCm===k,ph=s.r.photos||[];
   return `<div class="strow"><div class="sthd"><b>${esc(stSubj(t))}</b><span class="s"> · ${esc(fmt(t.date))}${t.time?' '+esc(t.time):''}</span><span class="stic"><button class="sticon${s.r.comment?' has':''}" data-act="stcm" data-k="${k}" aria-label="${s.r.comment?'Edit comment':'Add comment'}" title="Comment"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg></button><button class="sticon${ph.length?' has':''}" data-act="photopick" data-kind="stu" data-k="${k}" aria-label="Add photo" title="Photo"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button></span></div>
   <div class="sttk"><button class="stcb${s.w?' on':''}" data-act="stuw" data-t="${t.id}" data-c="${c.id}" aria-pressed="${s.w}" aria-label="Test written">${s.w?'✓':''}</button><span>Test written</span>${s.w&&s.wBy?`<span class="stwho">· ${esc(stWho(s.wBy))} ${esc(stAt(s.wAt))}</span>`:''}</div>
   <div class="sttk"><button class="stcb wa${s.hq?' on':''}" data-act="stuhq" data-t="${t.id}" data-c="${c.id}" aria-pressed="${s.hq}" aria-label="WhatsApp to HQ"${s.w?'':' disabled'}>${s.hq?'✓':''}</button><span>WhatsApp to HQ</span>${s.hq?`<span class="stwho">· ${esc(stWho(s.hqBy))} ${esc(stAt(s.hqAt))}</span>`:''}</div>
   ${cm?`<div class="stcmf"><textarea id="tf-stcm" rows="2" placeholder="Comment about this test">${esc(s.r.comment||'')}</textarea><span class="actions"><button class="btn xs primary" data-act="stcmsave" data-k="${k}">Save</button><button class="btn xs" data-act="stcmx">Cancel</button></span></div>`:s.r.comment?`<div class="stcmt" data-act="stcm" data-k="${k}" role="button" tabindex="0">💬 ${esc(s.r.comment)}</div>`:''}
   ${ph.length?`<div class="stph">${ph.map(p=>`<button type="button" class="stthumb" data-act="photoview" data-src="${esc(purl(p))}" aria-label="Open photo"><img src="${esc(purl(p))}" alt="Photo" loading="lazy"></button>`).join('')}</div>`:''}</div>`}
-function vStud(){const {br,kids}=stScope(),cid=ui.stKid&&kids.some(c=>c.id===ui.stKid)?ui.stKid:'',f=ui.stF||'',subj=ui.stSub||'';
+function vStud(){const {br,kids,areas}=stScope(),cid=ui.stKid&&kids.some(c=>c.id===ui.stKid)?ui.stKid:'',f=ui.stF||'',subj=ui.stSub||'';
   const subjects=[...new Set(kids.flatMap(c=>stTests(c).map(stSubj)))].sort();
   const rows=(cid?kids.filter(c=>c.id===cid):kids).map(c=>{const all=stTests(c).filter(t=>!subj||stSubj(t)===subj);
     const nw=all.filter(t=>!stState(t,c).w),hq=all.filter(t=>{const s=stState(t,c);return s.w&&!s.hq});
     return {c,all,nw,hq,shown:f==='nw'?nw:f==='hq'?hq:all}});
   const N=rows.reduce((a,x)=>a+x.all.length,0),NW=rows.reduce((a,x)=>a+x.nw.length,0),HQ=rows.reduce((a,x)=>a+x.hq.length,0);
   let h=`<div class="row spread"><h2 style="margin:0">Students</h2><span class="muted small">Tests written and sent to HQ</span></div>
-  <div class="card stflt"><div class="grid2">${ui.isMgr?`<label class="fld"><span>Area</span><select data-uiset="stArea">${opt('branches',ui.stArea||'','All areas')}</select></label>`:`<label class="fld"><span>Area</span><select disabled><option>${esc(nm('branches',br)||'My area')}</option></select></label>`}
+  <div class="card stflt"><div class="grid2">${ui.isMgr?`<label class="fld"><span>Area</span><select data-uiset="stArea">${opt('branches',ui.stArea||'','All areas')}</select></label>`:`<label class="fld"><span>Area</span><select data-uiset="stArea"><option value="">All my children</option>${(areas||[]).map(a=>`<option value="${a}"${a===br?' selected':''}>${esc(nm('branches',a))}</option>`).join('')}</select></label>`}
   <label class="fld"><span>Child</span><select data-uiset="stKid"><option value="">All children</option>${kids.map(c=>`<option value="${c.id}"${c.id===cid?' selected':''}>${esc(c.name)}</option>`).join('')}</select></label></div>
   <label class="fld"><span>Subject</span><select data-uiset="stSub"><option value="">All subjects</option>${subjects.map(s=>`<option${s===subj?' selected':''}>${esc(s)}</option>`).join('')}</select></label></div>
   <div class="sttot"><div class="nw"><b>${NW}</b>test${NW===1?'':'s'} outstanding</div><div class="hq"><b>${HQ}</b>still to WhatsApp to HQ</div></div>
