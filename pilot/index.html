@@ -651,6 +651,16 @@ body::before{background:var(--hdr)}
 @media (max-width:600px){.glance{grid-template-columns:1fr 1fr}}
 .arcbtn{font:inherit;font-size:12.5px;font-weight:700;border:1px dashed #b0b0a8;background:transparent;color:#6b6b63;border-radius:10px;padding:7px 12px;cursor:pointer;width:100%;margin-top:6px}
 #tf-mr-mo{min-height:40px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--fg);padding:0 10px;font:inherit;width:100%;box-sizing:border-box}
+/* round 14 */
+.ctr{font-weight:700;color:#23729f}
+.freeline{background:#e3eef5;border-radius:8px;padding:6px 10px;font-size:12.5px;color:#1f4f6e}
+.fsh,.fhd{font-size:12.5px;font-weight:800;color:#23729f;background:#e3eef5;border-radius:12px;padding:3px 10px;white-space:nowrap}
+details[open]>summary .fsh{display:none}details:not([open])>summary .fhd{display:none}
+.ptestrow{background:var(--warn-bg)!important;border-left-color:var(--warn)!important}
+.ptestrow .ctt{font-weight:700}
+.thub{background:#f3dcd8;border-color:#e0a59c;color:#7a1f17}
+.cpday .addnew{align-items:flex-end;flex-wrap:wrap}.cpday input[type=date]{min-height:36px}
+select option:disabled{color:#aaa}
 </style>
 </head>
 <body>
@@ -960,7 +970,7 @@ const selDates=()=>ui.day==='all'?weekDates(ui.ws):[ui.day];
 function filtersCard(){
   const f=ui.f, n=Object.entries(f).filter(([k,v])=>v&&(ui.mgr||k!=='staff')).length;
   const s=(k,c,ph)=>`<label class="fld"><span>${ph}</span><select data-filter="${k}">${opt(c,f[k],'All')}</select></label>`;
-  return `<details class="card flt" ${ui.fltOpen?'open':''} id="fltbox"><summary><span>Filters${n?` <span class="pill upcoming">${n} on</span>`:''}</span><span class="fsum">Child · grade · curriculum · time <span class="chev">▾</span></span></summary>
+  return `<details class="card flt" ${ui.fltOpen?'open':''} id="fltbox"><summary><span>Filters${n?` <span class="pill upcoming">${n} on</span>`:''}</span><span class="fsum">${ISTEST?'<span class="fsh">+ Show filters</span><span class="fhd">− Hide filters</span>':'Child · grade · curriculum · time <span class="chev">▾</span>'}</span></summary>
     <div class="filters">${ui.mgr?s('branch','branches','Branch')+s('staff','staff','Staff'):''}${s('child','children','Child')}${s('grade','grades','Grade')}${s('cur','curriculum','Curriculum')}
     <label class="fld"><span>Subject</span><select data-filter="topic">${topicOpts(f.cur,f.topic,'All',false)}</select></label>
     <label class="fld"><span>Time</span><select data-filter="period">${opt('periods',f.period,'All day',[['am','Morning'],['pm','Afternoon']])}</select></label></div>
@@ -979,7 +989,7 @@ function reminders(){
   if(!ui.me||ui.dismissed) return '';
   const ts=testsFor(ui.me); if(!ts.length) return '';
   return `<div class="banner"><div class="row spread"><b>Test reminders</b><button class="btn sm" data-act="dismiss">Hide</button></div>
-    ${ts.map(t=>{const d=daysBetween(todayIso(),t.date);return `<div>${esc(t.title||'Test')} ${[nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')} — <b>${fmt(t.date)}</b> <span class="muted">(${d===0?'today':d===1?'tomorrow':'in '+d+' days'})</span></div>`}).join('')}</div>`;
+    ${ts.map(t=>{const d=daysBetween(todayIso(),t.date);return `<div>${ISTEST?`<b>${esc(t.childId?nm('children',t.childId):(t.gradeId?'All of '+nm('grades',t.gradeId):'Everyone'))}</b> · `:''}${esc(t.title||'Test')} ${[nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')} — <b>${fmt(t.date)}</b> <span class="muted">(${d===0?'today':d===1?'tomorrow':'in '+d+' days'})</span></div>`}).join('')}</div>`;
 }
 function prevWorkday(){let d=addDays(parse(todayIso()),-1);while(d.getDay()===0||d.getDay()===6)d=addDays(d,-1);return iso(d)}
 function ydayCard(){if(!loaded)return '';const pd=prevWorkday(),its=itemsFor([pd]).filter(i=>i.st==='missed'&&!signed(i.sid,i.date));if(!its.length)return '';
@@ -1109,11 +1119,11 @@ function extraForms(){
    <div class="grid2"><label class="fld"><span>Child</span><select id="tf-child">${opt('children',et?et.childId||'':'','—')}</select></label></div>
    ${subjTopic('tf',et?{curriculumId:et.curId||'',topicId:et.topicId||''}:null)}
    <div class="grid2">
-   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${et?et.date:def}"></label>${PILOTNOTE?`<label class="fld"><span>Starts *</span><select id="tf-ttime" required>${timeOpts(et?et.time||'':'','Choose')}</select></label><label class="fld"><span>Ends *</span><select id="tf-tend" required>${timeOpts(et?et.timeEnd||'':'','Choose')}</select></label>`:PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
+   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${et?et.date:def}"></label>${PILOTNOTE?`<label class="fld"><span>Starts *</span><select id="tf-ttime" required>${ISTEST?timeOptsB(et?et.time||'':'','Choose',busyList(ui.isMgr?'':ui.me,et?et.date:def,et&&et.id)):timeOpts(et?et.time||'':'','Choose')}</select></label><label class="fld"><span>Ends *</span><select id="tf-tend" required>${ISTEST?timeOptsB(et?et.timeEnd||'':'','Choose',[],et&&et.time):timeOpts(et?et.timeEnd||'':'','Choose')}</select></label>`:PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
    <label class="fld"><span>Grade</span><select id="tf-grade">${opt('grades',et?et.gradeId||'':'','—')}</select></label>
    ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-branch">${opt('branches',et?et.branchId||'':'','All branches')}</select></label><label class="fld"><span>Staff</span><select id="tf-staff">${opt('staff',et?et.staffId||'':'','All staff at branch')}</select></label>`:''}
    <label class="fld"><span>Remind days before</span><input type="number" id="tf-lead" value="${et?esc(et.lead||'3'):'3'}" min="0" max="30"></label></div>
-   <div class="actions"><button class="btn primary" data-act="savetest">${et?'Save changes':'Save test'}</button>${et?'<button class="btn" data-act="testcancel">Cancel</button>':''}</div></details>
+   <div class="actions">${ISTEST&&ui.tclashMsg?`<div class="banner warnb small">⚠ ${esc(ui.tclashMsg)}<br>Tap <b>Save</b> again to save anyway.</div>`:''}<button class="btn primary" data-act="savetest">${et?'Save changes':'Save test'}</button>${et?'<button class="btn" data-act="testcancel">Cancel</button>':''}</div></details>
   <details class="card flt" id="brkbox"${ui.brkOpen?' open':''}><summary><span><span class="pmx"></span> Add break time</span><span class="fsum">${breaksFor().length} saved <span class="chev">▾</span></span></summary>
    <div class="grid2"><label class="fld"><span>Name</span><input type="text" id="tf-bname" placeholder="e.g. Tea break"></label>
    ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-bbranch">${opt('branches','','All branches')}</select></label>`:''}
@@ -1243,12 +1253,12 @@ function vPlanP(){
   if(!S.staff.length&&loaded) return reminders()+setupFirst();
   if(ui.plBatch) return vPlanBatch();
   const ds=weekDates(ui.ws),d=plDaySel(),kids=classKids(),grps=classGroups(),w=ui.plWho||'';
-  let h=reminders()+(PILOTNOTE?`<div class="row spread" style="margin-bottom:-4px"><h2 style="margin:0">Plan</h2>${qBar('plan')}</div>`:'')+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">${PILOTNOTE?'This week':'Today'}</button></div>`;
+  let h=thuReminder()+reminders()+(PILOTNOTE?`<div class="row spread" style="margin-bottom:-4px"><h2 style="margin:0">Plan</h2>${qBar('plan')}</div>`:'')+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">${PILOTNOTE?'This week':'Today'}</button></div>`;
   if(ui.mgr) h+=filtersCard();
   h+=`<div class="wk5">${ds.map(x=>{const ps=plansFor([x]),dn=ps.filter(p=>p.done).length,lab=ps.length?(dn===ps.length?dn+' ✓':ps.length+' planned'):'empty';
     return `<button class="wkd${x===d?' on':''}${ps.length?'':' empty'}" data-act="plday" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small>${bdStars(x)}</button>`}).join('')}</div>`;
   if(kids.length>1) h+=`<div class="chiprow" role="group" aria-label="Show planning for">${[['','All '+kids.length],...grps.map(g=>['g:'+g.id,g.name]),...kids.map(c=>['c:'+c.id,(c.name||'').split(' ')[0]])].map(([v,l])=>`<button class="chip${v===w?' on':''}" data-act="plwho" data-v="${v}" aria-pressed="${v===w}">${esc(l)}</button>`).join('')}</div>`;
-  h+=`<div class="plbar"><button class="btn primary" data-act="psopen" data-d="${d}">+ Add activity</button><button class="btn" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="copyweek">Copy last week</button></div>`;
+  h+=`<div class="plbar"><button class="btn primary" data-act="psopen" data-d="${d}">+ Add activity</button><button class="btn" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="copyweek">Copy last week</button>${ISTEST?`<button class="btn" data-act="copydayopen">Copy a day</button>`:''}</div>`+copyDayBox(d);
   h+=papBox();
   if(!w&&kids.length>1){const wk=plansFor(ds),miss=kids.filter(c=>!wk.some(p=>covers(p,c.id)));
     if(miss.length&&miss.length<kids.length) h+=`<div class="banner warnb"><span class="small"><b>No planning this week yet for:</b> ${miss.map(c=>esc((c.name||'').split(' ')[0])).join(', ')}</span></div>`}
@@ -1257,7 +1267,7 @@ function vPlanP(){
   h+=planLockBanner(d);if(!PILOTNOTE)ts.forEach(t=>h+=testBanner(t));
   const used=new Set(ps.map(p=>p.periodId).filter(Boolean)),usedSt=new Set(ps.map(p=>oStart(p)));
   const free=periodsSorted().filter(x=>!used.has(x.id)&&!usedSt.has(x.start||'~'));
-  const rows=[...tk.map(i=>({s:oStart(i.r),html:PILOTNOTE&&!ui.planFull?`<div class="pslim">${chkRowTask(i)}</div>`:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:PILOTNOTE&&!ui.planFull?`<div class="pslim">${chkRowPlan(p)}</div>`:planHtml(p)})),...(PILOTNOTE?ts.map(t=>({s:t.time||'00',html:testRow(t)})):[]),
+  const rows=[...tk.map(i=>({s:oStart(i.r),html:PILOTNOTE&&!ui.planFull?`<div class="pslim">${chkRowTask(i)}</div>`:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:PILOTNOTE&&!ui.planFull?`<div class="pslim">${chkRowPlan(p)}</div>`:planHtml(p)})),...(PILOTNOTE?ts.map(t=>({s:t.time||'00',html:ISTEST&&!ui.planFull?testRowP(t):testRow(t)})):[]),
     ...bs.map(x=>({s:x.start||'99',html:`<div class="brk${PILOTNOTE?' pthin':''}"><span class="pill">Break</span><span>${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}</span></div>`})),
     ...bdRows(d).map(x=>({s:'06:55',html:PILOTNOTE?`<div class="pthin pbd${x.boy?' boy':''}"><span class="bstar sm" aria-hidden="true">★</span><span>${esc(x.t)}</span></div>`:`<div class="brk bdrow"><span class="pill due">Birthday</span><span>${esc(x.t)}</span></div>`})),
     ...free.map(x=>({s:x.start||'99',html:`<button class="slotadd" data-act="psopen" data-d="${d}" data-slot="${x.id}">+ Add activity · ${esc(periodLabel(x))}</button>`}))].sort((a,b)=>a.s.localeCompare(b.s));
@@ -1265,7 +1275,7 @@ function vPlanP(){
     :`<div class="card empty">Nothing planned for ${esc(fmt(d))} yet.<div class="plbar" style="justify-content:center"><button class="btn primary" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="psopen" data-d="${d}">+ Add one activity</button></div></div>`;
   h+=extraForms()+psSheet();
   return h}
-function psInit(d,slot){const p=byId('periods',slot);ui.ps={date:d,slot:p?p.id:'',start:p?p.start||'':'',end:p?p.end||'':'',who:'',kids:[],topicId:'',curriculumId:'',text:'',rep:false,staff:ui.isMgr?(ui.f.staff||''):ui.me,gname:''};ui.clash=null;ui.clear.add('tf-ps-')}
+function psInit(d,slot){const p=byId('periods',slot),bl0=ISTEST&&!p?busyList(ui.isMgr?(ui.f.staff||''):ui.me,d):[],nf0=bl0.length?nextFree(bl0,bl0.reduce((a,b)=>b.e>a.e?b:a,bl0[0]).e):'';ui.ps={date:d,slot:p?p.id:(nf0?'own':''),start:p?p.start||'':nf0,end:p?p.end||'':(nf0?add30(nf0):''),who:'',kids:[],topicId:'',curriculumId:'',text:'',rep:false,staff:ui.isMgr?(ui.f.staff||''):ui.me,gname:''};ui.clash=null;ui.clear.add('tf-ps-')}
 function psGrab(){const s=ui.ps;if(!s)return;const g=id=>document.getElementById(id);
   if(g('tf-ps-text'))s.text=g('tf-ps-text').value;if(g('tf-ps-start'))s.start=g('tf-ps-start').value;if(g('tf-ps-end'))s.end=g('tf-ps-end').value;
   if(g('tf-ps-rep'))s.rep=g('tf-ps-rep').checked;if(g('tf-ps-test'))s.isTest=g('tf-ps-test').checked;if(g('tf-ps-staff'))s.staff=g('tf-ps-staff').value;if(g('tf-ps-gname'))s.gname=g('tf-ps-gname').value}
@@ -1279,10 +1289,10 @@ function psSheet(){const s=ui.ps;if(!s)return '';const ds=weekDates(ui.ws),kids=
   const tm=s.start?s.start:'',lab=[tm,s.text&&(s.text.length>22?s.text.slice(0,22)+'…':s.text)||tName(s.topicId),whoTxt].filter(Boolean).join(' · ');
   return `<div class="psheet"><div class="in" role="dialog" aria-modal="true" aria-label="Add activity">
   <div class="row spread"><h3 style="margin:0">Add activity · ${esc(fmt(s.date))}</h3><button type="button" class="iconx" data-act="psclose" aria-label="Close">×</button></div>
-  ${ui.isMgr?`<label class="fld"><span>Staff member</span><select id="tf-ps-staff">${opt('staff',s.staff,'Choose staff')}</select></label>`:''}${psLastWeek(s,sid)}
+  ${ui.isMgr?`<label class="fld"><span>Staff member</span><select id="tf-ps-staff">${opt('staff',s.staff,'Choose staff')}</select></label>`:''}${ISTEST?freeLine(busyList(sid,s.date)):''}${psLastWeek(s,sid)}
   <div class="pss"><div class="psl">Day</div><div class="chips">${ds.map(x=>chip('psday',x,esc(fmt(x).split(' ').slice(0,2).join(' ')),x===s.date)).join('')}</div></div>
   <div class="pss"><div class="psl">1 · Time slot</div><div class="chips">${periodsSorted().map(x=>chip('psslot',x.id,esc(x.start?(x.start+(x.end?'–'+x.end:'')):(x.name||'Period'))+(used.has(x.id)?' <small>· used</small>':''),x.id===s.slot)).join('')}${chip('psslot','own','Own time',s.slot==='own')}</div>
-  ${s.slot==='own'?`<div class="grid2"><label class="fld"><span>From</span><select id="tf-ps-start">${timeOpts(s.start,'—')}</select></label><label class="fld"><span>To</span><select id="tf-ps-end">${timeOpts(s.end,'—')}</select></label></div>`:''}</div>
+  ${s.slot==='own'?`<div class="grid2"><label class="fld"><span>From</span><select id="tf-ps-start">${ISTEST?timeOptsB(s.start,'—',busyList(sid,s.date)):timeOpts(s.start,'—')}</select></label><label class="fld"><span>To</span><select id="tf-ps-end">${ISTEST?timeOptsB(s.end,'—',[],s.start):timeOpts(s.end,'—')}</select></label></div>`:''}</div>
   <div class="pss"><div class="psl">2 · Who</div>
     <div class="chips">${kids.length>1?chip('pswho','class',`Whole class <small>${kids.length}</small>`,s.who==='class'):''}${grps.map(g=>chip('pswho','g:'+g.id,`${esc(g.name)} <small>${(g.childIds||[]).length}</small>`,s.who==='g:'+g.id)).join('')}</div>
     ${kids.length?`<div class="small muted">${kids.length>1?'Or tap names:':''}</div><div class="chips">${kids.map(c=>chip('pskid',c.id,(sel.includes(c.id)?'✓ ':'')+esc((c.name||'').split(' ')[0]),sel.includes(c.id))).join('')}</div>`:'<span class="muted small">No children for this branch yet. Add them in Setup → Children.</span>'}
@@ -1390,11 +1400,12 @@ function testBars(){const t=todayIso();
 /* 4 weekly plan approval */
 const papId=(sid,ws)=>sid+'_'+ws;
 function papBox(){const sid=ui.isMgr?ui.f.staff:ui.me;if(!sid||sid==='*')return '';const ws=iso(ui.ws),r=byId('papprove',papId(sid,ws)),n=S.plans.filter(p=>p.staffId===sid&&weekDates(ui.ws).includes(p.date)).length;
-  const wk='week '+isoWeek(ui.ws);
+  const wk=(ISTEST?'Week ':'week ')+isoWeek(ui.ws);
   if(ui.isMgr){if(!r)return n?`<div class="banner"><span class="small">${esc(nm('staff',sid))} has not submitted ${wk} planning for approval yet (${n} planned).</span></div>`:'';
     return `<div class="banner ${r.status==='approved'?'okb':''}"><div class="row spread"><span><b>${esc(nm('staff',sid))} · ${wk} planning</b><br><span class="small">${r.status==='approved'?'Approved '+esc(fmtAt(r.decidedAt)):r.status==='changes'?'Changes asked: '+esc(r.note||''):'Submitted '+esc(fmtAt(r.at))+' · '+n+' activities'}</span></span>${r.status==='submitted'?`<span class="acts"><button class="btn sm primary" data-act="papok" data-id="${r.id}">Approve</button>${PILOTNOTE?`<button class="btn sm" data-act="unlockweek" data-s="${r.staffId}" data-d="${r.ws}">Unlock</button>`:''}</span>`:PILOTNOTE&&r.status==='approved'?`<span class="acts"><button class="btn sm" data-act="unlockweek" data-s="${r.staffId}" data-d="${r.ws}">Unlock</button></span>`:''}</div>${r.status==='submitted'?`<div class="addnew"><input type="text" id="tf-pch-${r.id}" placeholder="What should change?" aria-label="Changes needed"><button class="btn sm" data-act="papchg" data-id="${r.id}">Ask for changes</button></div>`:''}</div>`}
-  if(!r)return `<div class="banner"><div class="row spread"><span class="small"><b>${wk} planning</b> · ${n} activit${n===1?'y':'ies'} planned. When it is ready, send it to your manager.</span><button class="btn sm primary" data-act="papsend"${n?'':' disabled'}>Submit for approval</button></div></div>`;
-  if(r.status==='approved'&&PILOTNOTE){const q=wkReq(sid,ws);return `<div class="banner okb"><div class="row spread"><span class="small"><b>${wk} planning approved</b> · ${esc(fmtAt(r.decidedAt))}<br>Approved planning is locked.</span>${q?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-scope="week" data-d="${ws}">Request unlock</button>`}</div></div>`}
+  const gaps=ISTEST?weekGaps(sid):[];
+  if(!r)return `<div class="banner"><div class="row spread"><span class="small"><b>${wk} planning</b> · ${n} activit${n===1?'y':'ies'} planned. ${gaps.length?`<span class="bad">Still to plan: ${gaps.map(d=>esc(dayWord(d))).join(', ')}.</span> You can submit once every day is planned.`:'When it is ready, send it to your manager.'}</span><button class="btn sm primary" data-act="papsend"${n&&!gaps.length?'':' disabled'}>Submit for approval</button></div></div>`;
+  if(r.status==='approved'&&PILOTNOTE){const q=wkReq(sid,ws);return `<div class="banner okb"><div class="row spread"><span class="small"><b>${wk} planning approved${ISTEST?'! 😊':''}</b> · ${esc(fmtAt(r.decidedAt))}<br>Approved planning is locked.</span>${q?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-scope="week" data-d="${ws}">Request unlock</button>`}</div></div>`}
   if(r.status==='approved')return `<div class="banner okb"><span class="small"><b>${wk} planning approved</b> · ${esc(fmtAt(r.decidedAt))}</span></div>`;
   if(r.status==='changes')return `<div class="banner"><div class="row spread"><span class="small"><b>Your manager asked for changes to ${wk}:</b> ${esc(r.note||'See messages')}</span><button class="btn sm primary" data-act="papsend">Submit again</button></div></div>`;
   if(PILOTNOTE){const q=wkReq(sid,ws);return `<div class="banner info"><div class="row spread"><span class="small"><b>${wk} planning submitted</b> · waiting for your manager · ${esc(fmtAt(r.at))}<br>You can't change this week's planning while it is with your manager.</span>${q?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-scope="week" data-d="${ws}">Request unlock</button>`}</div></div>`}
@@ -1605,7 +1616,7 @@ function bdLine(){const l=bdayList().filter(x=>x.days<=3);if(!l.length)return ''
 function dayScore(d){const its=itemsFor([d]).filter(i=>i.st!=='off'),ps=plansFor([d]),tot=its.length+ps.length,dn=its.filter(i=>i.st==='done').length+ps.filter(p=>p.done).length,ms=its.filter(i=>i.st==='missed').length+(d<todayIso()?ps.filter(p=>!p.done).length:0);return {tot,dn,ms}}
 const timeRange=o=>{const s=oStart(o),e=oEnd(o);return s==='99'?'Any time':s+(e?'–'+e:'')};
 function crow(x){const open=ui.rowMenu===x.k,STC={done:'ok',missed:'bad',due:'due',upcoming:'',off:'muted'};
-  return `<div class="crow${x.done?' cdone':''}${open?' cmopen':''}${x.qd?' cq':''}">${x.qd?'':`<input type="checkbox" ${x.tick} aria-label="Mark ${esc(x.title)} done">`}<span class="ctime">${esc(x.time)}</span><span class="ctx"><span class="ctt">${esc(x.title)}${x.icons}</span><span class="cmeta">${x.meta}<span class="cnar"> · ${esc(x.time)} · ${esc(nm('staff',x.who))} · ${esc(x.stl)}</span></span></span><span class="who ${bcls(x.who)}">${esc(nm('staff',x.who))}</span>${x.qd?x.qd:`<span class="cst ${STC[x.st]||''}">${esc(x.stl)}</span>`}<button class="cmore" data-act="rowmenu" data-k="${esc(x.k)}" aria-label="Actions for ${esc(x.title)}" aria-expanded="${open}">⋯</button>${open?`<div class="cmenu" role="menu">${x.menu.map(([a,ds,l,cls])=>`<button role="menuitem" class="${cls||''}" data-act="${a}" ${Object.entries(ds).map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ')}>${esc(l)}</button>`).join('')}</div>`:''}</div>`}
+  return `<div class="crow${x.done?' cdone':''}${open?' cmopen':''}${x.qd?' cq':''}">${x.qd?'':`<input type="checkbox" ${x.tick} aria-label="Mark ${esc(x.title)} done">`}<span class="ctime">${esc(x.time)}</span><span class="ctx"><span class="ctt">${esc(x.title)}${x.icons}</span><span class="cmeta">${ISTEST&&x.qd&&x.time?`<span class="ctr">${esc(x.time)}</span> · `:''}${x.meta}<span class="cnar"> · ${esc(x.time)} · ${esc(nm('staff',x.who))} · ${esc(x.stl)}</span></span></span><span class="who ${bcls(x.who)}">${esc(nm('staff',x.who))}</span>${x.qd?x.qd:`<span class="cst ${STC[x.st]||''}">${esc(x.stl)}</span>`}<button class="cmore" data-act="rowmenu" data-k="${esc(x.k)}" aria-label="Actions for ${esc(x.title)}" aria-expanded="${open}">⋯</button>${open?`<div class="cmenu" role="menu">${x.menu.map(([a,ds,l,cls])=>`<button role="menuitem" class="${cls||''}" data-act="${a}" ${Object.entries(ds).map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ')}>${esc(l)}</button>`).join('')}</div>`:''}</div>`}
 function chkRowTask(i){const {r,date:d,sid,st,cover}=i,e=entryMap[ekey(r,d,sid)]||{},key=r.id+'|'+d+'|'+sid,lock=signed(sid,d)&&!ui.mgr,off=st==='off'?offReason(sid,d):'';
   if(ui.openC.has(key)||(ui.rowFull&&ui.rowFull.has('t'+key)))return `<div class="crfull">${itemHtml(i)}${ui.openC.has(key)?'':`<button class="btn sm" data-act="rowless" data-k="t${esc(key)}">Show less</button>`}</div>`;
   const a=r.childId&&byId('attendance',d+'_'+r.childId);
@@ -1738,7 +1749,7 @@ function planView(){return PILOTNOTE?`<div class="mmx" role="group" aria-label="
 const wkLock=(sid,d)=>{if(!PILOTNOTE||!sid||sid==='*'||!d)return null;const r=byId('papprove',papId(sid,iso(mondayOf(parse(d)))));return r&&(r.status==='submitted'||r.status==='approved')?r:null};
 const wkReq=(sid,ws)=>S.feedback.find(f=>f.kind==='unlock'&&f.scope==='week'&&f.from===sid&&f.date===ws&&!f.closed);
 function wkGuard(b){if(!PILOTNOTE||ui.mgr||!ui.me)return false;const a=b.dataset.act;
-  if(!['psopen','pbopen','copyweek','editplan','slotadd','psave','pbsave'].includes(a)&&!(a==='del'&&b.dataset.c==='plans'))return false;
+  if(!['psopen','pbopen','copyweek','copyday','copydayopen','editplan','slotadd','psave','pbsave'].includes(a)&&!(a==='del'&&b.dataset.c==='plans'))return false;
   const p=b.dataset.id&&byId('plans',b.dataset.id),d=b.dataset.d||(p&&p.date)||(a==='copyweek'?iso(ui.ws):(ui.ps&&ui.ps.date)||plDaySel());
   const r=wkLock(ui.me,d);if(!r)return false;
   toast(`Week ${isoWeek(parse(r.ws))} planning is ${r.status==='approved'?'approved':'with your manager'}. Tap "Request unlock" to change it.`);return true}
@@ -1958,6 +1969,30 @@ function mgrReportCard(){if(!ISTEST||!ui.isMgr)return '';return `<div class="car
 function arcCut(list,dk,key){if(!ISTEST)return {cur:list,btn:''};const cut=iso(addDays(new Date(),-60)),old=list.filter(x=>(dk(x)||'').slice(0,10)<cut),on=!!(ui.arc&&ui.arc[key]);
   return {cur:on?list:list.filter(x=>(dk(x)||'').slice(0,10)>=cut),btn:old.length?`<button class="arcbtn" data-act="arctog" data-k="${key}" aria-expanded="${on}">${on?'Hide archive':`🗄 Archive · ${old.length} older than 60 days ▸`}</button>`:''}}
 
+/* ---------- pilot round 14: planning help ---------- */
+const add30=t=>{const i=TIMES.indexOf(t);return i>=0&&TIMES[i+2]?TIMES[i+2]:''};
+function busyList(sid,d,skip){const out=[],sv=ui.f.staff;
+  S.plans.filter(p=>p.date===d&&(!sid||p.staffId===sid||p.staffId==='*')&&p.id!==skip).forEach(p=>{const s=oStart(p),e=oEnd(p);if(s!=='99')out.push({s,e:e||add30(s),l:p.text})});
+  if(sid){ui.f.staff=sid;try{itemsFor([d]).filter(i=>(i.cover?i.cover===sid:i.sid===sid)&&i.st!=='off').forEach(i=>{const s=oStart(i.r),e=oEnd(i.r);if(s!=='99')out.push({s,e:e||add30(s),l:i.r.text})})}catch(e){}ui.f.staff=sv}
+  S.tests.filter(t=>t.date===d&&t.time&&t.id!==skip&&(!sid||t.by===sid||t.staffId===sid)).forEach(t=>out.push({s:t.time,e:t.timeEnd||add30(t.time),l:'Test: '+(t.title||'')}));
+  try{breaksFor().forEach(b=>{if(b.start)out.push({s:b.start,e:b.end||add30(b.start),l:b.name||'Break'})})}catch(e){}
+  return out.sort((a,b)=>a.s.localeCompare(b.s))}
+const busyAt=(bl,t)=>bl.find(b=>t>=b.s&&t<b.e);
+function timeOptsB(sel,ph,bl,after){return `<option value="">${ph}</option>`+TIMES.map(t=>{const b=after?null:busyAt(bl,t),dis=(after&&t<=after)||!!b;return `<option value="${t}"${t===sel?' selected':''}${dis&&t!==sel?' disabled':''}>${t}${b?' · '+esc(b.l.slice(0,24)):''}</option>`}).join('')}
+function nextFree(bl,from){let t=from||TIMES[0];for(const b of bl){if(t>=b.s&&t<b.e)t=b.e}return t}
+function freeLine(bl){if(!ISTEST||!bl.length)return '';const last=bl.reduce((a,b)=>b.e>a.e?b:a,bl[0]);const nf=nextFree(bl,last.e);const nxt=bl.find(b=>b.s>=nf);
+  return `<div class="freeline">🕘 Last booked: <b>${esc(last.l)}</b> ends ${esc(last.e)} · free from <b>${esc(nf)}</b>${nxt?` until ${esc(nxt.s)} (${esc(nxt.l)})`:''}</div>`}
+function testRowP(t){const can=ui.mgr||t.by===ui.me,k='x'+t.id,open=ui.rowMenu===k,x=[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(esc).join(' · ');
+  const menu=can?[['edittest',{id:t.id},'Edit'],['del',{c:'tests',id:t.id},ui.confirmDel==='tests'+t.id?'Tap again to delete':'Delete','danger']]:[];
+  return `<div class="pslim"><div class="crow cq ptestrow${t.done?' cdone':''}${open?' cmopen':''}"><span class="ctime"></span><span class="ctx"><span class="ctt">Test: ${esc(t.title||'')}</span><span class="cmeta"><span class="ctr">${t.time?esc(t.time)+(t.timeEnd?'–'+esc(t.timeEnd):''):'no time set'}</span>${x?' · '+x:''}</span></span>
+  <span class="who">${esc(t.by==='manager'?'Manager':nm('staff',t.by)||'')}</span>${can?qdBtn(!!t.done,'testdone',`data-id="${t.id}"`,false,t.title):'<span></span>'}${can?`<button class="cmore" data-act="rowmenu" data-k="${k}" aria-label="Actions for test ${esc(t.title||'')}" aria-expanded="${open}">⋯</button>`:'<span></span>'}
+  ${open?`<div class="cmenu" role="menu">${menu.map(([a,ds,l,cls])=>`<button role="menuitem" class="${cls||''}" data-act="${a}" ${Object.entries(ds).map(([k2,v])=>`data-${k2}="${esc(v)}"`).join(' ')}>${esc(l)}</button>`).join('')}</div>`:''}</div></div>`}
+function weekGaps(sid){const ds=weekDates(ui.ws).filter(d=>!S.holidays.some(h=>h.date===d)&&!leaveOf(sid,d));return ds.filter(d=>!S.plans.some(p=>p.date===d&&p.staffId===sid))}
+function thuReminder(){if(!ISTEST||!ui.me||ui.isMgr)return '';const now=new Date(),w=now.getDay();if(!(w===4||(w===5&&now.getHours()<12)))return '';
+  const nws=iso(addDays(mondayOf(now),7)),r=byId('papprove',papId(ui.me,nws));if(r&&(r.status==='submitted'||r.status==='approved'))return '';
+  return `<div class="banner warnb thub"><div class="row spread"><span><b>Planning for Week ${isoWeek(parse(nws))} must be submitted by Friday 12:00.</b><br><span class="small">Plan every day of next week, then tap Submit for approval.</span></span><button class="btn sm primary" data-act="gonextwk" data-ws="${nws}">Go to Week ${isoWeek(parse(nws))}</button></div></div>`}
+function copyDayBox(d){if(!ISTEST||!ui.copyDay)return '';return `<div class="card cpday"><div class="row spread"><b>Copy a day into ${esc(fmt(d))}</b><button class="iconx" data-act="copydayx" aria-label="Close">×</button></div><div class="addnew"><label class="fld" style="margin:0"><span>Copy from</span><input type="date" id="tf-cpd" value="${iso(addDays(parse(d),-7))}"></label><button class="btn primary sm" data-act="copyday" data-d="${d}">Copy into ${esc(fmt(d))}</button></div></div>`}
+
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1967,7 +2002,7 @@ function vHome(){
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
     ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick">'+qBar('home')+'</div>':''}</div>`;
-  h+=PILOT?homeNoticeLine()+(fun()?kudoCards()+starCard():'')+bdBar(d)+eodCard(d)+(fun()?winsCard():''):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
+  h+=PILOT?thuReminder()+homeNoticeLine()+(fun()?kudoCards()+starCard():'')+bdBar(d)+eodCard(d)+(fun()?winsCard():''):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
   pls.forEach(p=>{const lk=p.staffId!=='*'&&plocked(p.staffId,p.date);rows.push({type:'plan',key:'p:'+p.id,id:p.id,s:oStart(p),e:oEnd(p),t:p.text,o:p,done:!!p.done,who:p.staffId,lock:lk&&!ui.mgr,comment:p.comment,photos:p.photos,cover:coverOf(p)?p.staffId:''})});
@@ -2667,6 +2702,8 @@ const acts={
     fillFromChild(d,'curId');
     if(!d.topicId&&!(PILOTNOTE&&ui.editing.test)){toast('Choose the subject for the test.');return} if(!d.date){toast('Pick the test date.');return}
     if(PILOTNOTE&&(!d.time||!d.timeEnd)){toast('Choose when the test starts and ends.');return} if(PILOTNOTE&&d.timeEnd<=d.time){toast('The test must end after it starts.');return}
+    if(ISTEST){const who=d.staffId||(ui.isMgr?'':ui.me),bl=busyList(who,d.date,ui.editing.test).filter(b=>b.s<d.timeEnd&&d.time<b.e&&!/^Break|break/i.test(b.l)),bl2=busyList('',d.date,ui.editing.test).filter(b=>/^Test:/.test(b.l)&&b.s<d.timeEnd&&d.time<b.e&&S.tests.some(t=>t.date===d.date&&t.time===b.s&&d.childId&&t.childId===d.childId)),all=[...bl,...bl2];
+      const sig=d.date+d.time+d.timeEnd+all.map(b=>b.l).join();if(all.length&&ui.tclash!==sig){ui.tclash=sig;ui.tclashMsg='This test clashes with '+all.map(b=>`${b.l} ${b.s}–${b.e}`).join(', ')+'.';render();toast('Clash found. Check the warning.');return}ui.tclash=null;ui.tclashMsg=''}
     const eid=PILOTNOTE&&ui.editing.test,old=eid&&byId('tests',eid);if(old){const {id:_i,...o}=old;if(!d.topicId){d.title=o.title||'';d.topicId=o.topicId||''}Object.assign(d,{done:o.done||false,doneBy:o.doneBy||'',doneAt:o.doneAt||'',by:o.by||d.by})}
     if(await put('tests',eid||newId(),d)){logAct(`${eid?'Edited':'Added'} test "${d.title}" on ${fmt(d.date)}`);ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
   savebreak:async()=>{const d={name:val('tf-bname')||'Break',start:val('tf-bstart'),end:val('tf-bend'),branchId:ui.mgr?val('tf-bbranch'):myBranch(),by:ui.me||'manager'};
@@ -2784,7 +2821,7 @@ const acts={
   plday:b=>{ui.plDay=b.dataset.d;render()},
   pltoday:b=>{acts.today(b);ui.plDay=todayIso();render()},
   plwho:b=>{ui.plWho=b.dataset.v;render()},
-  psopen:b=>{psInit(b.dataset.d||plDaySel(),b.dataset.slot||'');render()},
+  psopen:b=>{if(ISTEST)ui.fltOpen=false;psInit(b.dataset.d||plDaySel(),b.dataset.slot||'');render()},
   psclose:()=>{ui.ps=null;ui.clash=null;render()},
   psday:b=>{psGrab();ui.ps.date=b.dataset.v;ui.clash=null;render()},
   psslot:b=>{psGrab();const s=ui.ps,v=b.dataset.v;s.slot=s.slot===v?'':v;const p=byId('periods',v);if(p){s.start=p.start||'';s.end=p.end||''}ui.clash=null;render()},
@@ -2810,7 +2847,7 @@ const acts={
     const pid=newId();if(s.rep)d.series=pid;
     if(await put('plans',pid,d)){if(s.isTest)await put('tests',newId(),{title:tName(d.topicId)||d.text,topicId:d.topicId,childId:kids.length===1?kids[0]:'',date:d.date,time:d.start||'',timeEnd:d.end||'',gradeId:'',curId:d.curriculumId||'',lead:'3',branchId:ui.isMgr?plBranch():myBranch(),staffId,by:ui.me||'manager'});let n=0;if(s.rep){const until=repUntilDefault();for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd});n++}}
       ui.ps=null;ui.clash=null;ui.plDay=d.date;ui.clear.add('tf-ps-');render();toast(n?`Saved and repeated for ${n} more week${n===1?'':'s'}`:'Activity saved')}},
-  pbopen:b=>{ui.plBatch=b.dataset.d;ui.pb={src:'last'};ui.ps=null;ui.clear.add('tf-pb-');render();window.scrollTo(0,0)},
+  pbopen:b=>{if(ISTEST)ui.fltOpen=false;ui.plBatch=b.dataset.d;ui.pb={src:'last'};ui.ps=null;ui.clear.add('tf-pb-');render();window.scrollTo(0,0)},
   pbclose:()=>{ui.plBatch=null;ui.ps=null;render()},
   pbsrc:b=>{ui.pb.src=b.dataset.v;ui.clear.add('tf-pb-');render()},
   pbsave:async()=>{const d=ui.plBatch,b=ui.pb;if(!d||!b)return;const ids=b.rows||[],rep=!!document.getElementById('tf-pb-rep')?.checked,until=repUntilDefault(),kids=classKids();let n=0,sk=0;
@@ -2836,7 +2873,7 @@ const acts={
   plweek:b=>{ui.tab='plan';ui.ws=parse(b.dataset.ws);ui.plDay='';render();window.scrollTo(0,0)},
   ibgo:b=>{ui.tab='inbox';ui.ibTab=b.dataset.v;ui.ibChat='';render();window.scrollTo(0,0)},
   ibplan:b=>{ui.tab='plan';ui.f.staff=b.dataset.s;ui.ws=parse(b.dataset.ws);ui.plDay='';render();window.scrollTo(0,0)},
-  papsend:async()=>{const sid=ui.me,ws=iso(ui.ws);if(!sid)return;const id=papId(sid,ws),d={staffId:sid,ws,status:'submitted',at:new Date().toISOString(),note:''};
+  papsend:async()=>{const sid=ui.me,ws=iso(ui.ws);if(!sid)return;if(ISTEST){const g=weekGaps(sid);if(g.length){toast('Plan every day first: '+g.map(dayWord).join(', ')+' still empty.');return}}const id=papId(sid,ws),d={staffId:sid,ws,status:'submitted',at:new Date().toISOString(),note:''};
     S.papprove=[...S.papprove.filter(x=>x.id!==id),{id,...d}];render();if(await put('papprove',id,d)){logAct(`Submitted week ${isoWeek(ui.ws)} planning for approval`);toast('Sent to your manager for approval')}},
   papok:async b=>{const r=byId('papprove',b.dataset.id);if(!r)return;const {id,...rest}=r;r.status='approved';r.decidedAt=new Date().toISOString();render();
     await put('papprove',id,{...rest,status:'approved',decidedAt:r.decidedAt});logAct(`Approved week ${isoWeek(parse(r.ws))} planning for ${nm('staff',r.staffId)}`);toast('Planning approved')},
@@ -2904,7 +2941,7 @@ const acts={
   respadd:b=>{ui.editing.resp=null;ui.respSec='new';ui.clear.add('rf-');render();const st=document.getElementById('rf-staff');if(st)st.value=b.dataset.s;[1,2,3,4,5].forEach(n=>{const c=document.getElementById('rf-d'+n);if(c)c.checked=String(n)===b.dataset.n});document.getElementById('respform')?.scrollIntoView({behavior:'smooth',block:'start'})},
   testdone:b=>{const t=byId('tests',b.dataset.id);if(!t)return;const {id,...r}=t,v=!t.done;Object.assign(t,{done:v,doneBy:v?(ui.me||'manager'):'',doneAt:v?new Date().toISOString():''});put('tests',id,{...r,done:v,doneBy:t.doneBy,doneAt:t.doneAt});logAct(`${v?'Marked':'Unmarked'} test "${t.title}" done`);render()},
   edittest:b=>{const t=byId('tests',b.dataset.id);if(!t)return;ui.editing.test=t.id;ui.clear.add('tf-');ui.tab='plan';ui.ws=mondayOf(parse(t.date));ui.plDay=t.date;ui.testOpen=true;render();document.getElementById('testbox')?.scrollIntoView({behavior:'smooth',block:'start'})},
-  testcancel:()=>{ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;render()},
+  testcancel:()=>{ui.tclash=null;ui.tclashMsg='';ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;render()},
   regprint:()=>regPrint(),
   planfull:b=>{ui.planFull=b.dataset.v==='1';ui.rowMenu=null;render()},
   unlockweek:async b=>{const sid=b.dataset.s,ws=b.dataset.d,r=byId('papprove',papId(sid,ws));const at=new Date().toISOString();
@@ -2943,6 +2980,12 @@ const acts={
   pssug:b=>{psGrab();const p=byId('plans',b.dataset.id),s=ui.ps;if(!p||!s)return;Object.assign(s,{text:p.text||'',start:p.start||'',end:p.end||'',slot:p.periodId||'own',topicId:p.topicId||'',curriculumId:p.curriculumId||'',kids:kidsOf(p).map(c=>c.id||c),who:p.wholeClass?'class':p.groupId?'g:'+p.groupId:''});ui.clear.add('tf-ps-');render();toast('Copied from last week')},
   mgrrep:()=>mgrReport(),
   arctog:b=>{ui.arc=ui.arc||{};ui.arc[b.dataset.k]=!ui.arc[b.dataset.k];render()},
+  copydayopen:()=>{ui.copyDay=!ui.copyDay;ui.fltOpen=false;render()},copydayx:()=>{ui.copyDay=false;render()},
+  copyday:async b=>{const to=b.dataset.d,from=val('tf-cpd'),who=ui.mgr?(ui.f.staff||null):ui.me;if(!from){toast('Choose the day to copy from.');return}if(from===to){toast('Choose a different day to copy from.');return}
+    const src=S.plans.filter(p=>p.date===from&&(!who||p.staffId===who));if(!src.length){toast(`Nothing planned on ${fmt(from)} to copy.`);return}
+    let n=0;for(const p of src){if(S.plans.some(q=>q.date===to&&q.staffId===p.staffId&&q.text===p.text))continue;const {id,photos,...rest}=p;if(await put('plans',newId(),{...rest,date:to,done:false,photos:[],copiedFrom:id,updated:new Date().toISOString()}))n++}
+    ui.copyDay=false;render();toast(n?`Copied ${n} activit${n===1?'y':'ies'} from ${fmt(from)}`:'Those activities are already on this day.')},
+  gonextwk:b=>{ui.tab='plan';ui.ws=parse(b.dataset.ws);ui.plDay=b.dataset.ws;render();window.scrollTo(0,0)},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
@@ -3020,7 +3063,7 @@ const acts={
     if(await put('plans',pid,d)){let n=0;if(rep&&until){for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd,done:false,photos:[]});n++}}
       ui.clash=null;ui.editing.plan=null;ui.clear.add('pf-');render();toast(n?`Planning saved and repeated for ${n} more week${n===1?'':'s'}`:'Planning saved')}
   },
-  copyweek:async()=>{const prev=weekDates(addDays(ui.ws,-7)),cur=weekDates(ui.ws),who=ui.mgr?(ui.f.staff||null):ui.me;
+  copyweek:async()=>{if(ISTEST){ui.fltOpen=false;render()}const prev=weekDates(addDays(ui.ws,-7)),cur=weekDates(ui.ws),who=ui.mgr?(ui.f.staff||null):ui.me;
     const src=S.plans.filter(p=>prev.includes(p.date)&&(!who||p.staffId===who));
     if(!src.length){toast('No planning last week to copy.');return}
     let n=0;for(const p of src){const nd=cur[prev.indexOf(p.date)];if(S.plans.some(q=>q.date===nd&&q.staffId===p.staffId&&q.text===p.text))continue;
@@ -3047,7 +3090,9 @@ function saveComment(key,text){
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(b.dataset.ntcgo&&document.getElementById('ntm')){document.getElementById('ntm').remove();ui.ntcDone=false}if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e);if(ISTEST&&['hdone','hpdone','testdone','stuw'].includes(b.dataset.act))setTimeout(celebrate,500)});
 document.addEventListener('submit',e=>{e.preventDefault();acts[e.target.dataset.act]?.(e.target)});
-document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.starmo&&t.value){const st={...(S.settings.star||{}),[t.dataset.starmo]:t.value};S.settings.star=st;if(db)db.doc('settings/main').set({...S.settings,star:st}).catch(()=>{});render();toast('Star of the month changed ⭐');return}if(t.dataset&&t.dataset.snz){const m=Number(t.value);if(!m)return;const k=t.dataset.snz,sz=ntcSnz();sz[k]=new Date(Date.now()+m*60000).toISOString();lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));const r=ntcRead();if(!r.includes(k)){r.push(k);ntcSave(r)}toast('I will remind you '+(SNZ.find(x=>x[0]===m)||[0,''])[1]);render();ntcModalFill();return}
+document.addEventListener('change',e=>{const t=e.target;
+  if(ISTEST&&(t.id==='tf-ttime'||t.id==='tf-ps-start')){const en=document.getElementById(t.id==='tf-ttime'?'tf-tend':'tf-ps-end');if(en){[...en.options].forEach(o=>{if(o.value)o.disabled=!!t.value&&o.value<=t.value});if(t.value&&(!en.value||en.value<=t.value))en.value=add30(t.value)||''}ui.tclash=null}
+  if(ISTEST&&t.id==='tf-child'&&t.value){const c=byId('children',t.value)||{},g=document.getElementById('tf-grade'),cu=document.getElementById('tf-cur');if(g&&c.gradeId)g.value=c.gradeId;const cid=(c.curIds||[])[0];if(cu&&cid&&[...cu.options].some(o=>o.value===cid)){cu.value=cid;cu.dispatchEvent(new Event('change',{bubbles:true}))}}if(t.dataset&&t.dataset.starmo&&t.value){const st={...(S.settings.star||{}),[t.dataset.starmo]:t.value};S.settings.star=st;if(db)db.doc('settings/main').set({...S.settings,star:st}).catch(()=>{});render();toast('Star of the month changed ⭐');return}if(t.dataset&&t.dataset.snz){const m=Number(t.value);if(!m)return;const k=t.dataset.snz,sz=ntcSnz();sz[k]=new Date(Date.now()+m*60000).toISOString();lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));const r=ntcRead();if(!r.includes(k)){r.push(k);ntcSave(r)}toast('I will remind you '+(SNZ.find(x=>x[0]===m)||[0,''])[1]);render();ntcModalFill();return}
   if(t.dataset.filter!==undefined){ui.f[t.dataset.filter]=t.value;if(t.dataset.filter==='cur')ui.f.topic='';
     if(t.dataset.filter==='child'){const c=byId('children',t.value);ui.f.grade=c?c.gradeId||'':'';ui.f.cur=c&&(c.curIds||[]).length?c.curIds[0]:'';ui.f.topic=''}
     render();return}
