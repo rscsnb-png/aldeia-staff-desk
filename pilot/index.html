@@ -714,7 +714,8 @@ window.startApp=function(){
 const PILOT=!!window.__PILOT;
 const PILOTNOTE=PILOT&&!!window.__PILOTNOTE;
 const ISTEST=!!window.__ISTEST;
-const VERSION='2.6.0-pilot';
+const ONPILOT=location.pathname.includes('/pilot/');
+const VERSION='2.6.1-pilot';
 const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','papprove','mood','leavereq','incidents','maint','ibhide','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log','stutests','kudos','wins'];
 const S={settings:{}}; COLLS.forEach(c=>S[c]=[]);
 let entryMap={}, soMap={}, db=null, dl=null, assets=null, photoOk=false, loaded=false, dbState='loading';
@@ -927,7 +928,7 @@ function render(){
     let h='';
     if(dbState==='none') h+=`<div class="banner info"><b>Sign in to Claude to use the shared tracker.</b><span>Ticks, comments and planning are saved in one shared place once you're signed in.</span></div>`;
     else if(dbState==='error') h+=`<div class="banner"><b>Couldn't reach the shared data.</b><span>Check your connection, then reopen this page.</span></div>`;
-    if(ISTEST&&signedIn()&&ui.tab!=='home') h+=`<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>`;
+    if(ONPILOT&&signedIn()&&ui.tab!=='home') h+=`<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>`;
     if(PILOT&&signedIn()&&ui.tab!=='home'&&!navigator.onLine) h+=`<div class="banner"><b>You're offline</b><span class="small">Changes are saved on this phone and sent when you're back online.</span></div>`;
     if(ui.viewing) h+=`<div class="banner" style="background:var(--accent-soft)"><div class="row spread"><b>Viewing as ${esc(nm('staff',ui.me))}</b><button class="btn sm primary" data-act="viewexit">Back to my view</button></div></div>`;
     if(!signedIn()) h+=vGate(); else {if(ui.acct)h+=acctCard(); if(PILOTNOTE&&['reg','time','inc'].includes(ui.tab))h+=`<div class="qtop">${qBar(ui.tab)}</div>`; h+=VIEWS[ui.tab]();}
@@ -1531,7 +1532,7 @@ function ntfCheck(){if(!PILOT||!loaded||!signedIn()||!('Notification' in window)
   if(!last){lsSet(k,top);return}const nw=items.filter(x=>x[0]>last);if(!nw.length)return;lsSet(k,nw[0][0]);
   if(!document.hidden)return;
   const body=nw[0][1]+(nw.length>1?` (+${nw.length-1} more)`:'');
-  const show=r=>r.showNotification('Aldeia Staff Desk',{body,tag:'staffdesk',icon:ISTEST?'../icon-192.png':'icon-192.png',badge:ISTEST?'../icon-192.png':'icon-192.png'});
+  const show=r=>r.showNotification('Aldeia Staff Desk',{body,tag:'staffdesk',icon:ONPILOT?'../icon-192.png':'icon-192.png',badge:ONPILOT?'../icon-192.png':'icon-192.png'});
   if(navigator.serviceWorker&&navigator.serviceWorker.controller)navigator.serviceWorker.ready.then(show).catch(()=>{try{new Notification('Aldeia Staff Desk',{body})}catch(e){}});else try{new Notification('Aldeia Staff Desk',{body})}catch(e){}}
 if(PILOT){setInterval(ntfCheck,15000);window.addEventListener('online',()=>{render();toast('Back online · saving your changes')});window.addEventListener('offline',()=>render())}
 
@@ -1564,7 +1565,7 @@ function noticeItems(){const d=document.createElement('div');d.innerHTML=notices
   return [...d.children].map(el=>{const k='n'+hashI(el.textContent.replace(/\s+/g,' ').trim()).toString(36);return {el,k,read:rd.includes(k)}})}
 function noticeCount(){try{return noticeItems().filter(x=>!x.read).length}catch(e){return 0}}
 function homeNoticeLine(){let all=0,n=0;try{const it=noticeItems();all=it.length;n=it.filter(x=>!x.read).length}catch(e){}
-  return `<div class="halerts">${ISTEST?'<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>':''}${n?`<button class="hal hal-notice" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n?n+' new notice'+(n>1?'s':''):all+' notice'+(all>1?'s':'')+' · all read'}</b><span>Tests, birthdays, approvals and more · tap to see</span></span>${n?`<span class="ncount">${n}</span>`:''}</button>`:''}</div>`}
+  return `<div class="halerts">${ONPILOT?'<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>':''}${n?`<button class="hal hal-notice" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n?n+' new notice'+(n>1?'s':''):all+' notice'+(all>1?'s':'')+' · all read'}</b><span>Tests, birthdays, approvals and more · tap to see</span></span>${n?`<span class="ncount">${n}</span>`:''}</button>`:''}</div>`}
 function vNotices(){if(PILOTNOTE)return vNoticesP();let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
   let h=`<div class="row spread"><h2 style="margin:0">Notices${n?` <span class="count">${n} new</span>`:''}</h2><span class="actions">${n?'<button class="btn sm" data-act="ntcall">Mark all as read</button>':''}<button class="btn sm" data-act="tab" data-t="home">Back to Today</button></span></div><div class="small muted">Tap a notice to mark it as read. Use Open to go to it.</div>`;
   if(!items.length)return h+'<div class="card empty">No notices right now. All caught up.</div>';
