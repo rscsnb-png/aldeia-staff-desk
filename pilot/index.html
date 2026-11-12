@@ -569,6 +569,15 @@ body::before{background:var(--hdr)}
 .incbody{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
 .incsec-new .incbody>.card,.incsec-pdf .incbody>.card{border:0;box-shadow:none;background:transparent;padding:0;margin:0}
 .incsec-new .incbody>.card>h3:first-child,.incsec-pdf .incbody>.card>h3:first-child{display:none}
+.bdc{position:relative}
+.bdx{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:13px;border:1px solid #ffb3d1;background:#fff;color:#b0124f;font:inherit;font-size:16px;font-weight:800;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}
+.bdc.boy .bdx{border-color:#a9cbef;color:#1f5f9e}
+.bdc.soon .bdx{top:50%;transform:translateY(-50%)}
+.bdmsgbox{display:flex;align-items:flex-start;gap:8px;margin-top:8px;background:#fff;border:1px solid #ffb3d1;border-radius:10px;padding:8px 10px;font-size:13px;text-align:left;max-width:440px;width:100%;box-sizing:border-box}
+.bdc.boy .bdmsgbox{border-color:#a9cbef}
+.bdmsgbox span{flex:1}
+.bdcopy{flex:none;width:28px;height:28px;border-radius:7px;border:1px solid #c4c4bc;background:var(--surface);color:#555;cursor:pointer;display:grid;place-items:center;padding:0}
+.bdcopy:hover{color:#23729f;border-color:#23729f}
 </style>
 </head>
 <body>
@@ -1725,13 +1734,16 @@ const bdOn=d=>bdKids().filter(c=>c.dob&&c.dob.slice(5)===d.slice(5));
 function bdStars(d){if(!PILOTNOTE)return '';const ks=bdOn(d);if(!ks.length)return '';const cols=[...new Set(ks.map(bdCol))];
   return `<span class="sdstars" aria-label="Birthday: ${esc(ks.map(c=>c.name).join(', '))}" title="Birthday: ${esc(ks.map(c=>c.name).join(', '))}">${cols.map(k=>`<span class="sdstar ${k}">★</span>`).join('')}</span>`}
 const waNum=n=>{let d=String(n||'').replace(/\D/g,'');if(d.startsWith('00'))d=d.slice(2);if(d.startsWith('0'))d='27'+d.slice(1);return d};
-function bdWa(c){const first=(c.name||'').split(' ')[0],msg=`Happy birthday to ${first} from all of us at Aldeia! 🎉 Have a wonderful day.`;
+const bdMsg=c=>`Happy birthday to ${(c.name||'').split(' ')[0]} from all of us at Aldeia! 🎉 Have a wonderful day.`;
+const bdMinK=(c,d)=>'bdmin_'+c.id+'_'+d+'_'+meKey();
+function bdWa(c){const msg=bdMsg(c);
   const ps=[['p1','p1cell'],['p2','p2cell']].filter(([n,k])=>c[k]);
   if(!ps.length)return `<a class="btn sm wab" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp a greeting</a><div class="small muted">Add a parent cellphone in Setup → Children to send it straight to the parent.</div>`;
   return ps.map(([n,k])=>`<a class="btn sm wab" href="https://wa.me/${waNum(c[k])}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp ${esc(c[n]||'parent')}</a>`).join('')}
 function bdBarP(d){const nx=iso(addDays(parse(d),1)),age=(c,dt)=>{const y=Number((c.dob||'').slice(0,4));return y>1900?Number(dt.slice(0,4))-y:null};
   const td=bdOn(d),tm=bdOn(nx);if(!td.length&&!tm.length)return '';
-  return `<div class="bdcards">${td.map(c=>{const a=age(c,d);return `<div class="bdc ${bdCol(c)}"><span class="bdcs" aria-hidden="true">★</span><div class="bdct">${esc(c.name)}${a?` turns ${a}`:''} today</div><div class="bdcsub">${esc([nm('grades',c.gradeId),nm('branches',c.branchId)].filter(Boolean).join(' · '))}</div><div class="bdcwa">${bdWa(c)}</div></div>`}).join('')}
+  return `<div class="bdcards">${td.map(c=>{const a=age(c,d);if(lsGet(bdMinK(c,d)))return `<div class="bdc soon ${bdCol(c)}"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">${esc(c.name)}${a?` turns ${a}`:''} today</div><button class="bdx" data-act="bdmin" data-c="${c.id}" data-d="${d}" aria-label="Show birthday card" title="Show">+</button></div>`;
+    const showM=ui.bdMsg===c.id;return `<div class="bdc ${bdCol(c)}"><button class="bdx" data-act="bdmin" data-c="${c.id}" data-d="${d}" aria-label="Minimise birthday card" title="Minimise">−</button><span class="bdcs" aria-hidden="true">★</span><div class="bdct">${esc(c.name)}${a?` turns ${a}`:''} today</div><div class="bdcsub">${esc([nm('grades',c.gradeId),nm('branches',c.branchId)].filter(Boolean).join(' · '))}</div><div class="bdcwa">${bdWa(c)}<button class="btn sm" data-act="bdmsg" data-c="${c.id}" aria-expanded="${showM}">${showM?'Hide message':'Show message'}</button></div>${showM?`<div class="bdmsgbox"><span id="bdm-${c.id}">${esc(bdMsg(c))}</span><button class="bdcopy" data-act="bdcopy" data-c="${c.id}" aria-label="Copy message" title="Copy"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div>`:''}</div>`}).join('')}
   ${tm.map(c=>{const a=age(c,nx);return `<div class="bdc soon ${bdCol(c)}"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">Tomorrow: ${esc(c.name)}${a?` turns ${a}`:''}</div></div>`}).join('')}</div>`}
 function bdPosterCard(){return `<div class="card"><h3>Birthday poster (PDF)</h3><div class="grid2"><label class="fld"><span>Month</span><input type="month" id="tf-bdp-month" value="${todayIso().slice(0,7)}"></label><label class="fld"><span>Branch</span><select id="tf-bdp-br">${opt('branches',ui.f.branch||'','All branches')}</select></label></div>
   <div class="actions"><button class="btn primary" data-act="bdposter">Print poster</button><span class="muted small">A page for the classroom wall. Choose "Save as PDF" in the print window.</span></div></div>`}
@@ -2697,6 +2709,9 @@ const acts={
     logAct(`Unlocked week ${isoWeek(parse(ws))} planning for ${nm('staff',sid)}`);render();toast('Week unlocked')},
   bdposter:()=>bdPoster(),
   incsec:b=>{ui.incSec=ui.incSec===b.dataset.v?null:b.dataset.v;render()},
+  bdmin:b=>{const k='bdmin_'+b.dataset.c+'_'+b.dataset.d+'_'+meKey();lsGet(k)?lsSet(k,''):lsSet(k,'1');render()},
+  bdmsg:b=>{ui.bdMsg=ui.bdMsg===b.dataset.c?null:b.dataset.c;render()},
+  bdcopy:b=>{const c=byId('children',b.dataset.c);if(!c)return;const t=bdMsg(c);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Message copied'),()=>{const r=document.createRange(),el=document.getElementById('bdm-'+c.id);if(el){r.selectNodeContents(el);const sl=getSelection();sl.removeAllRanges();sl.addRange(r);try{document.execCommand('copy');toast('Message copied')}catch(e){toast('Select the text to copy it')}}})},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
