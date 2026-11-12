@@ -2740,16 +2740,16 @@ let started=false;
 fauth.onAuthStateChanged(async u=>{
   if(!u){try{localStorage.removeItem('asd_me');localStorage.removeItem('asd_mgr')}catch(e){}showAuth('login');return}
   const email=(u.email||'').toLowerCase();let me='',mgr=MANAGERS.includes(email);
-  if(!mgr){try{const a=await fsdb.collection('access').doc(email).get();if(a.exists)me=a.data().staffId||''}catch(e){}
+  if(!mgr){for(const c of [PFX+'access','access']){if(me)break;try{const a=await fsdb.collection(c).doc(email).get();if(a.exists)me=a.data().staffId||''}catch(e){}}
     if(!me){$a('nolink-email').textContent=email;showAuth('nolink');return}}
   try{localStorage.setItem('asd_me',me);mgr?localStorage.setItem('asd_mgr','1'):localStorage.removeItem('asd_mgr');localStorage.setItem('asd_tab','home')}catch(e){}
   $a('authbox').hidden=true;$a('appwrap').hidden=false;
   if(!started){started=true;window.startApp();if(mgr)syncAccess()}
 });
 function syncAccess(){const done={};
-  fsdb.collection('staff').onSnapshot(s=>s.docs.forEach(d=>{const x=d.data(),e=(x.email||'').trim().toLowerCase();if(!e)return;
+  fsdb.collection(PFX+'staff').onSnapshot(s=>s.docs.forEach(d=>{const x=d.data(),e=(x.email||'').trim().toLowerCase();if(!e)return;
     const key=e+'|'+d.id+'|'+!!x.archived;if(done[e]===key)return;done[e]=key;
-    (x.archived?fsdb.collection('access').doc(e).delete():fsdb.collection('access').doc(e).set({staffId:d.id,at:new Date().toISOString()})).catch(()=>{})}),()=>{});
+    (x.archived?fsdb.collection(PFX+'access').doc(e).delete():fsdb.collection(PFX+'access').doc(e).set({staffId:d.id,at:new Date().toISOString()})).catch(()=>{})}),()=>{});
 }
 
 </script>
