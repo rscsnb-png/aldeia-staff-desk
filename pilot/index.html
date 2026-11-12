@@ -496,6 +496,18 @@ body::before{background:var(--hdr)}
 .pslim .crow{min-height:34px}
 .wk5 .wkd{min-height:0;padding:4px 2px;display:grid;grid-template-columns:auto auto;justify-content:center;column-gap:5px;row-gap:0;align-items:baseline;border-radius:9px}
 .wk5 .wkd span{font-size:12px}.wk5 .wkd b{font-size:14px;line-height:1.2}.wk5 .wkd small{grid-column:1/-1;text-align:center;font-size:10px}
+/* round 7 */
+.tabnav{display:inline-flex;gap:0;flex-wrap:nowrap;border:1.5px solid #23729f;border-radius:10px;overflow:hidden;box-shadow:0 2px 0 rgba(0,0,0,.12);background:var(--surface)}
+.tnb{font:inherit;font-size:13.5px;font-weight:700;border:0;border-left:1.5px solid #23729f;background:var(--surface);color:#23729f;padding:7px 14px;min-height:36px;cursor:pointer}
+.tnb:first-child{border-left:0}.tnb:hover{background:#e3eef5}.tnb.on{background:#23729f;color:#fff;cursor:default}
+.tacts{display:inline-flex;gap:6px;margin-left:auto;flex:none}
+.tltest.slim{align-items:center}.tltest.slim .tacts .btn{min-height:26px;padding:1px 9px}
+.tdone .tlt,.tdone .ptx b{text-decoration:line-through;color:var(--muted)}
+.ptest .tacts{margin-left:0}
+.ok{color:#2f6a3e;font-weight:700}
+.ibh{margin:14px 2px 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+@media (max-width:600px){.tabnav{width:100%}.tnb{flex:1;padding:7px 6px;font-size:12.5px}}
+#rpbox input[type=month]{min-height:40px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--fg);padding:0 10px;font:inherit;width:100%;box-sizing:border-box}#rpbox .actions{align-items:center;margin-top:8px}
 </style>
 </head>
 <body>
@@ -671,7 +683,7 @@ const plansFor=dates=>S.plans.filter(p=>dates.includes(p.date)&&(matchCommon(p,p
 function testsFor(sid){
   const st=byId('staff',sid); if(!st) return [];
   const t=todayIso();
-  return S.tests.filter(x=>{const who=x.staffId?x.staffId===sid:(!x.branchId||x.branchId===st.branchId);
+  return S.tests.filter(x=>{if(PILOTNOTE&&x.done)return false;const who=x.staffId?x.staffId===sid:(!x.branchId||x.branchId===st.branchId);
     return who&&x.date&&x.date>=t&&daysBetween(t,x.date)<=(Number(x.lead)||3)}).sort((a,b)=>a.date.localeCompare(b.date));
 }
 function testsOnDate(date){
@@ -948,16 +960,16 @@ function breaksFor(){const br=ui.mgr?(ui.f.branch||(ui.f.staff?(byId('staff',ui.
 function testBanner(t){const can=ui.mgr||t.by===ui.me;
   return `<div class="banner"><div class="row spread"><span><b>Test${t.time?' · '+tRange(t):''}:</b> ${esc(t.title||'')}${[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span>${can?`<button class="btn sm danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div></div>`}
 function extraForms(){
-  const sd=selDates(), def=sd.includes(todayIso())?todayIso():sd[0];
-  return `<details class="card flt" id="testbox"${ui.testOpen?' open':''}><summary><span><span class="pmx"></span> Add a test</span><span class="fsum">Shows as a reminder <span class="chev">▾</span></span></summary>
-   <div class="grid2"><label class="fld"><span>Child</span><select id="tf-child">${opt('children','','—')}</select></label></div>
-   ${subjTopic('tf',null)}
+  const sd=selDates(), def=sd.includes(todayIso())?todayIso():sd[0], et=PILOTNOTE&&ui.editing.test?byId('tests',ui.editing.test):null;
+  return `<details class="card flt" id="testbox"${ui.testOpen||et?' open':''}><summary><span><span class="pmx"></span> ${et?'Edit test':'Add a test'}</span><span class="fsum">Shows as a reminder <span class="chev">▾</span></span></summary>
+   <div class="grid2"><label class="fld"><span>Child</span><select id="tf-child">${opt('children',et?et.childId||'':'','—')}</select></label></div>
+   ${subjTopic('tf',et?{curriculumId:et.curId||'',topicId:et.topicId||''}:null)}
    <div class="grid2">
-   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${def}"></label>${PILOTNOTE?`<label class="fld"><span>Starts *</span><select id="tf-ttime" required>${timeOpts('','Choose')}</select></label><label class="fld"><span>Ends *</span><select id="tf-tend" required>${timeOpts('','Choose')}</select></label>`:PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
-   <label class="fld"><span>Grade</span><select id="tf-grade">${opt('grades','','—')}</select></label>
-   ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-branch">${opt('branches','','All branches')}</select></label><label class="fld"><span>Staff</span><select id="tf-staff">${opt('staff','','All staff at branch')}</select></label>`:''}
-   <label class="fld"><span>Remind days before</span><input type="number" id="tf-lead" value="3" min="0" max="30"></label></div>
-   <div class="actions"><button class="btn primary" data-act="savetest">Save test</button></div></details>
+   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${et?et.date:def}"></label>${PILOTNOTE?`<label class="fld"><span>Starts *</span><select id="tf-ttime" required>${timeOpts(et?et.time||'':'','Choose')}</select></label><label class="fld"><span>Ends *</span><select id="tf-tend" required>${timeOpts(et?et.timeEnd||'':'','Choose')}</select></label>`:PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
+   <label class="fld"><span>Grade</span><select id="tf-grade">${opt('grades',et?et.gradeId||'':'','—')}</select></label>
+   ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-branch">${opt('branches',et?et.branchId||'':'','All branches')}</select></label><label class="fld"><span>Staff</span><select id="tf-staff">${opt('staff',et?et.staffId||'':'','All staff at branch')}</select></label>`:''}
+   <label class="fld"><span>Remind days before</span><input type="number" id="tf-lead" value="${et?esc(et.lead||'3'):'3'}" min="0" max="30"></label></div>
+   <div class="actions"><button class="btn primary" data-act="savetest">${et?'Save changes':'Save test'}</button>${et?'<button class="btn" data-act="testcancel">Cancel</button>':''}</div></details>
   <details class="card flt" id="brkbox"${ui.brkOpen?' open':''}><summary><span><span class="pmx"></span> Add break time</span><span class="fsum">${breaksFor().length} saved <span class="chev">▾</span></span></summary>
    <div class="grid2"><label class="fld"><span>Name</span><input type="text" id="tf-bname" placeholder="e.g. Tea break"></label>
    ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-bbranch">${opt('branches','','All branches')}</select></label>`:''}
@@ -1193,7 +1205,7 @@ function vInboxP(){if(ui.ibChat&&byId('staff',ui.ibChat))return ibThread(ui.ibCh
     h+=`<div class="chips">${[['','All'],['u','Unread']].map(([v,l])=>`<button class="chip${v===f?' on':''}" data-act="ibfilt" data-v="${v}" aria-pressed="${v===f}">${l}</button>`).join('')}</div>`;
     h+=list.length?`<div class="iblist">${list.map(t=>{const s=byId('staff',t.sid);return `<button class="ibrow" data-act="ibopen" data-s="${t.sid}">${av(t.sid,staffLabel(s))}<span class="ibm"><b>${esc(staffLabel(s))}</b><span class="${t.unread?'ub':''}">${esc(ibPrev(t.last))}</span></span><span class="ibr"><span class="${t.unread?'tn':''}">${esc(ibTime(t.last.at))}</span>${t.unread?`<span class="ibn">${t.unread}</span>`:''}</span></button>`}).join('')}</div>`
       :`<div class="card empty">${f?'No unread chats.':'No messages yet.'}</div>`}
-  else if(tab==='appr') h+=ap.length?`<div class="iblist">${ap.map(a=>`<div class="ibrow ibap">${av(a.sid,nm('staff',a.sid))}<span class="ibm"><b>${esc(nm('staff',a.sid))} <small class="muted">· ${esc(ibTime(a.at))}</small></b><span class="ub">${esc(a.txt)}</span>${a.note?`<span>${esc(a.note)}</span>`:''}</span><span class="acts">${a.btn}</span></div>`).join('')}</div>`:'<div class="card empty">Nothing waiting for approval.</div>';
+  else if(tab==='appr') h+=ap.length?`<div class="iblist">${ap.map(a=>`<div class="ibrow ibap">${av(a.sid,nm('staff',a.sid))}<span class="ibm"><b>${esc(nm('staff',a.sid))} <small class="muted">· ${esc(ibTime(a.at))}</small></b><span class="ub">${esc(a.txt)}</span>${a.note?`<span>${esc(a.note)}</span>`:''}</span><span class="acts">${a.btn}</span></div>`).join('')}</div>`+(PILOTNOTE?apprHist():''):'<div class="card empty">Nothing waiting for approval.</div>'+(PILOTNOTE?apprHist():'');
   else h+=ph.length?ph.slice(0,40).map(x=>`<div class="card"><div class="row spread small muted"><span><b>${esc(nm('staff',x.sid))}</b> · ${x.kind} · ${esc(x.text)}</span><span>${esc(fmt(x.date))}</span></div>${phGrid(x)}</div>`).join(''):'<div class="card empty">No photos from staff yet.</div>';
   return h}
 function ibThread(sid){const s=byId('staff',sid),ev=ibEvents(sid);
@@ -1492,13 +1504,13 @@ function addRefresh(){if(!PILOTNOTE||document.getElementById('refBtn'))return;co
 try{addRefresh();document.addEventListener('DOMContentLoaded',addRefresh)}catch(e){}
 /* ---------- pilot round 6 ---------- */
 const tRange=t=>t.time?esc(t.time)+(t.timeEnd?'–'+esc(t.timeEnd):''):'';
-function tabNav(cur){const has=k=>tabsFor().some(t=>t[0]===k),L=[['home','Today'],['plan','Plan'],['resp','Responsibilities']].filter(([k])=>k!==cur&&(k==='home'||has(k)));
-  return `<div class="tabnav">${L.map(([k,l])=>`<button class="btn sm" data-act="tab" data-t="${k}">${l}</button>`).join('')}</div>`}
+function tabNav(cur){const has=k=>tabsFor().some(t=>t[0]===k),L=[['home','Today'],['plan','Plan'],['resp','Responsibilities']].filter(([k])=>k===cur||k==='home'||has(k));
+  return `<div class="tabnav" role="group" aria-label="Go to">${L.map(([k,l])=>`<button class="tnb${k===cur?' on':''}" data-act="tab" data-t="${k}"${k===cur?' aria-current="page"':''}>${l}</button>`).join('')}</div>`}
 function homeStrip(d){const ds=weekDates(mondayOf(parse(d))),t=todayIso();
   return `<div class="hstrip">${ds.map(x=>{const s=dayScore(x),lab=s.tot?`${s.dn}/${s.tot}${s.dn===s.tot?' ✓':''}`:'empty';
     return `<button class="hsd${x===d?' on':''}${x===t?' tdy':''}${s.tot?'':' empty'}${s.ms?' miss':''}" data-act="hdayset" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small></button>`}).join('')}</div>`}
 function testRow(t){const can=ui.mgr||t.by===ui.me,x=[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(esc).join(' · ');
-  return `<div class="pthin ptest"><span class="ptx"><b>Test: ${esc(t.title||'')}</b>${x?' · '+x:''}${t.time?` · ${tRange(t)}`:' · <span class="bad">no time set</span>'}</span>${can?`<button class="btn xs danger" data-act="del" data-c="tests" data-id="${t.id}" aria-label="Delete test">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div>`}
+  return `<div class="pthin ptest${t.done?' tdone':''}"><span class="ptx"><b>Test: ${esc(t.title||'')}</b>${x?' · '+x:''}${t.time?` · ${tRange(t)}`:' · <span class="bad">no time set</span>'}${t.done?' · <span class="ok">done</span>':''}</span>${testBtns(t)}${can?`<button class="btn xs danger" data-act="del" data-c="tests" data-id="${t.id}" aria-label="Delete test">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div>`}
 function respMeta(r){const when=r.recur==='once'?'Once: '+fmt(r.date):((r.days||[]).length===5?'Mon–Fri':(r.days||[]).map(d=>DAYS[d]).join(', '));
   return [when,r.childId&&nm('children',r.childId),nm('grades',r.gradeId),nm('curriculum',r.curriculumId),tName(r.topicId)].filter(Boolean).map(esc).join(' · ')}
 function rrow(r){const k='r'+r.id,open=ui.rowMenu===k;
@@ -1536,6 +1548,37 @@ function vRespP(){const sec=ui.editing.resp?'new':(ui.respSec||'list'),bOf=id=>(
   h+=`<div class="card rsec">${head('new',ui.editing.resp?'Edit responsibility':'New responsibility',ui.editing.resp?'':'tap to add')}${sec==='new'?respForm():''}</div>`;
   return h}
 
+/* ---------- pilot round 7 ---------- */
+const canTest=t=>ui.mgr||t.by===ui.me;
+function testBtns(t){return `<span class="tacts"><button class="btn xs${t.done?'':' primary'}" data-act="testdone" data-id="${t.id}">${t.done?'Undo':'✓ Done'}</button>${canTest(t)?`<button class="btn xs" data-act="edittest" data-id="${t.id}">Edit</button>`:''}</span>`}
+function regPrint(){const kind=val('tf-rp-kind')||'month',br=ui.regBranch||'',kids=regKids();if(!kids.length){toast('No children to print.');return}
+  const st=`<style>table{max-width:none;table-layout:auto}th,td{padding:4px 5px;font-size:10.5px}td.c{text-align:center}.P{color:#2f6a3e;font-weight:700}.A{color:#a3322a;font-weight:700}.H{color:#888}</style>`;
+  const att=(d,c)=>{const r=byId('attendance',d+'_'+c.id);return r?(r.present?'P':'A'):''},hol=d=>S.holidays.some(h=>h.date===d);
+  const bl=br?' · '+nm('branches',br):'';
+  if(kind==='month'){const m=val('tf-rp-month')||todayIso().slice(0,7),[y,mo]=m.split('-').map(Number),ds=[];
+    for(let d=new Date(y,mo-1,1);d.getMonth()===mo-1;d=addDays(d,1))if(d.getDay()>0&&d.getDay()<6)ds.push(iso(d));
+    let rows=kids.map(c=>{let p=0,a=0;const cells=ds.map(d=>{if(hol(d))return '<td class="c H">H</td>';const v=att(d,c);if(v==='P')p++;if(v==='A')a++;return `<td class="c ${v}">${v}</td>`}).join('');
+      return `<tr><td>${esc(c.name)}</td>${cells}<td class="n">${p}</td><td class="n">${a}</td><td class="n">${p+a?Math.round(p/(p+a)*100)+'%':'—'}</td></tr>`}).join('');
+    const tp=kids.reduce((s,c)=>s+ds.filter(d=>att(d,c)==='P').length,0),ta=kids.reduce((s,c)=>s+ds.filter(d=>att(d,c)==='A').length,0);
+    rows+=`<tr class="g"><td>Total</td>${ds.map(d=>`<td class="c">${hol(d)?'H':kids.filter(c=>att(d,c)==='P').length||''}</td>`).join('')}<td class="n">${tp}</td><td class="n">${ta}</td><td class="n">${tp+ta?Math.round(tp/(tp+ta)*100)+'%':'—'}</td></tr>`;
+    const title=`Register · ${MON_LONG[mo-1]} ${y}${bl}`;
+    openPrint(title,st+`<h1>${esc(title)}</h1><div class="m">P = present · A = absent · H = public holiday · blank = not marked · Printed ${esc(fmtAt(new Date().toISOString()))}</div><table><thead><tr><th>Child</th>${ds.map(d=>`<th class="c">${esc(DAYS[parse(d).getDay()].slice(0,2))}<br>${parse(d).getDate()}</th>`).join('')}<th class="n">P</th><th class="n">A</th><th class="n">%</th></tr></thead><tbody>${rows}</tbody></table>`,true);return}
+  const y=Number(val('tf-rp-year'))||new Date().getFullYear(),all=S.attendance.filter(r=>(r.id||'').startsWith(String(y)));
+  const cnt=(c,mo)=>{let p=0,a=0;all.forEach(r=>{const [d,cid]=[r.id.slice(0,10),r.id.slice(11)];if(cid===c.id&&Number(d.slice(5,7))===mo){r.present?p++:a++}});return [p,a]};
+  let tp=0,ta=0,rows=kids.map(c=>{let P=0,A=0;const cells=[...Array(12)].map((_,i)=>{const [p,a]=cnt(c,i+1);P+=p;A+=a;return `<td class="c">${p+a?`<span class="P">${p}</span>/<span class="A">${a}</span>`:''}</td>`}).join('');tp+=P;ta+=A;
+    return `<tr><td>${esc(c.name)}</td>${cells}<td class="n">${P}</td><td class="n">${A}</td><td class="n">${P+A?Math.round(P/(P+A)*100)+'%':'—'}</td></tr>`}).join('');
+  rows+=`<tr class="g"><td>Total</td>${[...Array(12)].map(()=>'<td></td>').join('')}<td class="n">${tp}</td><td class="n">${ta}</td><td class="n">${tp+ta?Math.round(tp/(tp+ta)*100)+'%':'—'}</td></tr>`;
+  const title=`Register · ${y}${bl}`;
+  openPrint(title,st+`<h1>${esc(title)}</h1><div class="m">Each month shows days present / days absent · Printed ${esc(fmtAt(new Date().toISOString()))}</div><table><thead><tr><th>Child</th>${MON.map(m=>`<th class="c">${esc(m)}</th>`).join('')}<th class="n">Present</th><th class="n">Absent</th><th class="n">%</th></tr></thead><tbody>${rows}</tbody></table>`,true)}
+function regPrintCard(){const k=ui.rpKind||'month',y=new Date().getFullYear();
+  return `<details class="card flt" id="rpbox"${ui.rpOpen?' open':''}><summary><span><span class="pmx"></span> Print register (PDF)</span><span class="fsum">Month or year <span class="chev">▾</span></span></summary>
+  <div class="grid3"><label class="fld"><span>Period</span><select id="tf-rp-kind" data-uiset="rpKind"><option value="month"${k==='month'?' selected':''}>Month</option><option value="year"${k==='year'?' selected':''}>Year</option></select></label>
+  ${k==='month'?`<label class="fld"><span>Month</span><input type="month" id="tf-rp-month" value="${todayIso().slice(0,7)}"></label>`:`<label class="fld"><span>Year</span><select id="tf-rp-year">${[y,y-1,y-2].map(v=>`<option>${v}</option>`).join('')}</select></label>`}</div>
+  <div class="actions"><button class="btn primary" data-act="regprint">Print PDF</button><span class="muted small">Uses the branch chosen above. Choose "Save as PDF" in the print window.</span></div></details>`}
+function apprHist(){const done=S.papprove.filter(r=>r.status==='approved').sort((a,b)=>(b.decidedAt||'').localeCompare(a.decidedAt||'')).slice(0,30);
+  if(!done.length)return '';
+  return `<h3 class="ibh">Approved planning</h3><div class="iblist">${done.map(r=>`<div class="ibrow ibap">${av(r.staffId,nm('staff',r.staffId))}<span class="ibm"><b>${esc(nm('staff',r.staffId))} <small class="muted">· approved ${esc(ibTime(r.decidedAt))}</small></b><span class="ub">Week ${isoWeek(parse(r.ws))} · ${esc(fmt(r.ws).slice(4))} – ${esc(fmt(iso(addDays(parse(r.ws),4))).slice(4))}</span></span><span class="acts"><button class="btn sm" data-act="ibplan" data-s="${r.staffId}" data-ws="${r.ws}">Open week</button></span></div>`).join('')}</div>`}
+
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1561,7 +1604,7 @@ function vHome(){
   const card=r=>{
     if(r.type==='brk')return `<div class="tlc tlbrk">${esc(r.t)} · ${esc(r.s)}${r.e?'–'+esc(r.e):''}</div>`;
     if(r.type==='bday')return `<div class="tlc tlbday"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
-    if(r.type==='test'&&PILOTNOTE)return `<div class="tlc tltest slim"><span class="tlt">${esc(r.t)}</span>${(()=>{const x=[r.o.time?tRange(r.o):'',nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ');return x?`<span class="tlsub"> · ${x}</span>`:''})()}</div>`;
+    if(r.type==='test'&&PILOTNOTE)return `<div class="tlc tltest slim${r.o.done?' tdone':''}"><span class="tlt">${esc(r.t)}</span>${(()=>{const x=[r.o.time?tRange(r.o):'',nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ');return x?`<span class="tlsub"> · ${x}</span>`:''})()}${r.o.done?'<span class="pill done">Done</span>':''}${testBtns(r.o)}</div>`;
     if(r.type==='test')return `<div class="tlc tltest"><b>${esc(r.t)}</b><div class="tlsub">${[nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ')}</div></div>`;
     const isNow=cur&&cur.key===r.key,isOpen=open===r.key,o=r.o;
     const sub=[r.s!=='99'?r.s+(r.e?'–'+r.e:''):'Any time',r.type==='task'?'Task':'Plan',o.childId&&nm('children',o.childId),tName(o.topicId)||nm('curriculum',o.curriculumId),(ui.mgr||r.cover)&&nm('staff',r.who)].filter(Boolean).map(esc).join(' · ');
@@ -1615,6 +1658,7 @@ function vReg(){const d=focusDay(),kids=regKids(),rec=c=>byId('attendance',d+'_'
   const p=kids.filter(c=>rec(c)&&rec(c).present).length,a=kids.filter(c=>rec(c)&&!rec(c).present).length;
   let h=weekNav();
   if(ui.isMgr)h+=`<div class="card"><div class="grid2"><label class="fld"><span>Branch</span><select data-uiset="regBranch">${opt('branches',ui.regBranch||'','All branches')}</select></label></div></div>`;
+  if(PILOTNOTE)h+=regPrintCard();
   h+=`<div class="row spread"><div class="stats"><span class="pill upcoming">${d===todayIso()?'Today':fmt(d)}</span><span class="pill done">Present ${p}</span><span class="pill missed">Absent ${a}</span><span class="pill">Not marked ${kids.length-p-a}</span></div><button class="btn sm" data-act="attall" data-d="${d}">Mark the rest present</button></div>`;
   if(!kids.length)return h+`<div class="card empty">No children in this branch yet. Add them in Setup → Children.</div>`;
   if(PILOT){const ab=absAlerts().filter(a=>kids.some(k=>k.id===a.cid));if(ab.length)h+=`<div class="banner warnb"><b>Patterns to look at</b>${ab.map(a=>`<span class="small">${esc(a.txt)}</span>`).join('')}</div>`}
@@ -2079,7 +2123,7 @@ function staffBtns(x){return (hasPerm('viewas')?`<button class="btn sm" data-act
 function vSetup(){
   let h=`<div class="row spread"><h2>Setup</h2><span class="muted small">v${VERSION}</span></div>`;
   const wrap=(sec,body,count)=>`<details class="sec" data-sec="${sec.c}"${ui.open.has(sec.c)?' open':''}><summary>${sec.t}${count!=null?`<span class="count" style="margin-left:auto;margin-right:10px">${count}</span>`:''}</summary><div class="secbody">${body}</div></details>`;
-  SETUP.forEach(sec=>{
+  (PILOTNOTE?[...SETUP].sort((a,b)=>String(a.t).replace(/<[^>]*>/g,'').localeCompare(String(b.t).replace(/<[^>]*>/g,''))):SETUP).forEach(sec=>{
     if(!ui.isMgr&&['staff','branches','RESET','BACKUP','SEC','ROLES','LOG'].includes(sec.c))return;
     if(sec.c==='RESP'){h+=wrap(sec,respForm().replace('class="card" id="respform"','id="respform" style="display:flex;flex-direction:column;gap:10px"')+'<button class="btn" data-act="tab" data-t="resp">See all responsibilities</button>',S.resp.length);return}
     if(sec.c==='RESET'){
@@ -2235,9 +2279,10 @@ const acts={
   tscroll:b=>{const t=document.getElementById('tabs');t.scrollBy({left:Number(b.dataset.n)*t.clientWidth*0.7,behavior:'smooth'})},
   savetest:async()=>{const sj=readSubj('tf'),d={title:(byId('topics',sj.topicId)||{}).name||'',topicId:sj.topicId,childId:val('tf-child'),date:val('tf-date'),gradeId:val('tf-grade'),curId:sj.curriculumId,lead:val('tf-lead')||'3',...(PILOT?{time:val('tf-ttime')}:{}),...(PILOTNOTE?{timeEnd:val('tf-tend')}:{}),branchId:ui.mgr?val('tf-branch'):myBranch(),staffId:ui.mgr?val('tf-staff'):'',by:ui.me||'manager'};
     fillFromChild(d,'curId');
-    if(!d.topicId){toast('Choose the subject for the test.');return} if(!d.date){toast('Pick the test date.');return}
+    if(!d.topicId&&!(PILOTNOTE&&ui.editing.test)){toast('Choose the subject for the test.');return} if(!d.date){toast('Pick the test date.');return}
     if(PILOTNOTE&&(!d.time||!d.timeEnd)){toast('Choose when the test starts and ends.');return} if(PILOTNOTE&&d.timeEnd<=d.time){toast('The test must end after it starts.');return}
-    if(await put('tests',newId(),d)){logAct(`Added test "${d.title}" on ${fmt(d.date)}`);ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
+    const eid=PILOTNOTE&&ui.editing.test,old=eid&&byId('tests',eid);if(old){const {id:_i,...o}=old;if(!d.topicId){d.title=o.title||'';d.topicId=o.topicId||''}Object.assign(d,{done:o.done||false,doneBy:o.doneBy||'',doneAt:o.doneAt||'',by:o.by||d.by})}
+    if(await put('tests',eid||newId(),d)){logAct(`${eid?'Edited':'Added'} test "${d.title}" on ${fmt(d.date)}`);ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
   savebreak:async()=>{const d={name:val('tf-bname')||'Break',start:val('tf-bstart'),end:val('tf-bend'),branchId:ui.mgr?val('tf-bbranch'):myBranch(),by:ui.me||'manager'};
     if(!d.start){toast('Pick the start time.');return}
     if(await put('breaks',newId(),d)){logAct(`Added break time ${d.name} ${d.start}`);ui.clear.add('tf-');ui.brkOpen=false;render();toast('Break saved')}},
@@ -2396,8 +2441,8 @@ const acts={
     ui.plBatch=null;ui.plDay=d;ui.clear.add('tf-pb-');render();toast(n?`${n} activit${n>1?'ies':'y'} saved for ${fmt(d)}${sk?` · ${sk} already there`:''}`:(sk?'Those are already planned.':'Nothing ticked to save.'))},
   ibtab:b=>{ui.ibTab=b.dataset.v;render()},
   ibfilt:b=>{ui.ibFilt=b.dataset.v;render()},
-  ibopen:b=>{ui.ibChat=b.dataset.s;render();window.scrollTo(0,document.body.scrollHeight)},
-  ibback:()=>{ui.ibChat='';ui.ibSel=null;render()},
+  ibopen:b=>{ui.ibChat=b.dataset.s;ui.ibSel=null;ui.confirmDel=null;render();window.scrollTo(0,document.body.scrollHeight)},
+  ibback:()=>{ui.ibChat='';ui.ibSel=null;ui.confirmDel=null;render()},
   ibsend:async b=>{const sid=b.dataset.s,text=val('tf-ibc');if(!text){toast('Type a message first.');return}
     if(await put('feedback',newId(),{to:sid,text,from:'manager',at:new Date().toISOString()})){logAct('Sent message to '+nm('staff',sid));ui.clear.add('tf-ibc');lsSet(ibSeenK(sid),new Date().toISOString());render();window.scrollTo(0,document.body.scrollHeight)}},
   pltest:b=>{ui.tab='plan';ui.ws=mondayOf(parse(b.dataset.d));ui.plDay=b.dataset.d;render();window.scrollTo(0,0)},
@@ -2463,6 +2508,10 @@ const acts={
   hdayset:b=>{ui.homeDay=b.dataset.d;ui.homeOpen=null;render()},
   respsec:b=>{const v=b.dataset.v,cur=ui.editing.resp?'new':(ui.respSec||'list');if(cur==='new'&&ui.editing.resp){ui.editing.resp=null;ui.clear.add('rf-')}ui.respSec=cur===v?'none':v;ui.rowMenu=null;render()},
   respadd:b=>{ui.editing.resp=null;ui.respSec='new';ui.clear.add('rf-');render();const st=document.getElementById('rf-staff');if(st)st.value=b.dataset.s;[1,2,3,4,5].forEach(n=>{const c=document.getElementById('rf-d'+n);if(c)c.checked=String(n)===b.dataset.n});document.getElementById('respform')?.scrollIntoView({behavior:'smooth',block:'start'})},
+  testdone:b=>{const t=byId('tests',b.dataset.id);if(!t)return;const {id,...r}=t,v=!t.done;Object.assign(t,{done:v,doneBy:v?(ui.me||'manager'):'',doneAt:v?new Date().toISOString():''});put('tests',id,{...r,done:v,doneBy:t.doneBy,doneAt:t.doneAt});logAct(`${v?'Marked':'Unmarked'} test "${t.title}" done`);render()},
+  edittest:b=>{const t=byId('tests',b.dataset.id);if(!t)return;ui.editing.test=t.id;ui.clear.add('tf-');ui.tab='plan';ui.ws=mondayOf(parse(t.date));ui.plDay=t.date;ui.testOpen=true;render();document.getElementById('testbox')?.scrollIntoView({behavior:'smooth',block:'start'})},
+  testcancel:()=>{ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;render()},
+  regprint:()=>regPrint(),
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
@@ -2594,7 +2643,7 @@ document.addEventListener('change',e=>{const t=e.target;
   if(t.dataset.topic){const p=t.dataset.topic,w=document.getElementById('xn-'+p+'-wrap');
     if(t.value==='__new'){t.value='';if(!val(p+'-cur')){toast('Choose the curriculum first.');return}w.dataset.mode='topic';w.hidden=false;const i=document.getElementById('xn-'+p);i.placeholder='New subject for '+nm('curriculum',val(p+'-cur'))+', e.g. Maths';i.focus()}return}
 });
-document.addEventListener('toggle',e=>{const d=e.target;if(d.id==='fltbox')ui.fltOpen=d.open;if(d.id==='testbox')ui.testOpen=d.open;if(d.id==='brkbox')ui.brkOpen=d.open;if(d.dataset&&d.dataset.sec){if(d.open){ui.open=new Set([d.dataset.sec]);panel.querySelectorAll('details.sec[open]').forEach(x=>{if(x!==d)x.open=false})}else ui.open.delete(d.dataset.sec)}},true);
+document.addEventListener('toggle',e=>{const d=e.target;if(d.id==='fltbox')ui.fltOpen=d.open;if(d.id==='testbox')ui.testOpen=d.open;if(d.id==='rpbox')ui.rpOpen=d.open;if(d.id==='brkbox')ui.brkOpen=d.open;if(d.dataset&&d.dataset.sec){if(d.open){ui.open=new Set([d.dataset.sec]);panel.querySelectorAll('details.sec[open]').forEach(x=>{if(x!==d)x.open=false})}else ui.open.delete(d.dataset.sec)}},true);
 
 /* ---------- theme ---------- */
 function effTheme(){const t=document.documentElement.dataset.theme;if(t)return t;return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
