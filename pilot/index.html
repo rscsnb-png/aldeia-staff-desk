@@ -857,6 +857,9 @@ function tagsFor(o,sid,noTime){
 /* ---------- writes ---------- */
 async function put(c,id,data){if(!db){toast('Sign in to Claude to save changes.');return false}
   try{await db.collection(c).doc(id).set(data);return true}catch(e){toast(e&&e.code==='not_granted'?'You only have view access. Ask the owner for edit access.':'Could not save. Check your connection and try again.');return false}}
+async function putx(c,id,data){if(!db){toast('Sign in to Claude to save changes.');return false}
+  try{await db.collection(c).doc(id).update(data);return true}catch(e){if(e&&(e.code==='not-found'||/no document/i.test(e.message||''))){S[c]=(S[c]||[]).filter(x=>x.id!==id);render();toast('This was deleted on another device, so it was not saved.');return false}
+    toast('Could not save. Check your connection and try again.');return false}}
 async function remove(c,id){if(!db)return;try{await db.collection(c).doc(id).delete()}catch(e){toast('Could not delete. Try again.')}}
 function logAct(what){if(!db)return;db.collection('log').doc(newId()).set({at:new Date().toISOString(),who:ui.mgr&&!ui.me?'Manager':(nm('staff',ui.me)+(ui.mgr?' (admin)':'')),what}).catch(()=>{})}
 async function setEntry(id,rid,date,sid,patch){
@@ -867,7 +870,7 @@ async function setEntry(id,rid,date,sid,patch){
 }
 function syncPlans(rid,date,sid,done){const r=byId('resp',rid);if(!r)return;const key=(r.text||'').trim().toLowerCase();if(!key)return;
   S.plans.filter(p=>p.date===date&&(p.staffId===sid||p.staffId==='*')&&!!p.done!==done&&(p.text||'').trim().toLowerCase().startsWith(key))
-   .forEach(p=>{const {id,...rest}=p;p.done=done;put('plans',id,{...rest,done,doneFromTask:true});checkPlanDone(p.staffId,p.date)})}
+   .forEach(p=>{const {id,...rest}=p;p.done=done;putx('plans',id,{...rest,done,doneFromTask:true});checkPlanDone(p.staffId,p.date)})}
 
 /* ---------- render core ---------- */
 const panel=document.getElementById('panel');
@@ -2646,7 +2649,7 @@ async function addPhoto(kind,key,file){
     if(kind==='entry'){const [rid,date,sid]=key.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid);await setEntry(id,rid,date,sid,{photos:[...((entryMap[id]||{}).photos||[]),ph]})}
     else if(['leavereq','incidents','maint'].includes(kind)){const x=byId(kind,key);if(!x)return;const {id,...rest}=x;await put(kind,id,{...rest,photos:[...(x.photos||[]),ph],...(kind==='incidents'?{hist:[...(x.hist||[]),{at:ph.at,by:ph.by,what:'Photo added'}]}:{})})}
     else if(kind==='stu'){const r=byId('stutests',key)||{};await stSave(key,{photos:[...(r.photos||[]),ph]})}
-    else{const p=byId('plans',key);if(!p)return;const {id,...rest}=p;await put('plans',id,{...rest,photos:[...(p.photos||[]),ph]})}
+    else{const p=byId('plans',key);if(!p)return;const {id,...rest}=p;await putx('plans',id,{...rest,photos:[...(p.photos||[]),ph]})}
     toast('Photo added')}catch(e){toast(e&&e.code==='not_granted'?'Photo uploads need edit access to this page.':'Photo upload failed. Try again with a smaller photo.')}
 }
 
@@ -2705,7 +2708,7 @@ const acts={
     if(ISTEST){const who=d.staffId||(ui.isMgr?'':ui.me),bl=busyList(who,d.date,ui.editing.test).filter(b=>b.s<d.timeEnd&&d.time<b.e&&!/^Break|break/i.test(b.l)),bl2=busyList('',d.date,ui.editing.test).filter(b=>/^Test:/.test(b.l)&&b.s<d.timeEnd&&d.time<b.e&&S.tests.some(t=>t.date===d.date&&t.time===b.s&&d.childId&&t.childId===d.childId)),all=[...bl,...bl2];
       const sig=d.date+d.time+d.timeEnd+all.map(b=>b.l).join();if(all.length&&ui.tclash!==sig){ui.tclash=sig;ui.tclashMsg='This test clashes with '+all.map(b=>`${b.l} ${b.s}–${b.e}`).join(', ')+'.';render();toast('Clash found. Check the warning.');return}ui.tclash=null;ui.tclashMsg=''}
     const eid=PILOTNOTE&&ui.editing.test,old=eid&&byId('tests',eid);if(old){const {id:_i,...o}=old;if(!d.topicId){d.title=o.title||'';d.topicId=o.topicId||''}Object.assign(d,{done:o.done||false,doneBy:o.doneBy||'',doneAt:o.doneAt||'',by:o.by||d.by})}
-    if(await put('tests',eid||newId(),d)){logAct(`${eid?'Edited':'Added'} test "${d.title}" on ${fmt(d.date)}`);ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
+    if(await (eid?putx('tests',eid,d):put('tests',newId(),d))){logAct(`${eid?'Edited':'Added'} test "${d.title}" on ${fmt(d.date)}`);ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
   savebreak:async()=>{const d={name:val('tf-bname')||'Break',start:val('tf-bstart'),end:val('tf-bend'),branchId:ui.mgr?val('tf-bbranch'):myBranch(),by:ui.me||'manager'};
     if(!d.start){toast('Pick the start time.');return}
     if(await put('breaks',newId(),d)){logAct(`Added break time ${d.name} ${d.start}`);ui.clear.add('tf-');ui.brkOpen=false;render();toast('Break saved')}},
@@ -2729,7 +2732,7 @@ const acts={
     const tSid=sid==='*'?(E.s||'*'):sid;
     if(checkClash('ev',{text:o.text,staffId:sid,start,end},sid==='*'?liveStaff().map(x=>x.id):[sid],[day],id))return;
     let ok=false;
-    if(E.k==='plan') ok=await put('plans',id,{...rest,...tp,date:day,staffId:sid,updated:now});
+    if(E.k==='plan') ok=await putx('plans',id,{...rest,...tp,date:day,staffId:sid,updated:now});
     else if(o.recur==='once') ok=await put('resp',id,{...rest,...tp,date:day,staffId:sid,updated:now});
     else if(document.getElementById('tf-esc-all')?.checked){
       const wd=parse(E.d).getDay(),nd=parse(day).getDay(),days=[...new Set((o.days||[]).filter(x=>x!==wd).concat(nd))].sort();
@@ -2800,10 +2803,10 @@ const acts={
   htoday:()=>{ui.homeDay=null;ui.homeOpen=null;render()},
   hopen:b=>{const k=b.dataset.k;ui.homeOpen=ui.homeOpenEff===k?'__none':k;render()},
   hdone:b=>{const [rid,date,sid]=b.dataset.k.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid),cur=!!(entryMap[id]||{}).done;setEntry(id,rid,date,sid,{done:!cur});if(!cur){ui.homeOpen=null;toast('Done')}if(PILOTNOTE)render()},
-  hpdone:b=>{const p=byId('plans',b.dataset.id);if(!p)return;const {id,...rest}=p,v=!p.done;p.done=v;put('plans',id,{...rest,done:v});if(v){checkPlanDone(p.staffId,p.date);ui.homeOpen=null;toast('Done')}render()},
+  hpdone:b=>{const p=byId('plans',b.dataset.id);if(!p)return;const {id,...rest}=p,v=!p.done;p.done=v;putx('plans',id,{...rest,done:v});if(v){checkPlanDone(p.staffId,p.date);ui.homeOpen=null;toast('Done')}render()},
   pcopen:b=>{ui.openC.add('p:'+b.dataset.id);render();document.getElementById('pc-'+b.dataset.id)?.focus()},
   pcclose:b=>{ui.openC.delete('p:'+b.dataset.id);render()},
-  pcsave:async b=>{const p=byId('plans',b.dataset.id);if(!p)return;const t=val('pc-'+b.dataset.id),{id,...rest}=p;ui.openC.delete('p:'+id);p.comment=t;await put('plans',id,{...rest,comment:t});
+  pcsave:async b=>{const p=byId('plans',b.dataset.id);if(!p)return;const t=val('pc-'+b.dataset.id),{id,...rest}=p;ui.openC.delete('p:'+id);p.comment=t;await putx('plans',id,{...rest,comment:t});
     if(!ui.mgr&&t)put('feedback','pc_'+id,{to:'manager',from:ui.me,text:`${p.text} (${fmt(p.date)}): ${t}`,at:new Date().toISOString(),ref:'plan:'+id});render();toast('Comment saved')},
   hmissed:()=>{ui.tab='check';ui.ws=mondayOf(new Date());ui.day='all';ui.ydayClosed=false;render();window.scrollTo(0,0)},
   annpost:async()=>{const t=val('tf-an-title'),x=val('tf-an-text');if(!t){toast('Give the announcement a title.');return}
@@ -2939,7 +2942,7 @@ const acts={
   hdayset:b=>{ui.homeDay=b.dataset.d;ui.homeOpen=null;render()},
   respsec:b=>{const v=b.dataset.v,cur=ui.editing.resp?'new':(ui.respSec||'list');if(cur==='new'&&ui.editing.resp){ui.editing.resp=null;ui.clear.add('rf-')}ui.respSec=cur===v?'none':v;ui.rowMenu=null;render()},
   respadd:b=>{ui.editing.resp=null;ui.respSec='new';ui.clear.add('rf-');render();const st=document.getElementById('rf-staff');if(st)st.value=b.dataset.s;[1,2,3,4,5].forEach(n=>{const c=document.getElementById('rf-d'+n);if(c)c.checked=String(n)===b.dataset.n});document.getElementById('respform')?.scrollIntoView({behavior:'smooth',block:'start'})},
-  testdone:b=>{const t=byId('tests',b.dataset.id);if(!t)return;const {id,...r}=t,v=!t.done;Object.assign(t,{done:v,doneBy:v?(ui.me||'manager'):'',doneAt:v?new Date().toISOString():''});put('tests',id,{...r,done:v,doneBy:t.doneBy,doneAt:t.doneAt});logAct(`${v?'Marked':'Unmarked'} test "${t.title}" done`);render()},
+  testdone:b=>{const t=byId('tests',b.dataset.id);if(!t)return;const {id,...r}=t,v=!t.done;Object.assign(t,{done:v,doneBy:v?(ui.me||'manager'):'',doneAt:v?new Date().toISOString():''});putx('tests',id,{...r,done:v,doneBy:t.doneBy,doneAt:t.doneAt});logAct(`${v?'Marked':'Unmarked'} test "${t.title}" done`);render()},
   edittest:b=>{const t=byId('tests',b.dataset.id);if(!t)return;ui.editing.test=t.id;ui.clear.add('tf-');ui.tab='plan';ui.ws=mondayOf(parse(t.date));ui.plDay=t.date;ui.testOpen=true;render();document.getElementById('testbox')?.scrollIntoView({behavior:'smooth',block:'start'})},
   testcancel:()=>{ui.tclash=null;ui.tclashMsg='';ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;render()},
   regprint:()=>regPrint(),
@@ -3100,7 +3103,7 @@ document.addEventListener('change',e=>{const t=e.target;
   if(t.dataset.tick){const [rid,date,sid]=t.dataset.tick.split('|'),r=byId('resp',rid);if(!r)return;setEntry(ekey(r,date,sid),rid,date,sid,{done:t.checked});return}
   if(t.dataset.comment){saveComment(t.dataset.comment,t.value.trim());ui.openC.delete(t.dataset.comment);return}
   if(ISTEST&&(t.dataset.ptick||t.dataset.tick)&&t.checked)setTimeout(celebrate,500);
-  if(t.dataset.ptick){const p=byId('plans',t.dataset.ptick);if(!p)return;const {id,...rest}=p;p.done=t.checked;put('plans',id,{...rest,done:t.checked});checkPlanDone(p.staffId,p.date);render();return}
+  if(t.dataset.ptick){const p=byId('plans',t.dataset.ptick);if(!p)return;const {id,...rest}=p;p.done=t.checked;putx('plans',id,{...rest,done:t.checked});checkPlanDone(p.staffId,p.date);render();return}
   if(t.dataset.photo&&t.files&&t.files[0]){addPhoto('entry',t.dataset.photo,t.files[0]);return}
   if(t.dataset.pphoto&&t.files&&t.files[0]){addPhoto('plan',t.dataset.pphoto,t.files[0]);return}
   if(t.dataset.import&&t.files&&t.files[0]){const fr=new FileReader();fr.onload=()=>{try{const o=JSON.parse(fr.result);if(o.app!=='aldeia-staff-desk'||!o.data)throw 0;ui.importData=o;ui.open.add('BACKUP');render()}catch(x){toast('That file is not an Aldeia Staff Desk backup.')}};fr.readAsText(t.files[0]);t.value='';return}
@@ -3169,7 +3172,7 @@ async function shrinkPhoto(blob){
 }
 const MIME={xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',json:'application/json',html:'text/html',jpg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif'};
 window.claude={use:async n=>{
-  if(n==='db'){const q=p=>navigator.onLine?p:(p.catch(()=>{}),Promise.resolve());const wd=r=>({get:()=>r.get(),set:d=>q(r.set(d)),delete:()=>q(r.delete()),onSnapshot:(...a)=>r.onSnapshot(...a)});return {collection:c=>{const col=fsdb.collection(PFX+c);return {onSnapshot:(...a)=>col.onSnapshot(...a),doc:id=>wd(col.doc(id))}},doc:p=>wd(fsdb.doc(PFX+p))}}
+  if(n==='db'){const q=p=>navigator.onLine?p:(p.catch(()=>{}),Promise.resolve());const wd=r=>({get:()=>r.get(),set:d=>q(r.set(d)),update:d=>q(r.update(d)),delete:()=>q(r.delete()),onSnapshot:(...a)=>r.onSnapshot(...a)});return {collection:c=>{const col=fsdb.collection(PFX+c);return {onSnapshot:(...a)=>col.onSnapshot(...a),doc:id=>wd(col.doc(id))}},doc:p=>wd(fsdb.doc(PFX+p))}}
   if(n==='downloads')return {save:async({filename,data})=>{const ext=(filename.split('.').pop()||'').toLowerCase();
     const blob=data instanceof Blob?data:new Blob([data],{type:MIME[ext]||'application/octet-stream'});const u=URL.createObjectURL(blob),a=document.createElement('a');
     a.href=u;a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},1500);return {status:'saved'}}};
