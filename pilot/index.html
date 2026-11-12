@@ -744,7 +744,7 @@ function tabsFor(){if(ui.isMgr)return [['home','Today'],...(PILOT?[['notices','N
   if(P.includes('inbox'))t.push(['inbox','Inbox']);if(P.includes('setup'))t.push(['setup','Setup']);return t}
 const signedIn=()=>!!(ui.me||ui.mgr);
 const NAVICO={resp:'<path d="M9 4h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="M8 13l2.5 2.5L16 10"/>',time:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M13 14h3M8 17h3"/>',home:'<path d="M3 11 12 4l9 7v9H3z"/>',plan:'<path d="M4 20h16M6 16l9-9 3 3-9 9H6z"/>',reg:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11l2 2 4-4"/>',fb:'<path d="M4 5h16v11H8l-4 4z"/>',inbox:'<path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
-function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return PILOTNOTE?[['home','Today'],rs,['plan','Plan'],['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]:[['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
+function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return PILOTNOTE?[['home','Today'],...(rs[0]==='reg'?[['plan','Plan'],rs]:[rs,['plan','Plan']]),['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]:[['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
 function renderChrome(){
   const bn=document.getElementById('bnav'),tabs=document.getElementById('tabs');if(tabs){tabs.hidden=true}
   const me=byId('staff',ui.me);
@@ -1212,7 +1212,8 @@ const hhmm=at=>{try{return new Date(at).toTimeString().slice(0,5)}catch(e){retur
 const ibTime=at=>{if(!at)return '';const d=at.slice(0,10);return d===todayIso()?hhmm(at):relDay(d)==='Yesterday'?'Yesterday':fmt(d).split(' ').slice(1,3).join(' ')};
 function ibApprovals(){const out=[];
   S.feedback.forEach(f=>{if(f.deleted)return;
-    if(f.kind==='unlock'){const open=(f.scope==='plan'?plocked(f.from,f.date):signed(f.from,f.date))&&!f.closed;
+    if(f.kind==='unlock'&&f.scope==='week'){if(wkLock(f.from,f.date)&&!f.closed)out.push({at:f.at,sid:f.from,txt:'Unlock week '+isoWeek(parse(f.date))+' planning',note:f.text,btn:`<button class="btn sm primary" data-act="unlockweek" data-s="${f.from}" data-d="${f.date}">Unlock</button>`})}
+    else if(f.kind==='unlock'){const open=(f.scope==='plan'?plocked(f.from,f.date):signed(f.from,f.date))&&!f.closed;
       if(open)out.push({at:f.at,sid:f.from,txt:(f.scope==='plan'?'Unlock planning · ':'Unlock checklist · ')+fmt(f.date),note:f.text,btn:`<button class="btn sm primary" data-act="${f.scope==='plan'?'unlockplan':'unlockday'}" data-s="${f.from}" data-d="${f.date}">Unlock</button>`})}
     else if(!f.from||f.from==='manager')Object.entries(f.doneBy||{}).forEach(([k,t])=>{if(!(f.approvedFor||{})[k])out.push({at:t,sid:k,txt:'Done · '+f.text,btn:`<button class="btn sm primary" data-act="fbapprove" data-id="${f.id}" data-s="${k}">Approve</button><button class="btn sm" data-act="fbreopen" data-id="${f.id}" data-s="${k}">Not yet</button>`})})});
   S.papprove.forEach(r=>{if(r.status!=='submitted')return;const n=S.plans.filter(p=>p.staffId===r.staffId&&weekDates(parse(r.ws)).includes(p.date)).length;
@@ -1268,10 +1269,12 @@ const papId=(sid,ws)=>sid+'_'+ws;
 function papBox(){const sid=ui.isMgr?ui.f.staff:ui.me;if(!sid||sid==='*')return '';const ws=iso(ui.ws),r=byId('papprove',papId(sid,ws)),n=S.plans.filter(p=>p.staffId===sid&&weekDates(ui.ws).includes(p.date)).length;
   const wk='week '+isoWeek(ui.ws);
   if(ui.isMgr){if(!r)return n?`<div class="banner"><span class="small">${esc(nm('staff',sid))} has not submitted ${wk} planning for approval yet (${n} planned).</span></div>`:'';
-    return `<div class="banner ${r.status==='approved'?'okb':''}"><div class="row spread"><span><b>${esc(nm('staff',sid))} · ${wk} planning</b><br><span class="small">${r.status==='approved'?'Approved '+esc(fmtAt(r.decidedAt)):r.status==='changes'?'Changes asked: '+esc(r.note||''):'Submitted '+esc(fmtAt(r.at))+' · '+n+' activities'}</span></span>${r.status==='submitted'?`<span class="acts"><button class="btn sm primary" data-act="papok" data-id="${r.id}">Approve</button></span>`:''}</div>${r.status==='submitted'?`<div class="addnew"><input type="text" id="tf-pch-${r.id}" placeholder="What should change?" aria-label="Changes needed"><button class="btn sm" data-act="papchg" data-id="${r.id}">Ask for changes</button></div>`:''}</div>`}
+    return `<div class="banner ${r.status==='approved'?'okb':''}"><div class="row spread"><span><b>${esc(nm('staff',sid))} · ${wk} planning</b><br><span class="small">${r.status==='approved'?'Approved '+esc(fmtAt(r.decidedAt)):r.status==='changes'?'Changes asked: '+esc(r.note||''):'Submitted '+esc(fmtAt(r.at))+' · '+n+' activities'}</span></span>${r.status==='submitted'?`<span class="acts"><button class="btn sm primary" data-act="papok" data-id="${r.id}">Approve</button>${PILOTNOTE?`<button class="btn sm" data-act="unlockweek" data-s="${r.staffId}" data-d="${r.ws}">Unlock</button>`:''}</span>`:PILOTNOTE&&r.status==='approved'?`<span class="acts"><button class="btn sm" data-act="unlockweek" data-s="${r.staffId}" data-d="${r.ws}">Unlock</button></span>`:''}</div>${r.status==='submitted'?`<div class="addnew"><input type="text" id="tf-pch-${r.id}" placeholder="What should change?" aria-label="Changes needed"><button class="btn sm" data-act="papchg" data-id="${r.id}">Ask for changes</button></div>`:''}</div>`}
   if(!r)return `<div class="banner"><div class="row spread"><span class="small"><b>${wk} planning</b> · ${n} activit${n===1?'y':'ies'} planned. When it is ready, send it to your manager.</span><button class="btn sm primary" data-act="papsend"${n?'':' disabled'}>Submit for approval</button></div></div>`;
+  if(r.status==='approved'&&PILOTNOTE){const q=wkReq(sid,ws);return `<div class="banner okb"><div class="row spread"><span class="small"><b>${wk} planning approved</b> · ${esc(fmtAt(r.decidedAt))}<br>Approved planning is locked.</span>${q?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-scope="week" data-d="${ws}">Request unlock</button>`}</div></div>`}
   if(r.status==='approved')return `<div class="banner okb"><span class="small"><b>${wk} planning approved</b> · ${esc(fmtAt(r.decidedAt))}</span></div>`;
   if(r.status==='changes')return `<div class="banner"><div class="row spread"><span class="small"><b>Your manager asked for changes to ${wk}:</b> ${esc(r.note||'See messages')}</span><button class="btn sm primary" data-act="papsend">Submit again</button></div></div>`;
+  if(PILOTNOTE){const q=wkReq(sid,ws);return `<div class="banner info"><div class="row spread"><span class="small"><b>${wk} planning submitted</b> · waiting for your manager · ${esc(fmtAt(r.at))}<br>You can't change this week's planning while it is with your manager.</span>${q?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-scope="week" data-d="${ws}">Request unlock</button>`}</div></div>`}
   return `<div class="banner info"><span class="small"><b>${wk} planning submitted</b> · waiting for your manager · ${esc(fmtAt(r.at))}</span></div>`}
 
 /* 9 mood check-in */
@@ -1607,6 +1610,15 @@ function testCard(r,isOpen){const t=r.o,x=[t.time?tRange(t):'',nm('children',t.c
   return `<div class="tlc tltest slim qrow${t.done?' tdone':''}${isOpen?' tlx':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}</span><span class="tlsub">${x?' · '+x:''}</span></span></span></button>${qdBtn(!!t.done,'testdone',`data-id="${t.id}"`,false,r.t)}${isOpen?`<div class="tlbody"><div class="tlacts">${canTest(t)?`<button class="btn" data-act="edittest" data-id="${t.id}">Edit test</button><button class="btn danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again to delete':'Delete test'}</button>`:'<span class="small muted">Only the person who added this test can change it.</span>'}</div></div>`:''}</div>`}
 function planView(){return PILOTNOTE?`<div class="mmx" role="group" aria-label="Row size"><button class="${ui.planFull?'':'on'}" data-act="planfull" data-v="0" aria-pressed="${!ui.planFull}">Min</button><button class="${ui.planFull?'on':''}" data-act="planfull" data-v="1" aria-pressed="${!!ui.planFull}">Max</button></div>`:''}
 
+/* ---------- pilot round 9: weekly plan lock ---------- */
+const wkLock=(sid,d)=>{if(!PILOTNOTE||!sid||sid==='*'||!d)return null;const r=byId('papprove',papId(sid,iso(mondayOf(parse(d)))));return r&&(r.status==='submitted'||r.status==='approved')?r:null};
+const wkReq=(sid,ws)=>S.feedback.find(f=>f.kind==='unlock'&&f.scope==='week'&&f.from===sid&&f.date===ws&&!f.closed);
+function wkGuard(b){if(!PILOTNOTE||ui.mgr||!ui.me)return false;const a=b.dataset.act;
+  if(!['psopen','pbopen','copyweek','editplan','slotadd','psave','pbsave'].includes(a)&&!(a==='del'&&b.dataset.c==='plans'))return false;
+  const p=b.dataset.id&&byId('plans',b.dataset.id),d=b.dataset.d||(p&&p.date)||(a==='copyweek'?iso(ui.ws):(ui.ps&&ui.ps.date)||plDaySel());
+  const r=wkLock(ui.me,d);if(!r)return false;
+  toast(`Week ${isoWeek(parse(r.ws))} planning is ${r.status==='approved'?'approved':'with your manager'}. Tap "Request unlock" to change it.`);return true}
+
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1615,7 +1627,7 @@ function vHome(){
   const its=itemsFor([d]).filter(i=>i.st!=='off'),pls=plansFor([d]),tot=its.length+pls.length,dn=its.filter(i=>i.st==='done').length+pls.filter(p=>p.done).length;
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
-    ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick"><button class="btn sm" data-act="tab" data-t="reg">Register</button><button class="btn sm" data-act="tab" data-t="time">Timetable</button><span class="rsp"></span>'+tabNav('home')+'</div>':''}</div>`;
+    ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick"><button class="btn sm" data-act="tab" data-t="reg">Register</button><button class="btn sm primary" data-act="tab" data-t="plan">Plan</button><button class="btn sm" data-act="tab" data-t="time">Timetable</button><span class="rsp"></span>'+tabNav('home')+'</div>':''}</div>`;
   h+=PILOT?homeNoticeLine()+bdBar(d):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
@@ -1984,6 +1996,8 @@ function unread(){if(!signedIn())return 0;
 function unreadInbox(){if(!signedIn()||!(ui.isMgr||hasPerm('inbox')))return 0;const seen=lsGet(seenKey('inbox'))||'';return unreadIn(fbVisible().filter(f=>fbKind(f)!=='fb'),seen,r=>r.by!=='manager')+photoRecs().filter(x=>x.staffPh&&x.at>seen).length}
 function fbStatus(f){
   if(f.deleted) return '';
+  if(f.kind==='unlock'&&f.scope==='week'){const open=!!wkLock(f.from,f.date)&&!f.closed;
+    return `<div class="row small" style="gap:8px">${open?(ui.mgr?`<button class="btn sm primary" data-act="unlockweek" data-s="${f.from}" data-d="${f.date}">Unlock week ${isoWeek(parse(f.date))}</button>`:'<span class="pill due">Waiting for manager</span>'):'<span class="pill done">Unlocked</span>'}</div>`}
   if(f.kind==='unlock'&&f.scope==='plan'){const open=plocked(f.from,f.date)&&!f.closed;
     return `<div class="row small" style="gap:8px">${open?(ui.mgr?`<button class="btn sm primary" data-act="unlockplan" data-s="${f.from}" data-d="${f.date}">Unlock planning ${fmt(f.date)}</button>`:'<span class="pill due">Waiting for manager</span>'):'<span class="pill done">Unlocked</span>'}</div>`}
   if(f.kind==='unlock'){const open=signed(f.from,f.date)&&!f.closed;
@@ -2350,7 +2364,7 @@ const acts={
   unlockplan:async b=>{const sid=b.dataset.s,d=b.dataset.d,k=sid+'_'+d;S.plocks=S.plocks.filter(x=>x.id!==k);await remove('plocks',k);
     for(const f of S.feedback.filter(f=>f.kind==='unlock'&&f.scope==='plan'&&f.from===sid&&f.date===d&&!f.closed)){const {id,...rest}=f;await put('feedback',id,{...rest,closed:true})}
     logAct(`Unlocked planning on ${fmt(d)} for ${nm('staff',sid)}`);render();toast('Planning unlocked')},
-  requnlock:async b=>{const d=b.dataset.d,sc=b.dataset.scope||'';if(await put('feedback',newId(),{to:'manager',from:ui.me,kind:'unlock',scope:sc,date:d,text:sc==='plan'?`Please unlock my planning for ${fmt(d)}.`:`Please unlock ${fmt(d)} so I can update my ticks.`,at:new Date().toISOString()})){render();toast('Unlock request sent to your manager')}},
+  requnlock:async b=>{const d=b.dataset.d,sc=b.dataset.scope||'';if(await put('feedback',newId(),{to:'manager',from:ui.me,kind:'unlock',scope:sc,date:d,text:sc==='week'?`Please unlock my week ${isoWeek(parse(d))} planning so I can change it.`:sc==='plan'?`Please unlock my planning for ${fmt(d)}.`:`Please unlock ${fmt(d)} so I can update my ticks.`,at:new Date().toISOString()})){render();toast('Unlock request sent to your manager')}},
   unlockday:async b=>{const sid=b.dataset.s,d=b.dataset.d,k=sid+'_'+d;delete soMap[k];await remove('signoffs',k);
     for(const f of S.feedback.filter(f=>f.kind==='unlock'&&f.scope!=='plan'&&f.from===sid&&f.date===d&&!f.closed)){const {id,...rest}=f;await put('feedback',id,{...rest,closed:true})}
     logAct(`Unlocked ${fmt(d)} for ${nm('staff',sid)}`);render();toast('Day unlocked')},
@@ -2541,6 +2555,10 @@ const acts={
   testcancel:()=>{ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;render()},
   regprint:()=>regPrint(),
   planfull:b=>{ui.planFull=b.dataset.v==='1';ui.rowMenu=null;render()},
+  unlockweek:async b=>{const sid=b.dataset.s,ws=b.dataset.d,r=byId('papprove',papId(sid,ws));const at=new Date().toISOString();
+    if(r){const {id,...rest}=r;r.status='changes';r.note='Unlocked so you can make changes. Submit again when ready.';r.decidedAt=at;await put('papprove',id,{...rest,status:'changes',note:r.note,decidedAt:at})}
+    for(const f of S.feedback.filter(f=>f.kind==='unlock'&&f.scope==='week'&&f.from===sid&&f.date===ws&&!f.closed)){const {id,...rest}=f;f.closed=true;await put('feedback',id,{...rest,closed:true})}
+    logAct(`Unlocked week ${isoWeek(parse(ws))} planning for ${nm('staff',sid)}`);render();toast('Week unlocked')},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
@@ -2643,7 +2661,7 @@ function saveComment(key,text){
   if(((entryMap[id]||{}).comment||'')===text){render();return}
   setEntry(id,rid,date,sid,{comment:text,cby:ui.me||'manager'});toast('Comment saved');
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
 document.addEventListener('submit',e=>{e.preventDefault();acts[e.target.dataset.act]?.(e.target)});
 document.addEventListener('change',e=>{const t=e.target;
   if(t.dataset.filter!==undefined){ui.f[t.dataset.filter]=t.value;if(t.dataset.filter==='cur')ui.f.topic='';
