@@ -617,6 +617,40 @@ body::before{background:var(--hdr)}
 .stthumb img{width:100%;height:100%;object-fit:cover;display:block}
 #bnav .bn span{white-space:nowrap}
 @media (max-width:420px){#bnav .bn span{font-size:9.5px}}
+/* pilot round 13 */
+.strk{display:inline-block;font-size:14px;font-weight:800;background:#fff3e0;color:#c2410c;border-radius:12px;padding:1px 9px;margin-left:6px;vertical-align:middle}
+.confbox{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.confbox i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:conf 2.2s ease-in forwards}
+@keyframes conf{to{top:105%;transform:translateX(40px) rotate(720deg)}}
+@media (prefers-reduced-motion:reduce){.confbox{display:none}}
+.kudos{display:flex;flex-direction:column;gap:6px;background:#fff8e6;border:1px solid #f0d58a;border-radius:12px;padding:8px 12px;align-items:flex-start}
+.kudo{display:flex;gap:10px;align-items:center}.kudoi{font-size:22px}
+.funrow{display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:6px}
+.funbtn{font:inherit;font-size:13px;font-weight:700;border:1px dashed #c4c4bc;background:transparent;color:#555;border-radius:18px;padding:6px 14px;cursor:pointer}
+.funbtn:hover{border-color:#23729f;color:#23729f}
+.kudof{width:100%;display:flex;flex-direction:column;gap:8px}.kdchips{display:flex;gap:6px;flex-wrap:wrap}
+.bdgs{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:6px}
+.bdg{background:#fafaf8;border:1px solid #d5d5cd;border-radius:12px;font-size:12px;font-weight:700;padding:2px 9px}
+.starc{background:linear-gradient(135deg,#fff6d6,#ffe9f3);border:1px solid #f0d58a;border-radius:14px;padding:12px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px}
+.stari{font-size:28px}.startx{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8a6414}.starn{font-size:19px;font-weight:800;color:#b0124f}
+.starsel{width:auto;margin-top:6px;font-size:12px;min-height:30px}
+.winsc{display:flex;flex-direction:column;gap:8px}
+.wins{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.win{padding:9px 10px;border-radius:4px 12px 12px 12px;font-size:12.5px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.win small{display:block;margin-top:4px;color:#6b6b63}
+.win.w0{background:#fff6b8}.win.w1{background:#ffd9e8}.win.w2{background:#d9ecff}.win.w3{background:#dcf5dc}
+.eod{background:#fff3e0;border:1px solid #f3c58a;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.eodr{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;background:#fff;border-radius:8px;padding:4px 6px 4px 10px}
+.eodl{display:flex;gap:6px;flex-wrap:wrap}.eodp{background:#fff;border-radius:10px;font-size:12px;font-weight:700;padding:2px 8px}
+.coverc{width:100%;display:flex;flex-direction:column;gap:6px}.coverst{text-align:center}
+.hqb{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.hqnum{width:auto;max-width:170px;min-height:30px;font-size:12.5px}
+.sugl{display:flex;gap:6px;flex-wrap:wrap}
+.glance{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.glance>div{background:#fafaf8;border:1px solid #d5d5cd;border-radius:10px;padding:8px;font-size:11.5px;color:#555}
+.glance b{display:block;font-size:17px;color:#333}
+@media (max-width:600px){.glance{grid-template-columns:1fr 1fr}}
+.arcbtn{font:inherit;font-size:12.5px;font-weight:700;border:1px dashed #b0b0a8;background:transparent;color:#6b6b63;border-radius:10px;padding:7px 12px;cursor:pointer;width:100%;margin-top:6px}
+#tf-mr-mo{min-height:40px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--fg);padding:0 10px;font:inherit;width:100%;box-sizing:border-box}
 </style>
 </head>
 <body>
@@ -669,7 +703,7 @@ const PILOT=!!window.__PILOT;
 const PILOTNOTE=PILOT&&!!window.__PILOTNOTE;
 const ISTEST=!!window.__ISTEST;
 const VERSION='2.5.0-pilot';
-const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','papprove','mood','leavereq','incidents','maint','ibhide','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log','stutests'];
+const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','papprove','mood','leavereq','incidents','maint','ibhide','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log','stutests','kudos','wins'];
 const S={settings:{}}; COLLS.forEach(c=>S[c]=[]);
 let entryMap={}, soMap={}, db=null, dl=null, assets=null, photoOk=false, loaded=false, dbState='loading';
 const lsGet=k=>{try{return localStorage.getItem('asd_'+k)}catch(e){return null}};
@@ -1156,12 +1190,12 @@ function vNews(){let h='';const staffN=br=>liveStaff().filter(x=>!br||x.branchId
     <label class="fld"><span>Message</span><textarea id="tf-an-text" rows="3" placeholder="Details for staff"></textarea></label>
     <div class="grid2"><label class="fld"><span>For</span><select id="tf-an-br">${opt('branches','','All branches')}</select></label></div>
     <div class="actions"><button class="btn primary" data-act="annpost">Post announcement</button></div><span class="muted small">Staff see it at the top of Today until they tick "I have read this".</span></div>`;
-  const l=annList();if(!l.length)return h+`<div class="card empty">No announcements yet.</div>`;
+  const AR_=arcCut(annList(),a=>a.at,'news'),l=AR_.cur;if(!l.length)return h+`<div class="card empty">No announcements yet.</div>`+AR_.btn;
   l.forEach(a=>{const rd=a.reads||{},who=staffN(a.branchId),readN=who.filter(x=>rd[x.id]).length,notR=who.filter(x=>!rd[x.id]);
     h+=`<div class="card"><div class="row spread small muted"><span>${a.branchId?esc(nm('branches',a.branchId)):'All branches'}</span><span>${fmtAt(a.at)}</span></div><h3 style="margin:0">${esc(a.title)}</h3>${a.text?`<div class="fbtext">${esc(a.text)}</div>`:''}
     ${ui.isMgr?`<div class="row spread"><span class="pill ${readN===who.length?'done':'due'}">Read by ${readN} of ${who.length}</span><button class="btn sm danger" data-act="del" data-c="announce" data-id="${a.id}">${ui.confirmDel==='announce'+a.id?'Tap again':'Delete'}</button></div>${notR.length?`<div class="small muted">Not read yet: ${notR.map(x=>esc(staffLabel(x))).join(', ')}</div>`:''}`
       :rd[ui.me]?`<span class="pill done">Read ${fmtAt(rd[ui.me])}</span>`:`<div><button class="btn primary" data-act="annread" data-id="${a.id}">I have read this</button></div>`}</div>`});
-  return h}
+  return h+AR_.btn}
 const RQ_PILL={requested:'due',ordered:'upcoming',delivered:'done',declined:'missed'};
 function vReq(){let h=`<div class="card"><h3>Request resources</h3><div class="grid2"><label class="fld"><span>What do you need?</span><input type="text" id="tf-rq-item" placeholder="e.g. Finger paint, red and yellow"></label>
     <label class="fld"><span>How many</span><input type="text" id="tf-rq-qty" placeholder="e.g. 2 bottles"></label><label class="fld"><span>Needed by (optional)</span><input type="date" id="tf-rq-by"></label>
@@ -1245,7 +1279,7 @@ function psSheet(){const s=ui.ps;if(!s)return '';const ds=weekDates(ui.ws),kids=
   const tm=s.start?s.start:'',lab=[tm,s.text&&(s.text.length>22?s.text.slice(0,22)+'…':s.text)||tName(s.topicId),whoTxt].filter(Boolean).join(' · ');
   return `<div class="psheet"><div class="in" role="dialog" aria-modal="true" aria-label="Add activity">
   <div class="row spread"><h3 style="margin:0">Add activity · ${esc(fmt(s.date))}</h3><button type="button" class="iconx" data-act="psclose" aria-label="Close">×</button></div>
-  ${ui.isMgr?`<label class="fld"><span>Staff member</span><select id="tf-ps-staff">${opt('staff',s.staff,'Choose staff')}</select></label>`:''}
+  ${ui.isMgr?`<label class="fld"><span>Staff member</span><select id="tf-ps-staff">${opt('staff',s.staff,'Choose staff')}</select></label>`:''}${psLastWeek(s,sid)}
   <div class="pss"><div class="psl">Day</div><div class="chips">${ds.map(x=>chip('psday',x,esc(fmt(x).split(' ').slice(0,2).join(' ')),x===s.date)).join('')}</div></div>
   <div class="pss"><div class="psl">1 · Time slot</div><div class="chips">${periodsSorted().map(x=>chip('psslot',x.id,esc(x.start?(x.start+(x.end?'–'+x.end:'')):(x.name||'Period'))+(used.has(x.id)?' <small>· used</small>':''),x.id===s.slot)).join('')}${chip('psslot','own','Own time',s.slot==='own')}</div>
   ${s.slot==='own'?`<div class="grid2"><label class="fld"><span>From</span><select id="tf-ps-start">${timeOpts(s.start,'—')}</select></label><label class="fld"><span>To</span><select id="tf-ps-end">${timeOpts(s.end,'—')}</select></label></div>`:''}</div>
@@ -1385,7 +1419,7 @@ function absAlerts(){const t=todayIso(),from=iso(addDays(parse(t),-14)),out=[];
 
 /* 16 leave requests + 24 sick note */
 const LV_TYPES=['Annual leave','Sick leave','Family responsibility','Study leave','Unpaid leave','Other'];
-function vLeave(){let h='';const mine=S.leavereq.filter(r=>r.staffId===ui.me).sort((a,b)=>(b.at||'').localeCompare(a.at||''));
+function vLeave(){let h='';const ARm=arcCut(S.leavereq.filter(r=>r.staffId===ui.me).sort((a,b)=>(b.at||'').localeCompare(a.at||'')),r=>r.to||r.from,'lvm'),mine=ARm.cur;
   if(ui.me) h+=`<div class="card"><h3>Apply for leave</h3><div class="grid2"><label class="fld"><span>Type</span><select id="tf-lv-type">${LV_TYPES.map(x=>`<option>${x}</option>`).join('')}</select></label><span></span>
     <label class="fld"><span>From</span><input type="date" id="tf-lv-from" value="${todayIso()}"></label><label class="fld"><span>To</span><input type="date" id="tf-lv-to"></label></div>
     <label class="fld"><span>Note (optional)</span><input type="text" id="tf-lv-note" placeholder="e.g. Doctor's appointment in the morning"></label>
@@ -1397,8 +1431,8 @@ function vLeave(){let h='';const mine=S.leavereq.filter(r=>r.staffId===ui.me).so
       ${!mgr&&(r.status==='pending'||/Sick/.test(r.type))?`<div class="actions">${photoOk?`<button class="btn sm" data-act="photopick" data-kind="leavereq" data-k="${r.id}">${/Sick/.test(r.type)?'+ Sick note photo':'+ Photo'}</button>`:''}${r.status==='pending'?`<button class="btn sm" data-act="del" data-c="leavereq" data-id="${r.id}">${ui.confirmDel==='leavereq'+r.id?'Tap again to cancel':'Cancel request'}</button>`:''}</div>`:''}</div>`};
   if(ui.isMgr){const all=S.leavereq.filter(r=>!ui.f.branch||(byId('staff',r.staffId)||{}).branchId===ui.f.branch).sort((a,b)=>(b.at||'').localeCompare(a.at||''));const pend=all.filter(r=>r.status==='pending');
     h+=`<h2>Waiting for you <span class="count">${pend.length}</span></h2>`+(pend.length?pend.map(r=>card(r,true)).join(''):'<div class="card empty">No leave requests waiting.</div>');
-    h+=`<h2>Decided</h2>`+(all.filter(r=>r.status!=='pending').slice(0,20).map(r=>card(r,true)).join('')||'<div class="muted small">None yet.</div>')}
-  else h+=`<h2>My requests</h2>`+(mine.length?mine.map(r=>card(r,false)).join(''):'<div class="card empty">No leave requests yet.</div>');
+    const ARd=arcCut(all.filter(r=>r.status!=='pending'),r=>r.to||r.from,'lvd');h+=`<h2>Decided</h2>`+(ARd.cur.slice(0,ISTEST&&ui.arc&&ui.arc.lvd?500:20).map(r=>card(r,true)).join('')||'<div class="muted small">None yet.</div>')+ARd.btn}
+  else h+=`<h2>My requests</h2>`+(mine.length?mine.map(r=>card(r,false)).join(''):'<div class="card empty">No leave requests yet.</div>')+ARm.btn;
   return h}
 
 /* 30 incident reports */
@@ -1422,11 +1456,11 @@ function incCard(x){const mgr=ui.isMgr,c=byId('children',x.childId)||{};
     <div class="actions">${!x.parent&&(mgr||x.by===ui.me)?`<select id="tf-in-p-${x.id}" aria-label="How parent was informed"><option>Phone call</option><option>WhatsApp</option><option>In person</option></select><button class="btn sm primary" data-act="inpar" data-id="${x.id}">Parent informed</button>`:''}
       ${photoOk&&(mgr||x.by===ui.me)?`<button class="btn sm" data-act="photopick" data-kind="incidents" data-k="${x.id}">+ Photo</button>`:''}<button class="btn sm" data-act="inprint" data-id="${x.id}">PDF report</button></div>
     ${mgr&&x.status!=='closed'?`<div class="addnew"><input type="text" id="tf-in-mn-${x.id}" placeholder="Manager note (optional)" aria-label="Manager note"><button class="btn sm primary" data-act="inclose" data-id="${x.id}">Mark reviewed</button></div>`:''}</div>`}
-function vInc(){const list=S.incidents.filter(x=>ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+function vInc(){let list=S.incidents.filter(x=>ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));const AR_=arcCut(list,x=>x.date,'inc');list=AR_.cur;
   let h=(PILOTNOTE?incOpen('new','New incident report')+incForm('')+incClose()+incOpen('pdf','Incident report for a period (PDF)'):incForm(''))+`<div class="card"><h3>Incident report for a period (PDF)</h3><div class="grid2"><label class="fld"><span>From</span><input type="date" id="tf-inr-from" value="${iso(addDays(new Date(),-30))}"></label><label class="fld"><span>To</span><input type="date" id="tf-inr-to" value="${todayIso()}"></label><label class="fld"><span>Area</span><select id="tf-inr-br">${opt('branches','','All areas')}</select></label><label class="fld"><span>Child</span><select id="tf-inr-child">${opt('children','','All children')}</select></label></div><div class="actions"><button class="btn" data-act="inrange">Create PDF report</button></div><span class="small muted">Opens the report. Choose Save as PDF in the print window.</span></div>`+(PILOTNOTE?incClose():'');const open=list.filter(x=>x.status!=='closed');
   h+=(PILOTNOTE?incOpen('list',`${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span>`):`<h2>${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span></h2>`)+((ui.isMgr?open:list).map(incCard).join('')||'<div class="card empty">No incident reports.</div>');
   if(ui.isMgr){const cl=list.filter(x=>x.status==='closed');if(cl.length)h+=`<h2>Reviewed</h2>`+cl.slice(0,20).map(incCard).join('')}
-  if(PILOTNOTE)h+=incClose();
+  if(PILOTNOTE)h+=AR_.btn+incClose();
   return h}
 
 /* 38 maintenance */
@@ -1481,7 +1515,7 @@ function ntfCheck(){if(!PILOT||!loaded||!signedIn()||!('Notification' in window)
   if(!last){lsSet(k,top);return}const nw=items.filter(x=>x[0]>last);if(!nw.length)return;lsSet(k,nw[0][0]);
   if(!document.hidden)return;
   const body=nw[0][1]+(nw.length>1?` (+${nw.length-1} more)`:'');
-  const show=r=>r.showNotification('Aldeia Staff Desk',{body,tag:'staffdesk',icon:PILOTNOTE?'../icon-192.png':'icon-192.png',badge:PILOTNOTE?'../icon-192.png':'icon-192.png'});
+  const show=r=>r.showNotification('Aldeia Staff Desk',{body,tag:'staffdesk',icon:ISTEST?'../icon-192.png':'icon-192.png',badge:ISTEST?'../icon-192.png':'icon-192.png'});
   if(navigator.serviceWorker&&navigator.serviceWorker.controller)navigator.serviceWorker.ready.then(show).catch(()=>{try{new Notification('Aldeia Staff Desk',{body})}catch(e){}});else try{new Notification('Aldeia Staff Desk',{body})}catch(e){}}
 if(PILOT){setInterval(ntfCheck,15000);window.addEventListener('online',()=>{render();toast('Back online · saving your changes')});window.addEventListener('offline',()=>render())}
 
@@ -1826,25 +1860,114 @@ function vStud(){const {br,kids,areas}=stScope(),cid=ui.stKid&&kids.some(c=>c.id
   <label class="fld"><span>Subject</span><select data-uiset="stSub"><option value="">All subjects</option>${subjects.map(s=>`<option${s===subj?' selected':''}>${esc(s)}</option>`).join('')}</select></label></div>
   <div class="sttot"><div class="nw"><b>${NW}</b>test${NW===1?'':'s'} outstanding</div><div class="hq"><b>${HQ}</b>still to WhatsApp to HQ</div></div>
   <div class="stchips">${[['','All',N],['nw','Not written',NW],['hq','To send to HQ',HQ]].map(([k,l,n])=>`<button class="stchip${f===k?' on':''} ${k}" data-act="stf" data-v="${k}" aria-pressed="${f===k}">${l} ${n}</button>`).join('')}</div>`;
+  h+=hqBatchBtn(rows);
   const list=rows.filter(x=>cid||x.shown.length||!f);
   if(!list.length)return h+'<div class="card empty">Nothing to show for these filters.</div>';
   const av=c=>`<span class="stav ${c.sex==='boy'?'boy':''}">${esc((c.name||'?')[0])}</span>`;
   const cnt=x=>x.all.length?(x.nw.length||x.hq.length?`${x.nw.length?`<span class="stp nw">${x.nw.length} not written</span>`:''}${x.hq.length?`<span class="stp hq">${x.hq.length} to HQ</span>`:''}`:'<span class="stp ok">All done</span>'):'<span class="stp ok">No tests</span>';
-  if(cid){const x=list[0];return h+`<div class="card stbox"><div class="stkidh">${av(x.c)}<div><b>${esc(x.c.name)}</b><div class="s">${esc([nm('grades',x.c.gradeId),nm('branches',x.c.branchId)].filter(Boolean).join(' · '))}</div></div><span class="stcnt">${cnt(x)}</span></div>${x.shown.map(t=>stRow(t,x.c)).join('')||'<div class="muted small" style="padding:10px">No tests for these filters.</div>'}</div>`}
+  if(cid){const x=list[0];return h+`<div class="card stbox"><div class="stkidh">${av(x.c)}<div><b>${esc(x.c.name)}</b><div class="s">${esc([nm('grades',x.c.gradeId),nm('branches',x.c.branchId)].filter(Boolean).join(' · '))}</div></div><span class="stcnt">${cnt(x)}</span>${ISTEST?`<button class="btn xs" data-act="goto" data-k="child" data-v="${x.c.id}" data-d="">Profile ›</button>`:''}</div>${x.shown.map(t=>stRow(t,x.c)).join('')||'<div class="muted small" style="padding:10px">No tests for these filters.</div>'}</div>`}
   return h+`<div class="card stbox">${list.map(x=>{const on=ui.stOpen===x.c.id;return `<button class="stkid" data-act="stopenk" data-c="${x.c.id}" aria-expanded="${on}"><span class="pmb${on?'':' c'}" aria-hidden="true">${on?'−':'+'}</span>${av(x.c)}<b>${esc(x.c.name)}</b><span class="stcnt">${cnt(x)}</span></button>${on?x.shown.map(t=>stRow(t,x.c)).join('')||'<div class="muted small" style="padding:8px 12px">No tests for these filters.</div>':''}`}).join('')}</div>`}
 async function stSave(k,patch){const cur=byId('stutests',k)||{};const {id,...rest}=cur;const [tid,cid]=k.split('_');const d={...rest,testId:tid,childId:cid,...patch};
   const ix=S.stutests.findIndex(x=>x.id===k);if(ix>=0)S.stutests[ix]={id:k,...d};else S.stutests.push({id:k,...d});render();await put('stutests',k,d)}
+
+/* ---------- pilot round 13 (pilot only: ISTEST) ---------- */
+const fun=()=>ISTEST;
+function dayStat(sid,d){const sv=ui.f.staff;ui.f.staff=sid;let its=[],pls=[];try{its=itemsFor([d]).filter(i=>i.st!=='off'&&(i.cover?i.cover===sid:i.sid===sid));pls=plansFor([d]).filter(p=>p.staffId===sid)}catch(e){}ui.f.staff=sv;
+  const ts=S.tests.filter(t=>t.date===d&&t.childId&&(t.by===sid)),open=[...its.filter(i=>i.st!=='done').map(i=>({k:'t',i})),...pls.filter(p=>!p.done).map(p=>({k:'p',p})),...ts.filter(t=>!t.done).map(t=>({k:'x',t}))];
+  return {tot:its.length+pls.length+ts.length,done:its.filter(i=>i.st==='done').length+pls.filter(p=>p.done).length+ts.filter(t=>t.done).length,open}}
+const _stk={};
+function streak(sid){const key=sid+todayIso()+S.entries.reduce((a,e)=>a+(e.done?1:0),0)+'_'+S.plans.reduce((a,p)=>a+(p.done?1:0),0)+'_'+S.tests.reduce((a,t)=>a+(t.done?1:0),0);if(_stk[sid]&&_stk[sid].k===key)return _stk[sid].v;let n=0,d=new Date(),guard=0;
+  const t=dayStat(sid,todayIso());if(t.tot&&t.done===t.tot)n++;
+  for(d=addDays(d,-1);guard<90;d=addDays(d,-1),guard++){const w=d.getDay();if(!w||w===6)continue;const x=dayStat(sid,iso(d));if(!x.tot)continue;if(x.done===x.tot)n++;else break}
+  _stk[sid]={k:key,v:n};return n}
+/* 16 confetti */
+function confetti(){const box=document.createElement('div');box.className='confbox';box.setAttribute('aria-hidden','true');const cols=['#ff2d87','#2f7fd6','#2f8a4a','#f5b301','#8a5cd6','#23729f'];
+  for(let i=0;i<60;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.background=cols[i%cols.length];s.style.animationDelay=(Math.random()*.4)+'s';s.style.transform=`rotate(${Math.random()*360}deg)`;box.appendChild(s)}
+  document.body.appendChild(box);setTimeout(()=>box.remove(),2600)}
+function celebrate(){if(!fun()||!ui.me)return;const d=todayIso(),x=dayStat(ui.me,d),k='conf_'+ui.me+'_'+d;if(x.tot&&x.done===x.tot&&lsGet(k)!=='1'){lsSet(k,'1');confetti();toast('All done for today! 🎉 Well done.',4000)}}
+/* 12 high-fives */
+const KUDO=['Thanks for covering','Great lesson today','Team player','You made my day','Thanks for the help'];
+const kudoName=x=>x==='manager'?'Manager':(nm('staff',x)||'');
+function kudosIn(){const me=ui.me||'manager',seen=lsGet('kudoseen_'+meKey())||'';return S.kudos.filter(k=>k.to===me&&k.at>seen).sort((a,b)=>b.at.localeCompare(a.at))}
+function kudoCards(){const l=kudosIn();if(!l.length)return '';
+  return `<div class="kudos">${l.slice(0,3).map(k=>`<div class="kudo"><span class="kudoi" aria-hidden="true">🙌</span><div><b>${esc(kudoName(k.from))} gave you a high-five</b><div class="small">${esc(k.text)}</div></div></div>`).join('')}<button class="btn xs" data-act="kudoseen">Thanks!</button></div>`}
+function kudoForm(){if(!ui.kudo)return `<button class="funbtn" data-act="kudoopen">🙌 High-five a colleague</button>`;
+  const me=ui.me||'manager',who=[...(ui.me?[['manager','Manager']]:[]),...liveStaff().filter(x=>x.id!==ui.me).map(x=>[x.id,staffLabel(x)])];
+  return `<div class="card kudof"><div class="row spread"><b>🙌 Give a high-five</b><button class="iconx" data-act="kudox" aria-label="Close">×</button></div>
+  <select id="tf-kd-to"><option value="">Who?</option>${who.map(([v,l])=>`<option value="${v}">${esc(l)}</option>`).join('')}</select>
+  <div class="kdchips">${KUDO.map(t=>`<button type="button" class="chip${ui.kudoT===t?' on':''}" data-act="kudot" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+  <input type="text" id="tf-kd-text" placeholder="Or write your own (optional)"><div class="actions"><button class="btn primary sm" data-act="kudosend">Send high-five</button></div></div>`}
+/* 13 badges */
+function badges(sid){const b=[],cut=iso(addDays(new Date(),-14));
+  const early=new Set(S.attendance.filter(a=>a.by===sid&&a.at&&a.date>=cut&&new Date(a.at).getHours()<8).map(a=>a.date)).size;if(early>=5)b.push(['🐦','Early Bird','Register done before 08:00 on 5 days']);
+  const ph=[...S.entries.flatMap(e=>e.photos||[]),...S.plans.flatMap(p=>p.photos||[]),...S.stutests.flatMap(x=>x.photos||[]),...S.incidents.flatMap(x=>x.photos||[])].filter(p=>p.by===sid).length;if(ph>=10)b.push(['📸','Shutterbug',ph+' photos added']);
+  if(S.papprove.some(r=>r.staffId===sid&&r.status==='approved'&&!r.note))b.push(['🗓️','Planner Pro','A week approved first time']);
+  if(S.kudos.filter(k=>k.from===sid).length>=5)b.push(['🙌','High-Five Hero','Gave 5 high-fives']);
+  const st=streak(sid);if(st>=5)b.push(['🔥','On Fire',st+' days in a row all done']);return b}
+/* 14 star of the month */
+function starOf(mo){const set=(S.settings.star||{})[mo];if(set)return {sid:set,manual:true};const ck='starcalc_'+mo;try{const c=JSON.parse(lsGet(ck)||'null');if(c&&c.n===S.entries.length+S.plans.length)return c}catch(e){}
+  const [y,m]=mo.split('-').map(Number),days=[];for(let d=new Date(y,m-1,1);d.getMonth()===m-1;d=addDays(d,1))if(d.getDay()>0&&d.getDay()<6)days.push(iso(d));
+  let best=null;liveStaff().forEach(s=>{let t=0,dn=0;days.forEach(d=>{const x=dayStat(s.id,d);t+=x.tot;dn+=x.done});if(t>=5&&dn>0){const p=dn/t;if(!best||p>best.p||(p===best.p&&dn>best.dn))best={sid:s.id,p,dn}}});
+  const r=best?{sid:best.sid,pct:Math.round(best.p*100),n:S.entries.length+S.plans.length}:{sid:'',n:0};lsSet(ck,JSON.stringify(r));return r}
+function starCard(){if(!fun())return '';const now=new Date();if(now.getDate()>7)return '';const pm=new Date(now.getFullYear(),now.getMonth()-1,1),mo=iso(pm).slice(0,7),st=starOf(mo);if(!st.sid)return '';
+  return `<div class="starc"><span class="stari" aria-hidden="true">⭐</span><div class="startx">Star of ${MON_LONG[pm.getMonth()]}</div><div class="starn">${esc(nm('staff',st.sid))}</div>${st.pct?`<div class="small">${st.pct}% of tasks and plans done</div>`:''}
+  ${ui.isMgr?`<select class="starsel" data-starmo="${mo}" aria-label="Choose the star"><option value="">Change star…</option>${liveStaff().map(x=>`<option value="${x.id}">${esc(staffLabel(x))}</option>`).join('')}</select>`:''}</div>`}
+/* 15 Friday wins */
+function winsWs(){const d=new Date(),w=d.getDay();if(w===5||w===6||w===0)return iso(mondayOf(d));if(w===1)return iso(mondayOf(addDays(d,-3)));return ''}
+function winsCard(){if(!fun())return '';const ws=winsWs();if(!ws)return '';const l=S.wins.filter(x=>x.ws===ws).sort((a,b)=>a.at.localeCompare(b.at)),me=ui.me||'manager',mine=l.some(x=>x.by===me);
+  return `<div class="card winsc"><b>🎉 Wins of week ${isoWeek(parse(ws))}</b>${mine?'':`<div class="addnew"><input type="text" id="tf-win" placeholder="Your best moment this week?" aria-label="Your best moment this week"><button class="btn sm primary" data-act="winpost" data-ws="${ws}">Post</button></div>`}
+  ${l.length?`<div class="wins">${l.map((x,i)=>`<div class="win w${i%4}"><div>${esc(x.text)}</div><small>— ${esc(kudoName(x.by))}</small></div>`).join('')}</div>`:'<div class="small muted">No wins yet. Be the first!</div>'}</div>`}
+/* 5 end-of-day check */
+function eodCard(d){if(!ISTEST||d!==todayIso()||new Date().getHours()<15||lsGet('eod_'+meKey()+'_'+d))return '';
+  if(ui.isMgr){const rows=liveStaff().map(s=>({s,x:dayStat(s.id,d)})).filter(r=>r.x.open.length);if(!rows.length)return '';const n=rows.reduce((a,r)=>a+r.x.open.length,0);
+    return `<div class="eod"><div class="row spread"><b>⏰ ${n} thing${n===1?'':'s'} still open today</b><button class="btn xs" data-act="eodhide">Hide</button></div><div class="eodl">${rows.map(r=>`<span class="eodp">${esc(r.s.first||staffLabel(r.s))} · ${r.x.open.length}</span>`).join('')}</div><button class="btn sm" data-act="eodremind">Remind them</button></div>`}
+  if(!ui.me)return '';const x=dayStat(ui.me,d);if(!x.open.length)return '';
+  return `<div class="eod"><div class="row spread"><b>⏰ ${x.open.length} thing${x.open.length===1?'':'s'} still open today</b><button class="btn xs" data-act="eodhide">Hide</button></div>${x.open.slice(0,6).map(o=>o.k==='t'?`<div class="eodr"><span>${esc(o.i.r.text)}</span>${qdBtn(false,'hdone',`data-k="${o.i.r.id}|${o.i.date}|${o.i.sid}"`,false,o.i.r.text)}</div>`:o.k==='p'?`<div class="eodr"><span>${esc(o.p.text)}</span>${qdBtn(false,'hpdone',`data-id="${o.p.id}"`,false,o.p.text)}</div>`:`<div class="eodr"><span>Test: ${esc(o.t.title||'')}</span>${qdBtn(false,'testdone',`data-id="${o.t.id}"`,false,o.t.title)}</div>`).join('')}</div>`}
+/* 6 cover me */
+function coverBtn(d){if(!ISTEST||!ui.me||d!==todayIso())return '';const req=S.leavereq.find(r=>r.staffId===ui.me&&r.from<=d&&(r.to||r.from)>=d&&r.status!=='declined');
+  if(req)return `<div class="small muted coverst">🤒 ${esc(req.type)} today · ${req.status==='pending'?'waiting for your manager to arrange cover':'approved'+(req.coverId?' · '+esc(nm('staff',req.coverId))+' covers':'')}</div>`;
+  return ui.coverAsk?`<div class="card coverc"><b>Off sick today?</b><div class="small">Your manager gets a sick-leave request for today and can hand your tasks and plans to someone else.</div><input type="text" id="tf-cov-note" placeholder="Short note (optional)"><div class="actions"><button class="btn sm danger" data-act="coverme">Yes, I'm off sick today</button><button class="btn sm" data-act="coverx">Cancel</button></div></div>`
+    :`<button class="funbtn" data-act="coverask">🤒 Cover me · I'm off sick today</button>`}
+/* 2 HQ batch */
+function hqBatchBtn(rows){if(!ISTEST)return '';const items=rows.flatMap(x=>x.all.filter(t=>{const s=stState(t,x.c);return s.w&&!s.hq}).map(t=>({t,c:x.c})));if(!items.length)return '';
+  return `<div class="hqb"><button class="btn sm wab" data-act="hqbatch">📤 Send all ${items.length} to HQ</button>${ui.isMgr?`<input type="tel" id="tf-hqwa" class="hqnum" placeholder="HQ WhatsApp number" value="${esc(S.settings.hqWa||'')}" aria-label="HQ WhatsApp number"><button class="btn xs" data-act="hqsave">Save number</button>`:''}</div>`}
+/* 2 planning suggestions */
+function psLastWeek(s,sid){if(!ISTEST)return '';const prev=iso(addDays(parse(s.date),-7)),l=S.plans.filter(p=>p.date===prev&&(!sid||p.staffId===sid)).sort((a,b)=>oStart(a).localeCompare(oStart(b)));if(!l.length)return '';
+  return `<div class="fld"><span>Last ${esc(DAYS_LONG[parse(prev).getDay()])} you did · tap to copy</span><div class="sugl">${l.slice(0,6).map(p=>`<button type="button" class="chip" data-act="pssug" data-id="${p.id}">${p.start?esc(p.start)+' ':''}${esc(p.text)}${kidsOf(p).length?' · '+esc(whoLabel(p)):''}</button>`).join('')}</div></div>`}
+/* 8 child at a glance */
+function kidGlance(cid){if(!ISTEST)return '';const c=byId('children',cid);if(!c)return '';const ts=stTests(c),nw=ts.filter(t=>!stState(t,c).w).length,hq=ts.filter(t=>{const s=stState(t,c);return s.w&&!s.hq}).length;
+  const mo=todayIso().slice(0,7),att=S.attendance.filter(a=>a.childId===cid&&(a.date||'').startsWith(mo)),pr=att.filter(a=>a.present).length,nb=c.dob?nextBday(c.dob):null,inc=S.incidents.filter(x=>x.childId===cid&&(ui.isMgr||x.by===ui.me)).length;
+  return `<div class="glance"><div><b>${ts.length}</b>tests · ${nw} not written · ${hq} to HQ</div><div><b>${pr}/${att.length}</b>days present this month</div><div><b>${inc}</b>incident${inc===1?'':'s'}</div><div><b>${nb?esc(fmt(nb.date)):'—'}</b>birthday${nb&&nb.age?' · turns '+nb.age:''}</div></div>
+  ${ts.length?`<div class="card stbox">${ts.slice(-6).map(t=>stRow(t,c)).join('')}</div>`:''}`}
+/* 9 monthly manager report */
+function mgrReport(){const mo=val('tf-mr-mo')||todayIso().slice(0,7),[y,m]=mo.split('-').map(Number),days=[];for(let d=new Date(y,m-1,1);d.getMonth()===m-1;d=addDays(d,1))if(d.getDay()>0&&d.getDay()<6)days.push(iso(d));
+  const br=ui.f.branch||'',kids=sortByName('children').filter(c=>!br||c.branchId===br),att=S.attendance.filter(a=>(a.date||'').startsWith(mo)&&kids.some(c=>c.id===a.childId));
+  const aRows=kids.map(c=>{const r=att.filter(a=>a.childId===c.id),p=r.filter(a=>a.present).length;return [esc(c.name),p,r.length-p,r.length?Math.round(p/r.length*100)+'%':'—']});
+  const tP=att.filter(a=>a.present).length,tA=att.length-tP;
+  const tests=S.tests.filter(t=>(t.date||'').startsWith(mo));let tw=0,th=0,tt=0;kids.forEach(c=>stTests(c).filter(t=>(t.date||'').startsWith(mo)).forEach(t=>{tt++;const s=stState(t,c);if(s.w)tw++;if(s.hq)th++}));
+  const inc=S.incidents.filter(x=>(x.date||'').startsWith(mo)&&kids.some(c=>c.id===x.childId));
+  const st=liveStaff().filter(s=>!br||s.branchId===br).map(s=>{let t=0,dn=0;days.forEach(d=>{const x=dayStat(s.id,d);t+=x.tot;dn+=x.done});return [esc(staffLabel(s)),t,dn,t?Math.round(dn/t*100)+'%':'—']});
+  const T=st.reduce((a,r)=>[a[0]+r[1],a[1]+r[2]],[0,0]);
+  openPrint(`Monthly report ${MON_LONG[m-1]} ${y}`,`<h1>Monthly report · ${MON_LONG[m-1]} ${y}</h1><div class="m">${br?esc(nm('branches',br)):'All areas'}</div>
+  <h2>Attendance</h2>${tbl2(['Child','Present','Absent','%'],aRows,['Total',tP,tA,att.length?Math.round(tP/att.length*100)+'%':'—'],[1,2,3])}
+  <h2>Tests</h2>${tbl2(['Measure','Count'],[['Tests this month (per child)',tt],['Written',tw],['Sent to HQ',th],['Still to write',tt-tw]],null,[1])}
+  <h2>Incidents</h2>${inc.length?tbl2(['Date','Child','What','Injury'],inc.map(x=>[fmt(x.date),esc(nm('children',x.childId)),esc(x.what||''),esc(x.injury||'')]),null):'<p class="m">No incidents this month.</p>'}
+  <h2>Staff completion</h2>${tbl2(['Staff','Tasks + plans','Done','%'],st,['Total',T[0],T[1],T[0]?Math.round(T[1]/T[0]*100)+'%':'—'],[1,2,3])}`)}
+function mgrReportCard(){if(!ISTEST||!ui.isMgr)return '';return `<div class="card"><h3>Monthly report (PDF)</h3><div class="grid2"><label class="fld"><span>Month</span><input type="month" id="tf-mr-mo" value="${todayIso().slice(0,7)}"></label></div><div class="actions"><button class="btn primary" data-act="mgrrep">Create monthly report</button><span class="muted small">Attendance, tests, incidents and staff completion for the area chosen above.</span></div></div>`}
+/* 10 archive */
+function arcCut(list,dk,key){if(!ISTEST)return {cur:list,btn:''};const cut=iso(addDays(new Date(),-60)),old=list.filter(x=>(dk(x)||'').slice(0,10)<cut),on=!!(ui.arc&&ui.arc[key]);
+  return {cur:on?list:list.filter(x=>(dk(x)||'').slice(0,10)>=cut),btn:old.length?`<button class="arcbtn" data-act="arctog" data-k="${key}" aria-expanded="${on}">${on?'Hide archive':`🗄 Archive · ${old.length} older than 60 days ▸`}</button>`:''}}
 
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
   const d=homeDay(),t=todayIso(),now=new Date(),nowM=now.getHours()*60+now.getMinutes(),me=byId('staff',ui.me),hr=now.getHours();
-  const greet=(hr<12?'Good morning':hr<17?'Good afternoon':'Good evening')+(me?', '+esc(me.first||staffLabel(me)):'');
+  const greet=(hr<12?'Good morning':hr<17?'Good afternoon':'Good evening')+(me?', '+esc(me.first||staffLabel(me)):'')+(fun()&&ui.me&&streak(ui.me)?` <span class="strk" title="Days in a row with everything done">🔥 ${streak(ui.me)}</span>`:'');
   const its=itemsFor([d]).filter(i=>i.st!=='off'),pls=plansFor([d]),tot=its.length+pls.length,dn=its.filter(i=>i.st==='done').length+pls.filter(p=>p.done).length;
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
     ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick">'+qBar('home')+'</div>':''}</div>`;
-  h+=PILOT?homeNoticeLine()+bdBar(d):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
+  h+=PILOT?homeNoticeLine()+(fun()?kudoCards()+starCard():'')+bdBar(d)+eodCard(d)+(fun()?winsCard():''):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
   pls.forEach(p=>{const lk=p.staffId!=='*'&&plocked(p.staffId,p.date);rows.push({type:'plan',key:'p:'+p.id,id:p.id,s:oStart(p),e:oEnd(p),t:p.text,o:p,done:!!p.done,who:p.staffId,lock:lk&&!ui.mgr,comment:p.comment,photos:p.photos,cover:coverOf(p)?p.staffId:''})});
@@ -1878,6 +2001,7 @@ function vHome(){
     return `<div class="tlc ${r.done?'tldone':'tlopen'}${r.miss?' tlmiss':''}${isOpen?' tlx':''}${r.type==='plan'?' tlplan':''}${PILOTNOTE?' qrow':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}${PILOT?rIcons(r):''}</span><span class="tlsub">${sub}</span></span>${isNow?'<span class="nowb">NOW</span>':''}</span></button>${PILOTNOTE?qdBtn(!!r.done,r.type==='task'?'hdone':'hpdone',r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`,r.lock,r.t):''}${tags||act?`<div class="tlbody">${tags?`<div class="meta">${tags}</div>`:''}${act}</div>`:''}</div>`};
   h+=`<div class="tline${PILOT&&ui.isMgr?' thin':''}">${rows.map(r=>`<div class="tltime${cur&&cur.key===r.key?' tlnow':''}">${r.s==='99'?'Any':esc(r.s)}</div>${card(r)}`).join('')}</div>`;
   h+=`<div class="hfoot"><button class="btn sm" data-act="tab" data-t="check">Full checklist and week view</button></div>`;
+  if(ISTEST){const bd=ui.me?badges(ui.me):[];h+=`<div class="funrow">${kudoForm()}${coverBtn(d)}</div>${bd.length?`<div class="bdgs"><span class="small muted">My badges</span>${bd.map(([i,n,t])=>`<span class="bdg" title="${esc(t)}">${i} ${esc(n)}</span>`).join('')}</div>`:''}`}
   return h}
 const DAYS_LONG=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],MON_LONG=['January','February','March','April','May','June','July','August','September','October','November','December'];
 function homeMissed(){if(!loaded)return '';const pd=prevWorkday(),its=itemsFor([pd]).filter(i=>i.st==='missed'&&!signed(i.sid,i.date)),pls=plansFor([pd]).filter(p=>!p.done&&pd<todayIso());const n=its.length+pls.length;if(!n)return '';
@@ -2111,7 +2235,7 @@ function myProgress(dates,span){
 function vOver(){
   if(!S.staff.length&&loaded) return setupFirst();
   const dates=selDates(), span=dates.length>1?'week':'day';
-  let h=weekNav();
+  let h=weekNav()+mgrReportCard();
   if(!ui.mgr){
     return h+myProgress(dates,span);
   }
@@ -2181,6 +2305,7 @@ function vKids(){
   const c=byId('children',ui.kid)||{}, recs=records({child:ui.kid,since:iso(addDays(new Date(),-56))});
   h+=`<div class="card"><h2>${esc(c.name)}</h2><div class="muted small">${[nm('grades',c.gradeId),nm('branches',c.branchId)].filter(Boolean).map(esc).join(' · ')}${ui.mgr?'':' · your records only'}</div>
     <div class="stats"><span class="pill done">${recs.filter(r=>r.kind==='Task'&&r.done).length} tasks done</span><span class="pill upcoming">${recs.filter(r=>r.kind==='Plan').length} plans</span><span class="pill">${recs.filter(r=>r.comment).length} comments</span><span class="pill">${recs.reduce((a,r)=>a+(r.photos||[]).length,0)} photos</span></div></div>`;
+  h+=kidGlance(ui.kid);
   if(PILOT){h+=contactCard(ui.kid)+moodCard(ui.kid);absAlerts().filter(a=>a.cid===ui.kid).forEach(a=>h+=`<div class="banner warnb"><span class="small">${esc(a.txt)}</span></div>`);const inc=S.incidents.filter(x=>x.childId===ui.kid&&(ui.isMgr||x.by===ui.me));if(inc.length)h+='<h2>Incidents</h2>'+inc.map(incCard).join('')}
   h+=`<div class="card"><h3>Parent daily summary</h3><div class="grid2"><label class="fld"><span>Day</span><input type="date" data-uiset="psDate" value="${ui.psDate||todayIso()}"></label></div>
     <div class="actions"><button class="btn primary" data-act="psprint">Print or save PDF</button><button class="btn" data-act="pscopy">Copy as text (WhatsApp)</button>${PILOT?'<button class="btn" data-act="pswa">Send on WhatsApp</button>':''}</div></div>`;
@@ -2801,6 +2926,23 @@ const acts={
   stcm:b=>{ui.stCm=b.dataset.k;render();setTimeout(()=>document.getElementById('tf-stcm')?.focus(),0)},
   stcmx:()=>{ui.stCm=null;render()},
   stcmsave:b=>{const v=(document.getElementById('tf-stcm')||{}).value||'';ui.stCm=null;stSave(b.dataset.k,{comment:v.trim(),cBy:ui.me||'manager',cAt:new Date().toISOString()})},
+  kudoopen:()=>{ui.kudo=true;ui.kudoT='';render()},kudox:()=>{ui.kudo=false;render()},kudot:b=>{ui.kudoT=b.dataset.v;const to=val('tf-kd-to');render();const s=document.getElementById('tf-kd-to');if(s)s.value=to},
+  kudosend:async()=>{const to=val('tf-kd-to'),text=val('tf-kd-text')||ui.kudoT;if(!to){toast('Choose who gets the high-five.');return}if(!text){toast('Pick a reason or write one.');return}
+    if(await put('kudos',newId(),{from:ui.me||'manager',to,text,at:new Date().toISOString()})){ui.kudo=false;ui.clear.add('tf-kd-');render();confetti();toast('High-five sent 🙌')}},
+  kudoseen:()=>{lsSet('kudoseen_'+meKey(),new Date().toISOString());render()},
+  winpost:async b=>{const text=val('tf-win');if(!text){toast('Write your best moment first.');return}if(await put('wins',newId(),{by:ui.me||'manager',ws:b.dataset.ws,text,at:new Date().toISOString()})){ui.clear.add('tf-win');render();toast('Posted to the wins wall 🎉')}},
+  eodhide:()=>{lsSet('eod_'+meKey()+'_'+todayIso(),'1');render()},
+  eodremind:async()=>{const d=todayIso();let n=0;for(const s of liveStaff()){const x=dayStat(s.id,d);if(!x.open.length)continue;n++;await put('feedback',newId(),{to:s.id,from:'manager',text:`Reminder: you still have ${x.open.length} thing${x.open.length===1?'':'s'} open today. Please finish or add a comment.`,at:new Date().toISOString()})}toast(n?`Reminder sent to ${n} staff`:'Nothing open');lsSet('eod_'+meKey()+'_'+d,'1');render()},
+  coverask:()=>{ui.coverAsk=true;render()},coverx:()=>{ui.coverAsk=false;render()},
+  coverme:async()=>{const d=todayIso(),note=val('tf-cov-note')||'Off sick today (sent from Today)',at=new Date().toISOString(),x=dayStat(ui.me,d);
+    if(await put('leavereq',newId(),{staffId:ui.me,type:'Sick leave',from:d,to:d,note,status:'pending',at,photos:[]})){put('feedback',newId(),{to:'manager',from:ui.me,kind:'leave',text:`Off sick today · ${x.tot} task${x.tot===1?'':'s'} and plans need cover${note?' · '+note:''}`,at});ui.coverAsk=false;ui.clear.add('tf-cov-');render();toast('Your manager has been told. Get well soon.')}},
+  hqbatch:async()=>{const {kids}=stScope(),items=[];kids.forEach(c=>stTests(c).filter(t=>!ui.stSub||stSubj(t)===ui.stSub).forEach(t=>{const s=stState(t,c);if(s.w&&!s.hq&&(!ui.stKid||ui.stKid===c.id))items.push({t,c})}));if(!items.length)return;
+    const msg='Tests written · '+fmt(todayIso())+'\n'+items.map(x=>`• ${x.c.name} · ${stSubj(x.t)} · ${fmt(x.t.date)}`).join('\n')+'\n\nSent from Aldeia Staff Desk',n=waNum(S.settings.hqWa||'');
+    window.open(`https://wa.me/${n}?text=${encodeURIComponent(msg)}`,'_blank');const at=new Date().toISOString(),me=ui.me||'manager';for(const x of items)await stSave(x.t.id+'_'+x.c.id,{hq:true,hqBy:me,hqAt:at});toast(`${items.length} marked as sent to HQ`)},
+  hqsave:async()=>{const v=val('tf-hqwa');S.settings.hqWa=v;if(db){try{await db.doc('settings/main').set({...S.settings,hqWa:v});toast('HQ number saved')}catch(e){toast('Could not save the number.')}}},
+  pssug:b=>{psGrab();const p=byId('plans',b.dataset.id),s=ui.ps;if(!p||!s)return;Object.assign(s,{text:p.text||'',start:p.start||'',end:p.end||'',slot:p.periodId||'own',topicId:p.topicId||'',curriculumId:p.curriculumId||'',kids:kidsOf(p).map(c=>c.id||c),who:p.wholeClass?'class':p.groupId?'g:'+p.groupId:''});ui.clear.add('tf-ps-');render();toast('Copied from last week')},
+  mgrrep:()=>mgrReport(),
+  arctog:b=>{ui.arc=ui.arc||{};ui.arc[b.dataset.k]=!ui.arc[b.dataset.k];render()},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
@@ -2903,15 +3045,16 @@ function saveComment(key,text){
   if(((entryMap[id]||{}).comment||'')===text){render();return}
   setEntry(id,rid,date,sid,{comment:text,cby:ui.me||'manager'});toast('Comment saved');
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(b.dataset.ntcgo&&document.getElementById('ntm')){document.getElementById('ntm').remove();ui.ntcDone=false}if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(b.dataset.ntcgo&&document.getElementById('ntm')){document.getElementById('ntm').remove();ui.ntcDone=false}if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e);if(ISTEST&&['hdone','hpdone','testdone','stuw'].includes(b.dataset.act))setTimeout(celebrate,500)});
 document.addEventListener('submit',e=>{e.preventDefault();acts[e.target.dataset.act]?.(e.target)});
-document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.snz){const m=Number(t.value);if(!m)return;const k=t.dataset.snz,sz=ntcSnz();sz[k]=new Date(Date.now()+m*60000).toISOString();lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));const r=ntcRead();if(!r.includes(k)){r.push(k);ntcSave(r)}toast('I will remind you '+(SNZ.find(x=>x[0]===m)||[0,''])[1]);render();ntcModalFill();return}
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.starmo&&t.value){const st={...(S.settings.star||{}),[t.dataset.starmo]:t.value};S.settings.star=st;if(db)db.doc('settings/main').set({...S.settings,star:st}).catch(()=>{});render();toast('Star of the month changed ⭐');return}if(t.dataset&&t.dataset.snz){const m=Number(t.value);if(!m)return;const k=t.dataset.snz,sz=ntcSnz();sz[k]=new Date(Date.now()+m*60000).toISOString();lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));const r=ntcRead();if(!r.includes(k)){r.push(k);ntcSave(r)}toast('I will remind you '+(SNZ.find(x=>x[0]===m)||[0,''])[1]);render();ntcModalFill();return}
   if(t.dataset.filter!==undefined){ui.f[t.dataset.filter]=t.value;if(t.dataset.filter==='cur')ui.f.topic='';
     if(t.dataset.filter==='child'){const c=byId('children',t.value);ui.f.grade=c?c.gradeId||'':'';ui.f.cur=c&&(c.curIds||[]).length?c.curIds[0]:'';ui.f.topic=''}
     render();return}
   if(t.dataset.uiset){ui[t.dataset.uiset]=t.value;render();return}
   if(t.dataset.tick){const [rid,date,sid]=t.dataset.tick.split('|'),r=byId('resp',rid);if(!r)return;setEntry(ekey(r,date,sid),rid,date,sid,{done:t.checked});return}
   if(t.dataset.comment){saveComment(t.dataset.comment,t.value.trim());ui.openC.delete(t.dataset.comment);return}
+  if(ISTEST&&(t.dataset.ptick||t.dataset.tick)&&t.checked)setTimeout(celebrate,500);
   if(t.dataset.ptick){const p=byId('plans',t.dataset.ptick);if(!p)return;const {id,...rest}=p;p.done=t.checked;put('plans',id,{...rest,done:t.checked});checkPlanDone(p.staffId,p.date);render();return}
   if(t.dataset.photo&&t.files&&t.files[0]){addPhoto('entry',t.dataset.photo,t.files[0]);return}
   if(t.dataset.pphoto&&t.files&&t.files[0]){addPhoto('plan',t.dataset.pphoto,t.files[0]);return}
