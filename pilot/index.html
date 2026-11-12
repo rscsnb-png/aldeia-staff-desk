@@ -508,6 +508,26 @@ body::before{background:var(--hdr)}
 .ibh{margin:14px 2px 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
 @media (max-width:600px){.tabnav{width:100%}.tnb{flex:1;padding:7px 6px;font-size:12.5px}}
 #rpbox input[type=month]{min-height:40px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--fg);padding:0 10px;font:inherit;width:100%;box-sizing:border-box}#rpbox .actions{align-items:center;margin-top:8px}
+/* round 8 */
+.qrow{position:relative}.qrow>.tlhit{padding-right:84px}
+.qrow>.qdone{position:absolute;right:8px;top:6px}
+.tline.thin .qrow>.qdone{top:4px}
+.qdone{font:inherit;font-size:12px;font-weight:700;min-height:26px;min-width:64px;padding:2px 10px;border-radius:13px;border:1px solid #c4c4bc;background:#e3e3dc;color:#77776f;cursor:pointer;white-space:nowrap}
+.qdone:hover{background:#d8d8d0;color:#444}
+.qdone.on{background:#2f8a4a;border-color:#2f8a4a;color:#fff}.qdone.on:hover{background:#277a40}
+.qdone:disabled{opacity:.5;cursor:not-allowed}
+.qrow .nowb{margin-right:6px}
+.tltest.slim.qrow{padding:0;display:block}.tltest.slim.qrow>.tlhit{padding:5px 84px 5px 10px}
+.tltest.slim .tlh{display:block}.tltest.slim .tlt{font-size:13px;font-weight:700}
+.pslim .crow.cq{grid-template-columns:minmax(0,1fr) auto auto 30px}
+.ptest .qdone{margin-left:2px}
+.hquick{align-items:center}.hquick .rsp{flex:1}
+.mmx{display:inline-flex;border:1px solid #c4c4bc;border-radius:8px;overflow:hidden}
+.mmx button{font:inherit;font-size:12px;font-weight:700;border:0;background:var(--surface);color:#555;padding:3px 10px;min-height:26px;cursor:pointer}
+.mmx button+button{border-left:1px solid #c4c4bc}.mmx button.on{background:#23729f;color:#fff}
+.bn.bnplan svg{width:30px;height:30px;padding:6px;border-radius:50%;background:#23729f;color:#fff;margin-top:-16px;box-shadow:0 3px 8px rgba(0,0,0,.25);box-sizing:content-box}
+.bn.bnplan span{font-weight:800;color:#23729f}
+@media (max-width:600px){.pslim .crow.cq{grid-template-columns:minmax(0,1fr) auto 30px}.hquick .tabnav{width:100%}}
 </style>
 </head>
 <body>
@@ -723,7 +743,7 @@ function tabsFor(){if(ui.isMgr)return [['home','Today'],...(PILOT?[['notices','N
   if(P.includes('inbox'))t.push(['inbox','Inbox']);if(P.includes('setup'))t.push(['setup','Setup']);return t}
 const signedIn=()=>!!(ui.me||ui.mgr);
 const NAVICO={resp:'<path d="M9 4h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="M8 13l2.5 2.5L16 10"/>',time:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M13 14h3M8 17h3"/>',home:'<path d="M3 11 12 4l9 7v9H3z"/>',plan:'<path d="M4 20h16M6 16l9-9 3 3-9 9H6z"/>',reg:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11l2 2 4-4"/>',fb:'<path d="M4 5h16v11H8l-4 4z"/>',inbox:'<path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
-function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return [['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
+function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return PILOTNOTE?[['home','Today'],rs,['plan','Plan'],['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]:[['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
 function renderChrome(){
   const bn=document.getElementById('bnav'),tabs=document.getElementById('tabs');if(tabs){tabs.hidden=true}
   const me=byId('staff',ui.me);
@@ -736,7 +756,7 @@ function renderChrome(){
   bn.hidden=false;const nav=navItems();bn.style.gridTemplateColumns=`repeat(${nav.length},minmax(0,1fr))`;const inNav=nav.map(x=>x[0]),n=unread(),ni=unreadInbox();
   const moreOn=!inNav.slice(0,4).includes(ui.tab);
   bn.innerHTML=nav.map(([k,l])=>{const on=k==='more'?moreOn||ui.moreOpen:ui.tab===k&&!ui.moreOpen,b=k==='fb'?n:k==='inbox'?ni:k==='more'&&(ni||n)&&!inNav.includes('fb')?n:0;
-    return `<button class="bn${on?' on':''}" data-act="${k==='more'?'moretog':'tab'}" data-t="${k}" aria-label="${l}"${on?' aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${on?2.1:1.8}" aria-hidden="true">${NAVICO[k]}</svg><span>${l}</span>${b?`<span class="bnb">${b}</span>`:''}</button>`}).join('');
+    return `<button class="bn${on?' on':''}${PILOTNOTE&&k==='plan'?' bnplan':''}" data-act="${k==='more'?'moretog':'tab'}" data-t="${k}" aria-label="${l}"${on?' aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${on?2.1:1.8}" aria-hidden="true">${NAVICO[k]}</svg><span>${l}</span>${b?`<span class="bnb">${b}</span>`:''}</button>`}).join('');
   renderMore();
 }
 function renderMore(){let m=document.getElementById('moresheet');if(!ui.moreOpen||!signedIn()){if(m)m.remove();return}
@@ -961,7 +981,7 @@ function testBanner(t){const can=ui.mgr||t.by===ui.me;
   return `<div class="banner"><div class="row spread"><span><b>Test${t.time?' · '+tRange(t):''}:</b> ${esc(t.title||'')}${[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span>${can?`<button class="btn sm danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div></div>`}
 function extraForms(){
   const sd=selDates(), def=sd.includes(todayIso())?todayIso():sd[0], et=PILOTNOTE&&ui.editing.test?byId('tests',ui.editing.test):null;
-  return `<details class="card flt" id="testbox"${ui.testOpen||et?' open':''}><summary><span><span class="pmx"></span> ${et?'Edit test':'Add a test'}</span><span class="fsum">Shows as a reminder <span class="chev">▾</span></span></summary>
+  return `<details class="card flt" id="testbox"${ui.testOpen||et?' open':''}><summary><span><span class="pmx"></span> ${et?'Edit test':'Add a test'}</span><span class="fsum">${PILOTNOTE?'':'Shows as a reminder '}<span class="chev">▾</span></span></summary>
    <div class="grid2"><label class="fld"><span>Child</span><select id="tf-child">${opt('children',et?et.childId||'':'','—')}</select></label></div>
    ${subjTopic('tf',et?{curriculumId:et.curId||'',topicId:et.topicId||''}:null)}
    <div class="grid2">
@@ -1109,11 +1129,11 @@ function vPlanP(){
   if(!w&&kids.length>1){const wk=plansFor(ds),miss=kids.filter(c=>!wk.some(p=>covers(p,c.id)));
     if(miss.length&&miss.length<kids.length) h+=`<div class="banner warnb"><span class="small"><b>No planning this week yet for:</b> ${miss.map(c=>esc((c.name||'').split(' ')[0])).join(', ')}</span></div>`}
   const ps=plansFor([d]).filter(plWhoMatch),bs=breaksFor(),ts=testsOnDate(d),tk=w?[]:itemsFor([d]);
-  h+=`<div class="row spread"><h2 style="margin:0">${esc(fmt(d))}${d===todayIso()?' · Today':''}</h2><span class="muted small">${ps.length} planned${tk.length?` · ${tk.length} task${tk.length>1?'s':''}`:''}</span></div>`;
+  h+=`<div class="row spread"><h2 style="margin:0">${esc(fmt(d))}${d===todayIso()?' · Today':''}</h2><span class="row" style="gap:10px"><span class="muted small">${ps.length} planned${tk.length?` · ${tk.length} task${tk.length>1?'s':''}`:''}</span>${planView()}</span></div>`;
   h+=planLockBanner(d);if(!PILOTNOTE)ts.forEach(t=>h+=testBanner(t));
   const used=new Set(ps.map(p=>p.periodId).filter(Boolean)),usedSt=new Set(ps.map(p=>oStart(p)));
   const free=periodsSorted().filter(x=>!used.has(x.id)&&!usedSt.has(x.start||'~'));
-  const rows=[...tk.map(i=>({s:oStart(i.r),html:PILOTNOTE?`<div class="pslim">${chkRowTask(i)}</div>`:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:PILOTNOTE?`<div class="pslim">${chkRowPlan(p)}</div>`:planHtml(p)})),...(PILOTNOTE?ts.map(t=>({s:t.time||'00',html:testRow(t)})):[]),
+  const rows=[...tk.map(i=>({s:oStart(i.r),html:PILOTNOTE&&!ui.planFull?`<div class="pslim">${chkRowTask(i)}</div>`:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:PILOTNOTE&&!ui.planFull?`<div class="pslim">${chkRowPlan(p)}</div>`:planHtml(p)})),...(PILOTNOTE?ts.map(t=>({s:t.time||'00',html:testRow(t)})):[]),
     ...bs.map(x=>({s:x.start||'99',html:`<div class="brk${PILOTNOTE?' pthin':''}"><span class="pill">Break</span><span>${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}</span></div>`})),
     ...bdRows(d).map(x=>({s:'06:55',html:PILOTNOTE?`<div class="pthin pbd"><span class="bstar sm" aria-hidden="true">★</span><span>${esc(x.t)}</span></div>`:`<div class="brk bdrow"><span class="pill due">Birthday</span><span>${esc(x.t)}</span></div>`})),
     ...free.map(x=>({s:x.start||'99',html:`<button class="slotadd" data-act="psopen" data-d="${d}" data-slot="${x.id}">+ Add activity · ${esc(periodLabel(x))}</button>`}))].sort((a,b)=>a.s.localeCompare(b.s));
@@ -1420,7 +1440,7 @@ async function moodXL(cid){if(typeof XLSX==='undefined'){toast('Excel export cou
 
 /* 2 photos with delete */
 function phGrid(x){return `<div class="thumbs">${(x.photos||[]).map((p,i)=>{const u=purl(p),k='ph'+x.c+x.rid+i;
-  return `<span class="phw"><button type="button" class="thumb" data-act="photoview" data-src="${esc(u)}" aria-label="Open photo"><img src="${esc(u)}" alt="Photo from ${esc(nm('staff',x.sid))}" loading="lazy" onerror="this.parentNode.classList.add('bad');this.remove()"><span class="phbad">Photo not available</span></button>${ui.isMgr&&x.c?`<button type="button" class="phdel${ui.confirmDel===k?' on':''}" data-act="phdel" data-c="${x.c}" data-id="${x.rid}" data-i="${i}" aria-label="Delete photo">${ui.confirmDel===k?'Delete?':'×'}</button>`:''}</span>`}).join('')}</div>`}
+  return `<span class="phw"><button type="button" class="thumb" data-act="photoview" data-src="${esc(u)}" aria-label="Open photo"><img src="${esc(u)}" alt="Photo from ${esc(nm('staff',x.sid))}" loading="lazy" onerror="this.parentNode.classList.add('bad');this.remove()"><span class="phbad">Photo not available</span></button>${ui.isMgr&&x.c&&!(PILOTNOTE&&ui.tab==='inbox'&&ui.ibChat&&!ui.ibSel)?`<button type="button" class="phdel${ui.confirmDel===k?' on':''}" data-act="phdel" data-c="${x.c}" data-id="${x.rid}" data-i="${i}" aria-label="Delete photo">${ui.confirmDel===k?'Delete?':'×'}</button>`:''}</span>`}).join('')}</div>`}
 
 /* 14 + 15 incidents: history and reports */
 const incHist=(x,what)=>[...(x.hist||[]),{at:new Date().toISOString(),by:ui.me||'manager',what}];
@@ -1457,19 +1477,19 @@ function bdLine(){const l=bdayList().filter(x=>x.days<=3);if(!l.length)return ''
 function dayScore(d){const its=itemsFor([d]).filter(i=>i.st!=='off'),ps=plansFor([d]),tot=its.length+ps.length,dn=its.filter(i=>i.st==='done').length+ps.filter(p=>p.done).length,ms=its.filter(i=>i.st==='missed').length+(d<todayIso()?ps.filter(p=>!p.done).length:0);return {tot,dn,ms}}
 const timeRange=o=>{const s=oStart(o),e=oEnd(o);return s==='99'?'Any time':s+(e?'–'+e:'')};
 function crow(x){const open=ui.rowMenu===x.k,STC={done:'ok',missed:'bad',due:'due',upcoming:'',off:'muted'};
-  return `<div class="crow${x.done?' cdone':''}${open?' cmopen':''}"><input type="checkbox" ${x.tick} aria-label="Mark ${esc(x.title)} done"><span class="ctime">${esc(x.time)}</span><span class="ctx"><span class="ctt">${esc(x.title)}${x.icons}</span><span class="cmeta">${x.meta}<span class="cnar"> · ${esc(x.time)} · ${esc(nm('staff',x.who))} · ${esc(x.stl)}</span></span></span><span class="who ${bcls(x.who)}">${esc(nm('staff',x.who))}</span><span class="cst ${STC[x.st]||''}">${esc(x.stl)}</span><button class="cmore" data-act="rowmenu" data-k="${esc(x.k)}" aria-label="Actions for ${esc(x.title)}" aria-expanded="${open}">⋯</button>${open?`<div class="cmenu" role="menu">${x.menu.map(([a,ds,l,cls])=>`<button role="menuitem" class="${cls||''}" data-act="${a}" ${Object.entries(ds).map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ')}>${esc(l)}</button>`).join('')}</div>`:''}</div>`}
+  return `<div class="crow${x.done?' cdone':''}${open?' cmopen':''}${x.qd?' cq':''}">${x.qd?'':`<input type="checkbox" ${x.tick} aria-label="Mark ${esc(x.title)} done">`}<span class="ctime">${esc(x.time)}</span><span class="ctx"><span class="ctt">${esc(x.title)}${x.icons}</span><span class="cmeta">${x.meta}<span class="cnar"> · ${esc(x.time)} · ${esc(nm('staff',x.who))} · ${esc(x.stl)}</span></span></span><span class="who ${bcls(x.who)}">${esc(nm('staff',x.who))}</span>${x.qd?x.qd:`<span class="cst ${STC[x.st]||''}">${esc(x.stl)}</span>`}<button class="cmore" data-act="rowmenu" data-k="${esc(x.k)}" aria-label="Actions for ${esc(x.title)}" aria-expanded="${open}">⋯</button>${open?`<div class="cmenu" role="menu">${x.menu.map(([a,ds,l,cls])=>`<button role="menuitem" class="${cls||''}" data-act="${a}" ${Object.entries(ds).map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ')}>${esc(l)}</button>`).join('')}</div>`:''}</div>`}
 function chkRowTask(i){const {r,date:d,sid,st,cover}=i,e=entryMap[ekey(r,d,sid)]||{},key=r.id+'|'+d+'|'+sid,lock=signed(sid,d)&&!ui.mgr,off=st==='off'?offReason(sid,d):'';
   if(ui.openC.has(key)||(ui.rowFull&&ui.rowFull.has('t'+key)))return `<div class="crfull">${itemHtml(i)}${ui.openC.has(key)?'':`<button class="btn sm" data-act="rowless" data-k="t${esc(key)}">Show less</button>`}</div>`;
   const a=r.childId&&byId('attendance',d+'_'+r.childId);
   const meta=[r.childId&&nm('children',r.childId),tName(r.topicId),!r.childId&&('Task'+(r.staffId==='*'?' · all staff':''))].filter(Boolean).map(esc).join(' · ')+(a&&!a.present?' · <span class="bad">absent</span>':'')+(cover?' · cover for '+esc(nm('staff',sid)):'')+(signed(sid,d)?' · signed off':'');
   const menu=[lock?null:['copen',{k:key},e.comment?'Edit comment':'Add comment'],photoOk&&!lock?['photopick',{kind:'entry',k:key},'Add photo']:null,ui.mgr?['editresp',{id:r.id},'Edit responsibility']:null,['rowmore',{k:'t'+key},'Show details'],ui.isMgr?['del',{c:'resp',id:r.id},ui.confirmDel==='resp'+r.id?'Tap again to delete':'Delete responsibility','danger']:null].filter(Boolean);
-  return crow({k:'t'+key,done:!!e.done,tick:`data-tick="${esc(key)}" ${e.done?'checked':''} ${lock||st==='off'?'disabled':''}`,time:timeRange(r),title:r.text,meta,who:cover||sid,st,stl:off||ST_LABEL[st],icons:rIcons({comment:e.comment,photos:e.photos}),menu})}
+  return crow({qd:planQd()&&st!=='off'?qdBtn(!!e.done,'hdone',`data-k="${esc(key)}"`,lock,r.text):'',k:'t'+key,done:!!e.done,tick:`data-tick="${esc(key)}" ${e.done?'checked':''} ${lock||st==='off'?'disabled':''}`,time:timeRange(r),title:r.text,meta,who:cover||sid,st,stl:off||ST_LABEL[st],icons:rIcons({comment:e.comment,photos:e.photos}),menu})}
 function chkRowPlan(p){const lk=p.staffId!=='*'&&plocked(p.staffId,p.date),can=(ui.mgr||p.staffId===ui.me||p.by===ui.me)&&(!lk||ui.mgr),st=p.done?'done':p.date<todayIso()?'missed':p.date===todayIso()?'due':'upcoming';
   if(ui.rowFull&&ui.rowFull.has('p'+p.id))return `<div class="crfull">${planHtml(p)}<button class="btn sm" data-act="rowless" data-k="p${p.id}">Show less</button></div>`;
   const k1=kidsOf(p),ab=k1.length===1&&byId('attendance',p.date+'_'+k1[0]);
   const meta=[k1.length>1?whoLabel(p):k1.length?nm('children',k1[0]):'',tName(p.topicId),'Plan'].filter(Boolean).map(esc).join(' · ')+(ab&&!ab.present?' · <span class="bad">absent</span>':'')+(lk?' · locked':'');
   const menu=[can?['editplan',{id:p.id},'Edit']:null,can&&photoOk?['photopick',{kind:'plan',k:p.id},'Add photo']:null,['rowmore',{k:'p'+p.id},'Show details'],can?['del',{c:'plans',id:p.id},ui.confirmDel==='plans'+p.id?'Tap again to delete':'Delete','danger']:null].filter(Boolean);
-  return crow({k:'p'+p.id,done:!!p.done,tick:`data-ptick="${p.id}" ${p.done?'checked':''} ${lk&&!ui.mgr?'disabled':''}`,time:timeRange(p),title:p.text,meta,who:p.staffId,st,stl:p.done?'Done':st==='missed'?'Missed':'Planned',icons:rIcons({comment:p.comment,photos:p.photos}),menu})}
+  return crow({qd:planQd()?qdBtn(!!p.done,'hpdone',`data-id="${p.id}"`,lk&&!ui.mgr,p.text):'',k:'p'+p.id,done:!!p.done,tick:`data-ptick="${p.id}" ${p.done?'checked':''} ${lk&&!ui.mgr?'disabled':''}`,time:timeRange(p),title:p.text,meta,who:p.staffId,st,stl:p.done?'Done':st==='missed'?'Missed':'Planned',icons:rIcons({comment:p.comment,photos:p.photos}),menu})}
 function chkHead(){const ds=weekDates(ui.ws),t=todayIso(),nf=Object.values(ui.f).filter(Boolean).length;
   const sc=d=>{const x=dayScore(d);return x.tot?`${x.dn}/${x.tot}${x.ms?' · '+x.ms+' missed':''}`:(d===t?'today':'—')};
   return `<div class="card chead"><div class="chrow"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><b class="cwk">Week ${isoWeek(ui.ws)} · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}</b><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><span class="chsp"></span>
@@ -1510,7 +1530,7 @@ function homeStrip(d){const ds=weekDates(mondayOf(parse(d))),t=todayIso();
   return `<div class="hstrip">${ds.map(x=>{const s=dayScore(x),lab=s.tot?`${s.dn}/${s.tot}${s.dn===s.tot?' ✓':''}`:'empty';
     return `<button class="hsd${x===d?' on':''}${x===t?' tdy':''}${s.tot?'':' empty'}${s.ms?' miss':''}" data-act="hdayset" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small></button>`}).join('')}</div>`}
 function testRow(t){const can=ui.mgr||t.by===ui.me,x=[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(esc).join(' · ');
-  return `<div class="pthin ptest${t.done?' tdone':''}"><span class="ptx"><b>Test: ${esc(t.title||'')}</b>${x?' · '+x:''}${t.time?` · ${tRange(t)}`:' · <span class="bad">no time set</span>'}${t.done?' · <span class="ok">done</span>':''}</span>${testBtns(t)}${can?`<button class="btn xs danger" data-act="del" data-c="tests" data-id="${t.id}" aria-label="Delete test">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div>`}
+  return `<div class="pthin ptest${t.done?' tdone':''}"><span class="ptx"><b>Test: ${esc(t.title||'')}</b>${x?' · '+x:''}${t.time?` · ${tRange(t)}`:' · <span class="bad">no time set</span>'}</span>${can?`<button class="btn xs" data-act="edittest" data-id="${t.id}">Edit</button>`:''}${qdBtn(!!t.done,'testdone',`data-id="${t.id}"`,false,t.title)}${can?`<button class="btn xs danger" data-act="del" data-c="tests" data-id="${t.id}" aria-label="Delete test">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div>`}
 function respMeta(r){const when=r.recur==='once'?'Once: '+fmt(r.date):((r.days||[]).length===5?'Mon–Fri':(r.days||[]).map(d=>DAYS[d]).join(', '));
   return [when,r.childId&&nm('children',r.childId),nm('grades',r.gradeId),nm('curriculum',r.curriculumId),tName(r.topicId)].filter(Boolean).map(esc).join(' · ')}
 function rrow(r){const k='r'+r.id,open=ui.rowMenu===k;
@@ -1579,6 +1599,13 @@ function apprHist(){const done=S.papprove.filter(r=>r.status==='approved').sort(
   if(!done.length)return '';
   return `<h3 class="ibh">Approved planning</h3><div class="iblist">${done.map(r=>`<div class="ibrow ibap">${av(r.staffId,nm('staff',r.staffId))}<span class="ibm"><b>${esc(nm('staff',r.staffId))} <small class="muted">· approved ${esc(ibTime(r.decidedAt))}</small></b><span class="ub">Week ${isoWeek(parse(r.ws))} · ${esc(fmt(r.ws).slice(4))} – ${esc(fmt(iso(addDays(parse(r.ws),4))).slice(4))}</span></span><span class="acts"><button class="btn sm" data-act="ibplan" data-s="${r.staffId}" data-ws="${r.ws}">Open week</button></span></div>`).join('')}</div>`}
 
+/* ---------- pilot round 8 ---------- */
+function qdBtn(done,act,ds,dis,label){return `<button class="qdone${done?' on':''}" data-act="${act}" ${ds}${dis?' disabled':''} aria-pressed="${done}" aria-label="${done?'Done. Tap to undo':'Mark '+esc(label||'')+' done'}">${done?'<span aria-hidden="true">✓</span> Done':'Done'}</button>`}
+const planQd=()=>PILOTNOTE&&ui.tab==='plan';
+function testCard(r,isOpen){const t=r.o,x=[t.time?tRange(t):'',nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).join(' · ');
+  return `<div class="tlc tltest slim qrow${t.done?' tdone':''}${isOpen?' tlx':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}</span><span class="tlsub">${x?' · '+x:''}</span></span></span></button>${qdBtn(!!t.done,'testdone',`data-id="${t.id}"`,false,r.t)}${isOpen?`<div class="tlbody"><div class="tlacts">${canTest(t)?`<button class="btn" data-act="edittest" data-id="${t.id}">Edit test</button><button class="btn danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again to delete':'Delete test'}</button>`:'<span class="small muted">Only the person who added this test can change it.</span>'}</div></div>`:''}</div>`}
+function planView(){return PILOTNOTE?`<div class="mmx" role="group" aria-label="Row size"><button class="${ui.planFull?'':'on'}" data-act="planfull" data-v="0" aria-pressed="${!ui.planFull}">Min</button><button class="${ui.planFull?'on':''}" data-act="planfull" data-v="1" aria-pressed="${!!ui.planFull}">Max</button></div>`:''}
+
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1587,7 +1614,7 @@ function vHome(){
   const its=itemsFor([d]).filter(i=>i.st!=='off'),pls=plansFor([d]),tot=its.length+pls.length,dn=its.filter(i=>i.st==='done').length+pls.filter(p=>p.done).length;
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
-    ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick"><button class="btn sm" data-act="tab" data-t="reg">Register</button><button class="btn sm" data-act="tab" data-t="time">Timetable</button></div>':''}</div>`;
+    ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick"><button class="btn sm" data-act="tab" data-t="reg">Register</button><button class="btn sm" data-act="tab" data-t="time">Timetable</button><span class="rsp"></span>'+tabNav('home')+'</div>':''}</div>`;
   h+=PILOT?homeNoticeLine()+bdBar(d):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
@@ -1604,7 +1631,7 @@ function vHome(){
   const card=r=>{
     if(r.type==='brk')return `<div class="tlc tlbrk">${esc(r.t)} · ${esc(r.s)}${r.e?'–'+esc(r.e):''}</div>`;
     if(r.type==='bday')return `<div class="tlc tlbday"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
-    if(r.type==='test'&&PILOTNOTE)return `<div class="tlc tltest slim${r.o.done?' tdone':''}"><span class="tlt">${esc(r.t)}</span>${(()=>{const x=[r.o.time?tRange(r.o):'',nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ');return x?`<span class="tlsub"> · ${x}</span>`:''})()}${r.o.done?'<span class="pill done">Done</span>':''}${testBtns(r.o)}</div>`;
+    if(r.type==='test'&&PILOTNOTE)return testCard(r,open===r.key);
     if(r.type==='test')return `<div class="tlc tltest"><b>${esc(r.t)}</b><div class="tlsub">${[nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ')}</div></div>`;
     const isNow=cur&&cur.key===r.key,isOpen=open===r.key,o=r.o;
     const sub=[r.s!=='99'?r.s+(r.e?'–'+r.e:''):'Any time',r.type==='task'?'Task':'Plan',o.childId&&nm('children',o.childId),tName(o.topicId)||nm('curriculum',o.curriculumId),(ui.mgr||r.cover)&&nm('staff',r.who)].filter(Boolean).map(esc).join(' · ');
@@ -1615,11 +1642,11 @@ function vHome(){
       act=`${r.comment&&!editing?`<div class="cmt">${esc(r.comment)}</div>`:''}${thumbs(r.photos)}`;
       if(editing)act+=r.type==='task'?`<textarea data-comment="${r.k}" rows="2" placeholder="Type your comment">${esc(r.comment||'')}</textarea><div class="actions"><button class="btn sm primary" data-act="csave" data-k="${r.k}">Save comment</button><button class="btn sm" data-act="cclose" data-k="${r.k}">Cancel</button></div>`
         :`<textarea id="pc-${r.id}" rows="2" placeholder="Type your comment">${esc(r.comment||'')}</textarea><div class="actions"><button class="btn sm primary" data-act="pcsave" data-id="${r.id}">Save comment</button><button class="btn sm" data-act="pcclose" data-id="${r.id}">Cancel</button></div>`;
-      else if(!r.lock)act+=`<div class="tlacts"><button class="btn ${r.done?'':'primary'} tlgo" data-act="${r.type==='task'?'hdone':'hpdone'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.done?'Undo':'Done'}</button><button class="btn" data-act="${r.type==='task'?'copen':'pcopen'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.comment?'Edit comment':'Comment'}</button>${photoOk?`<button class="btn tlph" aria-label="Add photo" data-act="photopick" data-kind="${r.type==='task'?'entry':'plan'}" data-k="${r.type==='task'?r.k:r.id}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l2-3h4l2 3"/></svg></button>`:''}</div>`;
+      else if(!r.lock)act+=`<div class="tlacts">${PILOTNOTE?'':`<button class="btn ${r.done?'':'primary'} tlgo" data-act="${r.type==='task'?'hdone':'hpdone'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.done?'Undo':'Done'}</button>`}<button class="btn" data-act="${r.type==='task'?'copen':'pcopen'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.comment?'Edit comment':'Comment'}</button>${photoOk?`<button class="btn tlph" aria-label="Add photo" data-act="photopick" data-kind="${r.type==='task'?'entry':'plan'}" data-k="${r.type==='task'?r.k:r.id}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l2-3h4l2 3"/></svg></button>`:''}</div>`;
       else act+='<div class="small muted">This day is locked. Ask your manager to unlock it.</div>';
       if(PILOT&&ui.isMgr)act+=r.type==='task'?`<div class="tlmgr"><button class="btn sm danger" data-act="del" data-c="resp" data-id="${o.id}">${ui.confirmDel==='resp'+o.id?'Tap again to delete':'Delete this responsibility'}</button>${o.staffId==='*'?'<span class="small muted">This task is for all staff, so it is deleted for everyone. To stop it for one person only, use Re-assign or Archive under Responsibilities.</span>':''}</div>`:`<div class="tlmgr"><button class="btn sm danger" data-act="del" data-c="plans" data-id="${r.id}">${ui.confirmDel==='plans'+r.id?'Tap again to delete':'Delete this plan'}</button></div>`;
     }
-    return `<div class="tlc ${r.done?'tldone':'tlopen'}${r.miss?' tlmiss':''}${isOpen?' tlx':''}${r.type==='plan'?' tlplan':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}${PILOT?rIcons(r):''}</span><span class="tlsub">${sub}</span></span>${isNow?'<span class="nowb">NOW</span>':''}</span></button>${tags||act?`<div class="tlbody">${tags?`<div class="meta">${tags}</div>`:''}${act}</div>`:''}</div>`};
+    return `<div class="tlc ${r.done?'tldone':'tlopen'}${r.miss?' tlmiss':''}${isOpen?' tlx':''}${r.type==='plan'?' tlplan':''}${PILOTNOTE?' qrow':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}${PILOT?rIcons(r):''}</span><span class="tlsub">${sub}</span></span>${isNow?'<span class="nowb">NOW</span>':''}</span></button>${PILOTNOTE?qdBtn(!!r.done,r.type==='task'?'hdone':'hpdone',r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`,r.lock,r.t):''}${tags||act?`<div class="tlbody">${tags?`<div class="meta">${tags}</div>`:''}${act}</div>`:''}</div>`};
   h+=`<div class="tline${PILOT&&ui.isMgr?' thin':''}">${rows.map(r=>`<div class="tltime${cur&&cur.key===r.key?' tlnow':''}">${r.s==='99'?'Any':esc(r.s)}</div>${card(r)}`).join('')}</div>`;
   h+=`<div class="hfoot"><button class="btn sm" data-act="tab" data-t="check">Full checklist and week view</button></div>`;
   return h}
@@ -2376,7 +2403,7 @@ const acts={
   hday:b=>{let d=parse(homeDay());do{d=addDays(d,Number(b.dataset.n))}while(d.getDay()===0||d.getDay()===6);ui.homeDay=iso(d);ui.homeOpen=null;render()},
   htoday:()=>{ui.homeDay=null;ui.homeOpen=null;render()},
   hopen:b=>{const k=b.dataset.k;ui.homeOpen=ui.homeOpenEff===k?'__none':k;render()},
-  hdone:b=>{const [rid,date,sid]=b.dataset.k.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid),cur=!!(entryMap[id]||{}).done;setEntry(id,rid,date,sid,{done:!cur});if(!cur){ui.homeOpen=null;toast('Done')}},
+  hdone:b=>{const [rid,date,sid]=b.dataset.k.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid),cur=!!(entryMap[id]||{}).done;setEntry(id,rid,date,sid,{done:!cur});if(!cur){ui.homeOpen=null;toast('Done')}if(PILOTNOTE)render()},
   hpdone:b=>{const p=byId('plans',b.dataset.id);if(!p)return;const {id,...rest}=p,v=!p.done;p.done=v;put('plans',id,{...rest,done:v});if(v){checkPlanDone(p.staffId,p.date);ui.homeOpen=null;toast('Done')}render()},
   pcopen:b=>{ui.openC.add('p:'+b.dataset.id);render();document.getElementById('pc-'+b.dataset.id)?.focus()},
   pcclose:b=>{ui.openC.delete('p:'+b.dataset.id);render()},
@@ -2512,6 +2539,7 @@ const acts={
   edittest:b=>{const t=byId('tests',b.dataset.id);if(!t)return;ui.editing.test=t.id;ui.clear.add('tf-');ui.tab='plan';ui.ws=mondayOf(parse(t.date));ui.plDay=t.date;ui.testOpen=true;render();document.getElementById('testbox')?.scrollIntoView({behavior:'smooth',block:'start'})},
   testcancel:()=>{ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;render()},
   regprint:()=>regPrint(),
+  planfull:b=>{ui.planFull=b.dataset.v==='1';ui.rowMenu=null;render()},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
