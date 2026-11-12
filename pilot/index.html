@@ -578,6 +578,45 @@ body::before{background:var(--hdr)}
 .bdmsgbox span{flex:1}
 .bdcopy{flex:none;width:28px;height:28px;border-radius:7px;border:1px solid #c4c4bc;background:var(--surface);color:#555;cursor:pointer;display:grid;place-items:center;padding:0}
 .bdcopy:hover{color:#23729f;border-color:#23729f}
+/* Students tab */
+.stflt{display:flex;flex-direction:column;gap:8px}
+.sttot{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sttot>div{border-radius:12px;padding:8px 12px;font-size:12px;font-weight:700}
+.sttot b{display:block;font-size:22px;line-height:1.1}
+.sttot .nw{background:#f3dcd8;color:#a3322a}.sttot .hq{background:#f1e6c8;color:#6e4d10}
+.stchips{display:flex;gap:6px;flex-wrap:wrap}
+.stchip{font:inherit;font-size:12px;font-weight:700;border:1px solid #c4c4bc;background:var(--surface);color:#333;border-radius:14px;padding:4px 11px;cursor:pointer}
+.stchip.nw{color:#a3322a}.stchip.hq{color:#6e4d10}
+.stchip.on{background:#23729f;border-color:#23729f;color:#fff}
+.stbox{padding:0;overflow:hidden}
+.stkid{display:flex;align-items:center;gap:8px;width:100%;border:0;border-top:1px solid var(--line);background:transparent;font:inherit;color:var(--fg);padding:8px 12px;cursor:pointer;text-align:left}
+.stkid:first-child{border-top:0}
+.stkid b{font-size:13.5px}
+.stkidh{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.stav{width:26px;height:26px;border-radius:13px;background:#ff2d87;color:#fff;display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
+.stav.boy{background:#2f7fd6}
+.stkidh .stav{width:32px;height:32px;border-radius:16px;font-size:14px}
+.stcnt{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.stp{border-radius:9px;font-size:10.5px;font-weight:800;padding:1px 7px;white-space:nowrap}
+.stp.nw{background:#f3dcd8;color:#a3322a}.stp.hq{background:#f1e6c8;color:#6e4d10}.stp.ok{background:#dcebdc;color:#2f6a3e}
+.strow{border-top:1px solid var(--line);padding:6px 12px 7px 14px;background:var(--surface);display:flex;flex-direction:column;gap:3px}
+.sthd{display:flex;align-items:center;gap:2px;font-size:13px}.sthd .s{font-size:11.5px;color:var(--muted)}
+.stic{margin-left:auto;display:flex;gap:4px}
+.sticon{width:26px;height:26px;border-radius:7px;border:1px solid #d5d5cd;background:transparent;color:#8a8a82;display:grid;place-items:center;padding:0;cursor:pointer;position:relative}
+.sticon:hover{color:#23729f;border-color:#23729f}
+.sticon.has{color:#23729f;border-color:#a9cbef;background:#eef5fd}
+.sttk{display:flex;align-items:center;gap:7px;font-size:12.5px;min-height:24px}
+.stcb{width:20px;height:20px;border-radius:5px;border:1.5px solid #9a9a92;background:#fff;color:#fff;display:grid;place-items:center;padding:0;font-size:12px;font-weight:800;cursor:pointer;flex:none}
+.stcb.on{background:#2f8a4a;border-color:#2f8a4a}.stcb.wa.on{background:#25a35a;border-color:#25a35a}
+.stcb:disabled{opacity:.4;cursor:not-allowed}
+.stwho{font-size:11px;color:var(--muted)}
+.stcmt{font-size:11.5px;color:#555;background:#f4f3ee;border-radius:7px;padding:3px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.stcmf{display:flex;flex-direction:column;gap:5px}.stcmf textarea{min-height:44px;font-size:12.5px}
+.stph{display:flex;gap:5px;flex-wrap:wrap}
+.stthumb{width:34px;height:34px;border-radius:6px;overflow:hidden;border:1px solid #d5d5cd;padding:0;background:#eee;cursor:pointer}
+.stthumb img{width:100%;height:100%;object-fit:cover;display:block}
+#bnav .bn span{white-space:nowrap}
+@media (max-width:420px){#bnav .bn span{font-size:9.5px}}
 </style>
 </head>
 <body>
@@ -630,7 +669,7 @@ const PILOT=!!window.__PILOT;
 const PILOTNOTE=PILOT&&!!window.__PILOTNOTE;
 const ISTEST=!!window.__ISTEST;
 const VERSION='2.5.0-pilot';
-const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','papprove','mood','leavereq','incidents','maint','ibhide','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log'];
+const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','papprove','mood','leavereq','incidents','maint','ibhide','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log','stutests'];
 const S={settings:{}}; COLLS.forEach(c=>S[c]=[]);
 let entryMap={}, soMap={}, db=null, dl=null, assets=null, photoOk=false, loaded=false, dbState='loading';
 const lsGet=k=>{try{return localStorage.getItem('asd_'+k)}catch(e){return null}};
@@ -788,13 +827,13 @@ function syncPlans(rid,date,sid,done){const r=byId('resp',rid);if(!r)return;cons
 
 /* ---------- render core ---------- */
 const panel=document.getElementById('panel');
-function tabsFor(){if(ui.isMgr)return [['home','Today'],...(PILOT?[['notices','Notices']]:[]),['check','Checklist'],['reg','Register'],['plan','Planning'],['resp','Responsibilities'],['time','Timetable'],['over','Overview'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Requests & repairs'],['leave','Leave'],['inc','Incidents']]:[]),['fb','Messages'],['inbox','Inbox'],['setup','Setup']];
+function tabsFor(){if(ui.isMgr)return [['home','Today'],...(PILOT?[['notices','Notices']]:[]),['check','Checklist'],['reg','Register'],['plan','Planning'],['resp','Responsibilities'],['time','Timetable'],...(PILOTNOTE?[['stud','Students']]:[]),['over','Overview'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Requests & repairs'],['leave','Leave'],['inc','Incidents']]:[]),['fb','Messages'],['inbox','Inbox'],['setup','Setup']];
   const P=myPerms(),t=[['home','Today'],...(PILOT?[['notices','Notices']]:[]),['check','Checklist'],['reg','Register'],['plan','Planning']];if(P.includes('resp'))t.push(['resp','Responsibilities']);
-  t.push(['time','Timetable'],['over',P.includes('overview')?'Overview':'My progress'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Requests & repairs'],['leave','Leave'],['inc','Incidents']]:[]),['fb','Messages']);
+  t.push(['time','Timetable'],...(PILOTNOTE?[['stud','Students']]:[]),['over',P.includes('overview')?'Overview':'My progress'],['kids','Children'],['bday','Birthdays'],...(PILOT?[['news','Announcements'],['req','Requests & repairs'],['leave','Leave'],['inc','Incidents']]:[]),['fb','Messages']);
   if(P.includes('inbox'))t.push(['inbox','Inbox']);if(P.includes('setup'))t.push(['setup','Setup']);return t}
 const signedIn=()=>!!(ui.me||ui.mgr);
-const NAVICO={resp:'<path d="M9 4h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="M8 13l2.5 2.5L16 10"/>',time:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M13 14h3M8 17h3"/>',home:'<path d="M3 11 12 4l9 7v9H3z"/>',plan:'<path d="M4 20h16M6 16l9-9 3 3-9 9H6z"/>',reg:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11l2 2 4-4"/>',fb:'<path d="M4 5h16v11H8l-4 4z"/>',inbox:'<path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
-function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return PILOTNOTE?[['home','Today'],...(rs[0]==='reg'?[['plan','Plan'],rs]:[rs,['plan','Plan']]),['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]:[['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
+const NAVICO={stud:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/><path d="M22 9v6"/>',resp:'<path d="M9 4h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="M8 13l2.5 2.5L16 10"/>',time:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M13 14h3M8 17h3"/>',home:'<path d="M3 11 12 4l9 7v9H3z"/>',plan:'<path d="M4 20h16M6 16l9-9 3 3-9 9H6z"/>',reg:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11l2 2 4-4"/>',fb:'<path d="M4 5h16v11H8l-4 4z"/>',inbox:'<path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
+function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return PILOTNOTE?[['home','Today'],...(rs[0]==='reg'?[['plan','Plan'],rs]:[rs,['plan','Plan']]),['time','Timetable'],['stud','Students'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]:[['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
 function renderChrome(){
   const bn=document.getElementById('bnav'),tabs=document.getElementById('tabs');if(tabs){tabs.hidden=true}
   const me=byId('staff',ui.me);
@@ -805,7 +844,7 @@ function renderChrome(){
   applyTheme();
   if(PILOT){const bc=document.getElementById('bellC'),bb=document.getElementById('bellBtn');if(bb){bb.hidden=false;bb.classList.toggle('on',ui.tab==='notices')}if(bc){const n=noticeCount();bc.hidden=!n;bc.textContent=n>9?'9+':n}}
   bn.hidden=false;const nav=navItems();bn.style.gridTemplateColumns=`repeat(${nav.length},minmax(0,1fr))`;const inNav=nav.map(x=>x[0]),n=unread(),ni=unreadInbox();
-  const moreOn=!inNav.slice(0,4).includes(ui.tab);
+  const moreOn=PILOTNOTE?!inNav.filter(k=>k!=='more').includes(ui.tab):!inNav.slice(0,4).includes(ui.tab);
   bn.innerHTML=nav.map(([k,l])=>{const on=k==='more'?moreOn||ui.moreOpen:ui.tab===k&&!ui.moreOpen,b=k==='fb'?n:k==='inbox'?ni:k==='more'&&(ni||n)&&!inNav.includes('fb')?n:0;
     return `<button class="bn${on?' on':''}${PILOTNOTE&&k==='plan'?' bnplan':''}" data-act="${k==='more'?'moretog':'tab'}" data-t="${k}" aria-label="${l}"${on?' aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${on?2.1:1.8}" aria-hidden="true">${NAVICO[k]}</svg><span>${l}</span>${b?`<span class="bnb">${b}</span>`:''}</button>`}).join('');
   renderMore();
@@ -827,7 +866,7 @@ let pending=false;
 const isEditing=()=>{const a=document.activeElement;return a&&panel.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!['checkbox','radio','file'].includes(a.type)};
 function scheduleRender(){if(isEditing()){pending=true;return}render()}
 document.addEventListener('focusout',()=>{if(pending)setTimeout(()=>{if(!isEditing()){pending=false;render()}},60)});
-const VIEWS={notices:vNotices,news:vNews,req:PILOT?vReqCombo:vReq,leave:vLeave,inc:vInc,maint:vMaint,home:vHome,reg:vReg,bday:vBday,inbox:PILOT?vInboxP:vInbox,search:vSearch,time:vTime,check:vCheck,plan:PILOT?vPlanP:vPlan,over:vOver,kids:vKids,cover:vCover,fb:vFb,resp:vResp,setup:vSetup};
+const VIEWS={notices:vNotices,news:vNews,req:PILOT?vReqCombo:vReq,leave:vLeave,inc:vInc,maint:vMaint,home:vHome,reg:vReg,bday:vBday,inbox:PILOT?vInboxP:vInbox,search:vSearch,time:vTime,check:vCheck,plan:PILOT?vPlanP:vPlan,over:vOver,kids:vKids,cover:vCover,fb:vFb,resp:vResp,setup:vSetup,stud:vStud};
 function render(){
   pending=false;
   try{
@@ -1758,6 +1797,41 @@ function bdPoster(){const m=val('tf-bdp-month')||todayIso().slice(0,7),[y,mo]=m.
 /* ---------- pilot round 12 ---------- */
 function incOpen(k,t){const on=ui.incSec===k;return `<div class="card incsec incsec-${k}${on?' on':''}"><button class="rsh" data-act="incsec" data-v="${k}" aria-expanded="${on}"><span class="pmb${on?'':' c'}" aria-hidden="true">${on?'−':'+'}</span><b>${t}</b></button><div class="incbody"${on?'':' hidden'}>`}
 const incClose=()=>'</div></div>';
+/* ---------- Students tab ---------- */
+const stWho=b=>b==='manager'?'Manager':(nm('staff',b)||'');
+const stAt=a=>a?fmtAt(a):'';
+function stTests(c){return S.tests.filter(t=>t.date&&(t.childId?t.childId===c.id:(!!t.gradeId&&t.gradeId===c.gradeId&&(!t.branchId||t.branchId===c.branchId)))).sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')))}
+function stState(t,c){const r=byId('stutests',t.id+'_'+c.id)||{},w=!!(r.written||t.done);
+  return {r,w,wBy:r.written?r.wBy:t.doneBy,wAt:r.written?r.wAt:t.doneAt,hq:w&&!!r.hq,hqBy:r.hqBy,hqAt:r.hqAt}}
+const stSubj=t=>t.title||tName(t.topicId)||'Test';
+function stScope(){const br=ui.isMgr?(ui.stArea||''):myBranch();return {br,kids:sortByName('children').filter(c=>!br||c.branchId===br)}}
+function stRow(t,c){const s=stState(t,c),k=t.id+'_'+c.id,cm=ui.stCm===k,ph=s.r.photos||[];
+  return `<div class="strow"><div class="sthd"><b>${esc(stSubj(t))}</b><span class="s"> · ${esc(fmt(t.date))}${t.time?' '+esc(t.time):''}</span><span class="stic"><button class="sticon${s.r.comment?' has':''}" data-act="stcm" data-k="${k}" aria-label="${s.r.comment?'Edit comment':'Add comment'}" title="Comment"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg></button><button class="sticon${ph.length?' has':''}" data-act="photopick" data-kind="stu" data-k="${k}" aria-label="Add photo" title="Photo"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button></span></div>
+  <div class="sttk"><button class="stcb${s.w?' on':''}" data-act="stuw" data-t="${t.id}" data-c="${c.id}" aria-pressed="${s.w}" aria-label="Test written">${s.w?'✓':''}</button><span>Test written</span>${s.w&&s.wBy?`<span class="stwho">· ${esc(stWho(s.wBy))} ${esc(stAt(s.wAt))}</span>`:''}</div>
+  <div class="sttk"><button class="stcb wa${s.hq?' on':''}" data-act="stuhq" data-t="${t.id}" data-c="${c.id}" aria-pressed="${s.hq}" aria-label="WhatsApp to HQ"${s.w?'':' disabled'}>${s.hq?'✓':''}</button><span>WhatsApp to HQ</span>${s.hq?`<span class="stwho">· ${esc(stWho(s.hqBy))} ${esc(stAt(s.hqAt))}</span>`:''}</div>
+  ${cm?`<div class="stcmf"><textarea id="tf-stcm" rows="2" placeholder="Comment about this test">${esc(s.r.comment||'')}</textarea><span class="actions"><button class="btn xs primary" data-act="stcmsave" data-k="${k}">Save</button><button class="btn xs" data-act="stcmx">Cancel</button></span></div>`:s.r.comment?`<div class="stcmt" data-act="stcm" data-k="${k}" role="button" tabindex="0">💬 ${esc(s.r.comment)}</div>`:''}
+  ${ph.length?`<div class="stph">${ph.map(p=>`<button type="button" class="stthumb" data-act="photoview" data-src="${esc(purl(p))}" aria-label="Open photo"><img src="${esc(purl(p))}" alt="Photo" loading="lazy"></button>`).join('')}</div>`:''}</div>`}
+function vStud(){const {br,kids}=stScope(),cid=ui.stKid&&kids.some(c=>c.id===ui.stKid)?ui.stKid:'',f=ui.stF||'',subj=ui.stSub||'';
+  const subjects=[...new Set(kids.flatMap(c=>stTests(c).map(stSubj)))].sort();
+  const rows=(cid?kids.filter(c=>c.id===cid):kids).map(c=>{const all=stTests(c).filter(t=>!subj||stSubj(t)===subj);
+    const nw=all.filter(t=>!stState(t,c).w),hq=all.filter(t=>{const s=stState(t,c);return s.w&&!s.hq});
+    return {c,all,nw,hq,shown:f==='nw'?nw:f==='hq'?hq:all}});
+  const N=rows.reduce((a,x)=>a+x.all.length,0),NW=rows.reduce((a,x)=>a+x.nw.length,0),HQ=rows.reduce((a,x)=>a+x.hq.length,0);
+  let h=`<div class="row spread"><h2 style="margin:0">Students</h2><span class="muted small">Tests written and sent to HQ</span></div>
+  <div class="card stflt"><div class="grid2">${ui.isMgr?`<label class="fld"><span>Area</span><select data-uiset="stArea">${opt('branches',ui.stArea||'','All areas')}</select></label>`:`<label class="fld"><span>Area</span><select disabled><option>${esc(nm('branches',br)||'My area')}</option></select></label>`}
+  <label class="fld"><span>Child</span><select data-uiset="stKid"><option value="">All children</option>${kids.map(c=>`<option value="${c.id}"${c.id===cid?' selected':''}>${esc(c.name)}</option>`).join('')}</select></label></div>
+  <label class="fld"><span>Subject</span><select data-uiset="stSub"><option value="">All subjects</option>${subjects.map(s=>`<option${s===subj?' selected':''}>${esc(s)}</option>`).join('')}</select></label></div>
+  <div class="sttot"><div class="nw"><b>${NW}</b>test${NW===1?'':'s'} outstanding</div><div class="hq"><b>${HQ}</b>still to WhatsApp to HQ</div></div>
+  <div class="stchips">${[['','All',N],['nw','Not written',NW],['hq','To send to HQ',HQ]].map(([k,l,n])=>`<button class="stchip${f===k?' on':''} ${k}" data-act="stf" data-v="${k}" aria-pressed="${f===k}">${l} ${n}</button>`).join('')}</div>`;
+  const list=rows.filter(x=>cid||x.shown.length||!f);
+  if(!list.length)return h+'<div class="card empty">Nothing to show for these filters.</div>';
+  const av=c=>`<span class="stav ${c.sex==='boy'?'boy':''}">${esc((c.name||'?')[0])}</span>`;
+  const cnt=x=>x.all.length?(x.nw.length||x.hq.length?`${x.nw.length?`<span class="stp nw">${x.nw.length} not written</span>`:''}${x.hq.length?`<span class="stp hq">${x.hq.length} to HQ</span>`:''}`:'<span class="stp ok">All done</span>'):'<span class="stp ok">No tests</span>';
+  if(cid){const x=list[0];return h+`<div class="card stbox"><div class="stkidh">${av(x.c)}<div><b>${esc(x.c.name)}</b><div class="s">${esc([nm('grades',x.c.gradeId),nm('branches',x.c.branchId)].filter(Boolean).join(' · '))}</div></div><span class="stcnt">${cnt(x)}</span></div>${x.shown.map(t=>stRow(t,x.c)).join('')||'<div class="muted small" style="padding:10px">No tests for these filters.</div>'}</div>`}
+  return h+`<div class="card stbox">${list.map(x=>{const on=ui.stOpen===x.c.id;return `<button class="stkid" data-act="stopenk" data-c="${x.c.id}" aria-expanded="${on}"><span class="pmb${on?'':' c'}" aria-hidden="true">${on?'−':'+'}</span>${av(x.c)}<b>${esc(x.c.name)}</b><span class="stcnt">${cnt(x)}</span></button>${on?x.shown.map(t=>stRow(t,x.c)).join('')||'<div class="muted small" style="padding:8px 12px">No tests for these filters.</div>':''}`}).join('')}</div>`}
+async function stSave(k,patch){const cur=byId('stutests',k)||{};const {id,...rest}=cur;const [tid,cid]=k.split('_');const d={...rest,testId:tid,childId:cid,...patch};
+  const ix=S.stutests.findIndex(x=>x.id===k);if(ix>=0)S.stutests[ix]={id:k,...d};else S.stutests.push({id:k,...d});render();await put('stutests',k,d)}
+
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -2408,6 +2482,7 @@ async function addPhoto(kind,key,file){
   try{const res=await assets.upload(await compress(file)), ph={id:res.id,url:res.url,at:new Date().toISOString(),by:ui.mgr?'manager':ui.me};
     if(kind==='entry'){const [rid,date,sid]=key.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid);await setEntry(id,rid,date,sid,{photos:[...((entryMap[id]||{}).photos||[]),ph]})}
     else if(['leavereq','incidents','maint'].includes(kind)){const x=byId(kind,key);if(!x)return;const {id,...rest}=x;await put(kind,id,{...rest,photos:[...(x.photos||[]),ph],...(kind==='incidents'?{hist:[...(x.hist||[]),{at:ph.at,by:ph.by,what:'Photo added'}]}:{})})}
+    else if(kind==='stu'){const r=byId('stutests',key)||{};await stSave(key,{photos:[...(r.photos||[]),ph]})}
     else{const p=byId('plans',key);if(!p)return;const {id,...rest}=p;await put('plans',id,{...rest,photos:[...(p.photos||[]),ph]})}
     toast('Photo added')}catch(e){toast(e&&e.code==='not_granted'?'Photo uploads need edit access to this page.':'Photo upload failed. Try again with a smaller photo.')}
 }
@@ -2422,7 +2497,7 @@ async function signOff(sids,on){
   render();toast(on?'Signed off':'Reopened');
 }
 const acts={
-  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.stChat='';ui.incSec=null;ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
+  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.stChat='';ui.incSec=null;ui.stOpen=null;ui.stCm=null;ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
   theme:()=>{const n=effTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=n;lsSet('theme',n);renderChrome()},
   who:()=>{if(!signedIn())return;ui.acct=!ui.acct;render();window.scrollTo(0,0)},
   logout:()=>{ui.me='';ui.mgr=false;ui.acct=false;lsSet('me',null);lsSet('mgr',null);ui.f.staff='';render()},
@@ -2713,6 +2788,16 @@ const acts={
   bdmin:b=>{const k='bdmin_'+b.dataset.c+'_'+b.dataset.d+'_'+meKey();lsGet(k)?lsSet(k,''):lsSet(k,'1');render()},
   bdmsg:b=>{ui.bdMsg=ui.bdMsg===b.dataset.c?null:b.dataset.c;render()},
   bdcopy:b=>{const c=byId('children',b.dataset.c);if(!c)return;const t=bdMsg(c);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Message copied'),()=>{const r=document.createRange(),el=document.getElementById('bdm-'+c.id);if(el){r.selectNodeContents(el);const sl=getSelection();sl.removeAllRanges();sl.addRange(r);try{document.execCommand('copy');toast('Message copied')}catch(e){toast('Select the text to copy it')}}})},
+  stf:b=>{ui.stF=b.dataset.v;render()},
+  stopenk:b=>{ui.stOpen=ui.stOpen===b.dataset.c?null:b.dataset.c;ui.stCm=null;render()},
+  stuw:b=>{const t=byId('tests',b.dataset.t),c=byId('children',b.dataset.c);if(!t||!c)return;const s=stState(t,c),now=new Date().toISOString(),me=ui.me||'manager',k=t.id+'_'+c.id;
+    if(t.childId||(!s.r.written&&t.done)){acts.testdone({dataset:{id:t.id}});if(s.w)stSave(k,{written:false,hq:false});return}
+    stSave(k,s.w?{written:false,wBy:'',wAt:'',hq:false}:{written:true,wBy:me,wAt:now})},
+  stuhq:b=>{const t=byId('tests',b.dataset.t),c=byId('children',b.dataset.c);if(!t||!c)return;const s=stState(t,c);if(!s.w){toast('Tick "Test written" first.');return}
+    stSave(t.id+'_'+c.id,s.hq?{hq:false,hqBy:'',hqAt:''}:{hq:true,hqBy:ui.me||'manager',hqAt:new Date().toISOString()})},
+  stcm:b=>{ui.stCm=b.dataset.k;render();setTimeout(()=>document.getElementById('tf-stcm')?.focus(),0)},
+  stcmx:()=>{ui.stCm=null;render()},
+  stcmsave:b=>{const v=(document.getElementById('tf-stcm')||{}).value||'';ui.stCm=null;stSave(b.dataset.k,{comment:v.trim(),cBy:ui.me||'manager',cAt:new Date().toISOString()})},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}

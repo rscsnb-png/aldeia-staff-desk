@@ -1,6 +1,6 @@
 // Aldeia Staff Desk service worker: always tries the network first so updates show straight away,
 // falls back to the saved copy when the phone is offline, and opens the app when a notification is tapped.
-const CACHE='staff-desk-v4';
+const CACHE='staff-desk-v5';
 const HOSTS=['www.gstatic.com','cdnjs.cloudflare.com'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png']).catch(()=>{})))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('staff-desk-v')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
