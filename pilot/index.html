@@ -564,6 +564,11 @@ body::before{background:var(--hdr)}
 .tlbday.boy,.pbd.boy{background:#eef5fd;border-color:#a9cbef;border-left-color:#2f7fd6}
 .pbd.boy .bstar,.tlbday.boy .bstar{background:#2f7fd6}
 #tf-bdp-month{min-height:40px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--fg);padding:0 10px;font:inherit;width:100%;box-sizing:border-box}
+/* round 12 */
+.incsec{padding:0;overflow:visible}
+.incbody{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.incsec-new .incbody>.card,.incsec-pdf .incbody>.card{border:0;box-shadow:none;background:transparent;padding:0;margin:0}
+.incsec-new .incbody>.card>h3:first-child,.incsec-pdf .incbody>.card>h3:first-child{display:none}
 </style>
 </head>
 <body>
@@ -1369,9 +1374,10 @@ function incCard(x){const mgr=ui.isMgr,c=byId('children',x.childId)||{};
       ${photoOk&&(mgr||x.by===ui.me)?`<button class="btn sm" data-act="photopick" data-kind="incidents" data-k="${x.id}">+ Photo</button>`:''}<button class="btn sm" data-act="inprint" data-id="${x.id}">PDF report</button></div>
     ${mgr&&x.status!=='closed'?`<div class="addnew"><input type="text" id="tf-in-mn-${x.id}" placeholder="Manager note (optional)" aria-label="Manager note"><button class="btn sm primary" data-act="inclose" data-id="${x.id}">Mark reviewed</button></div>`:''}</div>`}
 function vInc(){const list=S.incidents.filter(x=>ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
-  let h=incForm('')+`<div class="card"><h3>Incident report for a period (PDF)</h3><div class="grid2"><label class="fld"><span>From</span><input type="date" id="tf-inr-from" value="${iso(addDays(new Date(),-30))}"></label><label class="fld"><span>To</span><input type="date" id="tf-inr-to" value="${todayIso()}"></label><label class="fld"><span>Area</span><select id="tf-inr-br">${opt('branches','','All areas')}</select></label><label class="fld"><span>Child</span><select id="tf-inr-child">${opt('children','','All children')}</select></label></div><div class="actions"><button class="btn" data-act="inrange">Create PDF report</button></div><span class="small muted">Opens the report. Choose Save as PDF in the print window.</span></div>`;const open=list.filter(x=>x.status!=='closed');
-  h+=`<h2>${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span></h2>`+((ui.isMgr?open:list).map(incCard).join('')||'<div class="card empty">No incident reports.</div>');
+  let h=(PILOTNOTE?incOpen('new','New incident report')+incForm('')+incClose()+incOpen('pdf','Incident report for a period (PDF)'):incForm(''))+`<div class="card"><h3>Incident report for a period (PDF)</h3><div class="grid2"><label class="fld"><span>From</span><input type="date" id="tf-inr-from" value="${iso(addDays(new Date(),-30))}"></label><label class="fld"><span>To</span><input type="date" id="tf-inr-to" value="${todayIso()}"></label><label class="fld"><span>Area</span><select id="tf-inr-br">${opt('branches','','All areas')}</select></label><label class="fld"><span>Child</span><select id="tf-inr-child">${opt('children','','All children')}</select></label></div><div class="actions"><button class="btn" data-act="inrange">Create PDF report</button></div><span class="small muted">Opens the report. Choose Save as PDF in the print window.</span></div>`+(PILOTNOTE?incClose():'');const open=list.filter(x=>x.status!=='closed');
+  h+=(PILOTNOTE?incOpen('list',`${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span>`):`<h2>${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span></h2>`)+((ui.isMgr?open:list).map(incCard).join('')||'<div class="card empty">No incident reports.</div>');
   if(ui.isMgr){const cl=list.filter(x=>x.status==='closed');if(cl.length)h+=`<h2>Reviewed</h2>`+cl.slice(0,20).map(incCard).join('')}
+  if(PILOTNOTE)h+=incClose();
   return h}
 
 /* 38 maintenance */
@@ -1671,8 +1677,9 @@ function vNoticesP(){let items=[];try{items=noticeItems()}catch(e){}const n=item
   let h=`<div class="row spread"><h2 style="margin:0">Notices${n?` <span class="count">${n} new</span>`:''}</h2><span class="actions">${n?'<button class="btn sm" data-act="ntcall">Mark all as read</button>':''}<button class="btn sm" data-act="tab" data-t="home">Back to Today</button></span></div><div class="small muted">Green = new. Tap to mark as read. Use Remind me to see it again later.</div>`;
   if(!items.length)return h+'<div class="card empty">No notices right now. All caught up.</div>';
   return h+`<div class="halerts">${ntcRows(items)}</div>`}
-function ntcModal(){if(ui.ntcDone||!loaded||!signedIn()||ui.viewing||ui.tab!=='home')return !!document.getElementById('ntm');ui.ntcDone=true;
-  if(lsGet('ntcpop_'+meKey())===todayIso())return false;let items=[];try{items=noticeItems()}catch(e){}if(!items.some(x=>!x.read))return false;
+function ntcModal(){if(document.getElementById('ntm'))return true;if(!loaded||!signedIn()||ui.viewing)return false;
+  if(ui.ntcDone||lsGet('ntcpop_'+meKey())===todayIso())return false;let items=[];try{items=noticeItems()}catch(e){}if(!items.some(x=>!x.read)){ui.ntcDone=true;return false}
+  if(ui.tab!=='home')return true;ui.ntcDone=true;
   const m=document.createElement('div');m.id='ntm';m.className='modal';document.body.appendChild(m);ntcModalFill();return true}
 function ntcModalFill(){const m=document.getElementById('ntm');if(!m)return;let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
   m.innerHTML=`<div class="modalcard ntmcard" role="dialog" aria-modal="true" aria-labelledby="ntmh"><div class="row spread"><h2 id="ntmh" style="margin:0">Read your notices first</h2>${n?`<span class="count">${n} new</span>`:''}</div>
@@ -1735,6 +1742,9 @@ function bdPoster(){const m=val('tf-bdp-month')||todayIso().slice(0,7),[y,mo]=m.
   const rows=ks.map(c=>{const a=Number(c.dob.slice(0,4))>1900?y-Number(c.dob.slice(0,4)):null;return `<div class="r"><span class="a ${bdCol(c)}">${esc((c.name||'?')[0])}</span><b>${esc(c.name)}${a?` · turns ${a}`:''}</b><span class="dd">${Number(c.dob.slice(8))} ${MON[mo-1]}</span></div>`}).join('');
   openPrint(`${MON_LONG[mo-1]} birthdays`,st+`<div class="pt"><div class="ck">🎂</div><h1>${MON_LONG[mo-1]} birthdays</h1><div class="m">Aldeia${br?' · '+esc(nm('branches',br)):''}</div></div>${rows}`)}
 
+/* ---------- pilot round 12 ---------- */
+function incOpen(k,t){const on=ui.incSec===k;return `<div class="card incsec incsec-${k}${on?' on':''}"><button class="rsh" data-act="incsec" data-v="${k}" aria-expanded="${on}"><span class="pmb${on?'':' c'}" aria-hidden="true">${on?'−':'+'}</span><b>${t}</b></button><div class="incbody"${on?'':' hidden'}>`}
+const incClose=()=>'</div></div>';
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1933,7 +1943,7 @@ function evPanel(){const E=ui.evEdit;if(!E)return '';const o=evObj(E);if(!o)retu
   ${weekly?`<div class="fld"><span>Apply to</span><div class="seg"><label><input type="radio" name="tf-escope" id="tf-esc-one" checked> ${fmt(E.d)} only</label><label><input type="radio" name="tf-escope" id="tf-esc-all"> Every week</label></div></div>`:''}
   ${clashBox('ev')}<div class="actions"><button class="btn primary" data-act="evsave">${ui.clash&&ui.clash.f==='ev'?'Save anyway':'Save'}</button><button class="btn" data-act="evcancel">Cancel</button></div></div>`}
 function vTime(){
-  let h=weekNav()+(ui.mgr?`<div class="card"><div class="grid2"><label class="fld"><span>Staff</span><select data-filter="staff"><option value="">All staff</option>${sortByName('staff').filter(x=>!ui.f.branch||x.branchId===ui.f.branch).map(x=>`<option value="${x.id}"${x.id===ui.f.staff?' selected':''}>${esc(staffLabel(x))}</option>`).join('')}</select></label>
+  let h=weekNav()+(ui.mgr&&!PILOTNOTE?`<div class="card"><div class="grid2"><label class="fld"><span>Staff</span><select data-filter="staff"><option value="">All staff</option>${sortByName('staff').filter(x=>!ui.f.branch||x.branchId===ui.f.branch).map(x=>`<option value="${x.id}"${x.id===ui.f.staff?' selected':''}>${esc(staffLabel(x))}</option>`).join('')}</select></label>
     <label class="fld"><span>Branch</span><select data-filter="branch">${opt('branches',ui.f.branch,'All branches')}</select></label></div></div>`:'')+filtersCard()+evPanel();
   const F0=420,F1=1020,PX=12, ds=selDates();let T0=F0,T1=F1;
   if(ui.mgr&&!ui.f.staff) h+=`<div class="banner info"><span class="small">Showing everyone. Pick one staff member above for a clearer timetable. Tap a block to edit it.</span></div>`;
@@ -2399,7 +2409,7 @@ async function signOff(sids,on){
   render();toast(on?'Signed off':'Reopened');
 }
 const acts={
-  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.stChat='';ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
+  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.stChat='';ui.incSec=null;ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
   theme:()=>{const n=effTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=n;lsSet('theme',n);renderChrome()},
   who:()=>{if(!signedIn())return;ui.acct=!ui.acct;render();window.scrollTo(0,0)},
   logout:()=>{ui.me='';ui.mgr=false;ui.acct=false;lsSet('me',null);lsSet('mgr',null);ui.f.staff='';render()},
@@ -2686,6 +2696,7 @@ const acts={
     for(const f of S.feedback.filter(f=>f.kind==='unlock'&&f.scope==='week'&&f.from===sid&&f.date===ws&&!f.closed)){const {id,...rest}=f;f.closed=true;await put('feedback',id,{...rest,closed:true})}
     logAct(`Unlocked week ${isoWeek(parse(ws))} planning for ${nm('staff',sid)}`);render();toast('Week unlocked')},
   bdposter:()=>bdPoster(),
+  incsec:b=>{ui.incSec=ui.incSec===b.dataset.v?null:b.dataset.v;render()},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
@@ -2788,7 +2799,7 @@ function saveComment(key,text){
   if(((entryMap[id]||{}).comment||'')===text){render();return}
   setEntry(id,rid,date,sid,{comment:text,cby:ui.me||'manager'});toast('Comment saved');
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(b.dataset.ntcgo&&document.getElementById('ntm')){lsSet('ntcpop_'+meKey(),todayIso());document.getElementById('ntm').remove()}if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(b.dataset.ntcgo&&document.getElementById('ntm')){document.getElementById('ntm').remove();ui.ntcDone=false}if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
 document.addEventListener('submit',e=>{e.preventDefault();acts[e.target.dataset.act]?.(e.target)});
 document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.snz){const m=Number(t.value);if(!m)return;const k=t.dataset.snz,sz=ntcSnz();sz[k]=new Date(Date.now()+m*60000).toISOString();lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));const r=ntcRead();if(!r.includes(k)){r.push(k);ntcSave(r)}toast('I will remind you '+(SNZ.find(x=>x[0]===m)||[0,''])[1]);render();ntcModalFill();return}
   if(t.dataset.filter!==undefined){ui.f[t.dataset.filter]=t.value;if(t.dataset.filter==='cur')ui.f.topic='';
