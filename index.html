@@ -419,6 +419,167 @@ body::before{background:var(--hdr)}
 .hal-bday{background:#fdf1dc;border:1.5px solid #e0a43a;color:#4a3200;align-items:center}.hal-bday b{color:#7a4a00}.tico.bd{background:#d9822b}
 .ricon{display:inline-flex;align-items:center;gap:2px;margin-left:6px;color:var(--accent);font-size:11px;font-weight:700;vertical-align:middle;text-decoration:none}.ricon svg{width:15px;height:15px}
 .tlmgr{display:flex;flex-direction:column;gap:4px;margin-top:8px;border-top:1px solid var(--line);padding-top:8px}.tlmgr .btn{align-self:flex-start}
+.tico.bd{background:#ff2d87;box-shadow:0 0 0 3px #ffd1e6}.hal-bday{background:#fff0f6;border:1.5px solid #ff7ab3;color:#4a1030}.hal-bday b{color:#b0124f}.tlbday{border-left-color:#ff2d87;background:#fff0f6}.bdrow{background:#fff0f6}
+.chead{gap:10px}.chrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.chrow .iconx{width:36px;height:36px;font-size:18px;background:var(--surface);border:1px solid var(--line-strong)}.cwk{font-size:15px}.chsp{flex:1}
+.cdays{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.cday{min-height:46px;border-radius:10px;border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);font:inherit;font-size:12.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:3px 2px;min-width:0}
+.cday small{font-size:10px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cday.on{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}.cday.on small{color:var(--accent-fg)}.cday.today:not(.on){border:2px solid var(--accent)}
+.cmw{position:relative}.cmenu{position:absolute;right:0;top:100%;z-index:30;background:var(--surface);border:1px solid var(--line-strong);border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.15);display:flex;flex-direction:column;min-width:200px;overflow:hidden;margin-top:4px}
+.cmenu button{all:unset;box-sizing:border-box;padding:11px 14px;font-size:13.5px;cursor:pointer;color:var(--fg)}.cmenu button:hover,.cmenu button:focus-visible{background:var(--off-bg)}.cmenu button.danger{color:var(--bad);border-top:1px solid var(--line)}
+.bdline{display:flex;align-items:center;gap:10px;background:#fff0f6;border:1.5px solid #ff7ab3;border-radius:10px;padding:7px 12px;font-size:13px;color:#4a1030}.bdline .bdt{flex:1;min-width:0}
+.bstar{width:28px;height:28px;border-radius:50%;background:#ff2d87;color:#fff;display:grid;place-items:center;font-size:16px;flex:none;box-shadow:0 0 0 3px #ffd1e6}.bstar.sm{width:22px;height:22px;font-size:12px;box-shadow:none}
+.cdh{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;padding:8px 2px 2px;cursor:pointer}.cdt{font-weight:800;font-size:16px}.cds{font-size:13px;color:var(--muted)}.cbar{grid-column:1/-1;height:6px;border-radius:3px;background:var(--line);overflow:hidden}.cbar i{display:block;height:100%;background:var(--ok)}
+.clist{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.crow{position:relative;display:grid;grid-template-columns:22px 88px minmax(0,1fr) auto 64px 34px;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line)}.clist>:last-child,.clist>.crow:last-child{border-bottom:0}
+.clist>.crow:first-child{border-radius:12px 12px 0 0}.clist>.crow:last-child{border-radius:0 0 12px 12px}
+.crow input[type=checkbox]{width:20px;height:20px;margin:0}.ctime{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}.ctx{min-width:0;display:flex;flex-direction:column}.ctt{font-size:14px;font-weight:600;overflow-wrap:anywhere}.cmeta{font-size:12px;color:var(--muted)}.cnar{display:none}
+.cdone{background:var(--ok-bg)}.cdone .ctt{text-decoration:line-through;color:var(--muted)}
+.crow .who{justify-self:start;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cst{font-size:12px;font-weight:700;color:var(--muted)}.cst.ok{color:var(--ok)}.cst.bad{color:var(--bad)}.cst.due{color:var(--warn)}
+.cmore{width:32px;height:32px;border-radius:16px;border:0;background:transparent;font-size:18px;line-height:1;color:var(--muted);cursor:pointer}.cmore[aria-expanded="true"]{background:var(--off-bg);color:var(--fg)}
+.crow .cmenu{top:calc(100% - 4px);right:6px}.cmopen{z-index:5}
+.cbd{background:#fff0f6;grid-template-columns:22px 88px minmax(0,1fr)}
+.crfull{padding:6px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px}.crfull .item{margin:0}.crfull>.btn{align-self:flex-start}
+@media (max-width:600px){.crow{grid-template-columns:22px minmax(0,1fr) 32px}.crow .ctime,.crow .who,.crow .cst{display:none}.cnar{display:inline}.cbd{grid-template-columns:22px minmax(0,1fr)}.cdays{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tltest.slim{padding:5px 10px;font-size:13px;border-radius:8px;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 4px}.tltest.slim .tlt{font-size:13px;font-weight:700}.tltest.slim .tlsub{font-size:11.5px;margin:0}
+.hquick{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.top .refbtn{width:28px;height:28px;opacity:.9}.top .refbtn svg{width:15px;height:15px}.top .refbtn:hover{opacity:1}
+.bub{padding:3px 9px 2px;gap:0;font-size:13.5px;line-height:1.3;border-radius:3px 10px 10px 10px}.bub.me{border-radius:10px 3px 10px 10px}.bub .bt{font-weight:500;font-size:14px;letter-spacing:0}.bub .bl{font-size:10.5px}.bub .bm{font-size:10px;line-height:1.1;margin-top:-1px}.ibchat{gap:4px}
+.bub .btn{min-height:26px;padding:2px 10px;font-size:12px;border-radius:7px}.bub .actions{gap:6px;margin:2px 0}
+/* round 6 */
+.tabnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.hstrip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:10px}
+.hsd{border:0;border-radius:10px;background:rgba(255,255,255,.45);color:var(--hdr-fg,#0e3550);font:inherit;display:flex;flex-direction:column;align-items:center;padding:4px 2px;gap:0;cursor:pointer;min-width:0}
+.hsd span{font-size:11px;font-weight:700}.hsd b{font-size:15px;line-height:1.15}.hsd small{font-size:10px;font-weight:700;opacity:.85;white-space:nowrap}
+.hsd.empty small{color:#a3322a;opacity:1}.hsd.miss small{color:#a3322a;opacity:1}
+.hsd.on{background:#23729f;color:#fff}.hsd.on small{color:#fff}
+.hsd.tdy:not(.on){box-shadow:inset 0 0 0 2px #23729f}
+.wk5{gap:5px}.wkd{min-height:0;padding:3px 2px;border-radius:10px}.wkd span{font-size:11px}.wkd b{font-size:15px}.wkd small{font-size:9.5px}
+.ptl.thin{row-gap:5px;column-gap:8px}.ptl.thin .ptlt{padding-top:7px;font-size:11px}
+.pslim .crow{grid-template-columns:22px minmax(0,1fr) auto 62px 30px;padding:3px 8px;border:1px solid var(--line);border-left:4px solid var(--hdr);border-radius:8px;background:var(--surface)}
+.pslim .crow.cdone{border-left-color:var(--ok,#2f6a3e)}
+.pslim .ctime{display:none}
+.pslim .ctt{font-size:13px}.pslim .cmeta{font-size:11.5px}
+.pslim .crfull{margin:0}
+.pthin{display:flex;align-items:center;gap:8px;min-height:32px;padding:3px 10px;border-radius:8px;font-size:13px;box-sizing:border-box}
+.ptest{background:var(--warn-bg);border:1px solid var(--line);border-left:4px solid var(--warn)}.ptest .ptx{flex:1;min-width:0}
+.pbd{background:#fff0f6;border:1px solid #ffb3d1;border-left:4px solid #ff2d87;font-weight:600}
+.brk.pthin{border:1px dashed var(--line-strong);background:transparent;color:var(--muted)}
+.ptl.thin .slotadd{min-height:32px;border-radius:8px;font-size:12.5px}
+.rsec{padding:0;overflow:visible}
+.rsh{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;font:inherit;color:var(--fg);padding:12px 14px;cursor:pointer;text-align:left}
+.rsh b{font-size:15px}.rsp{flex:1}
+.pmb{width:24px;height:24px;border-radius:12px;background:#23729f;color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px;flex:none}.pmb.c{background:#c0c0b8;color:#333}
+.rflt{display:flex;gap:8px;padding:0 14px 10px;flex-wrap:wrap}.rflt select{width:auto;max-width:200px}
+.rpad{padding:0 14px 12px}
+.rlist{border-top:1px solid var(--line)}
+.rrow{position:relative;display:grid;grid-template-columns:96px minmax(0,1fr) auto 32px;gap:8px;align-items:center;padding:6px 10px 6px 14px;border-bottom:1px solid var(--line)}
+.rrow:last-child{border-bottom:0}
+.rrow .ctt{font-size:13.5px;font-weight:700}.rrow .cmeta{font-size:12px;color:var(--muted);display:block}
+.rrow .cmenu{top:calc(100% - 4px);right:6px}
+.rrow .cnar{display:none}
+.rwknav{display:flex;align-items:center;gap:8px;padding:0 14px 10px;flex-wrap:wrap}.rwknav .muted{margin-left:auto}
+.rwk{display:grid;grid-template-columns:110px repeat(5,minmax(0,1fr));border-top:1px solid #b0b0a8;font-size:12px;overflow-x:auto}
+.rwh{background:#c0c0b8;padding:6px 8px;font-weight:700;border-right:1px solid #b0b0a8}.rwh:nth-child(6){border-right:0}
+.rwn{padding:6px 8px;border-top:1px solid var(--line);border-right:1px solid var(--line);display:flex;align-items:flex-start}
+.rwc{padding:5px;border-top:1px solid var(--line);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.rwc:nth-child(6n){border-right:0}
+.rwb{all:unset;box-sizing:border-box;cursor:pointer;background:#e3eef5;border-left:3px solid #23729f;border-radius:5px;padding:3px 6px;display:flex;flex-direction:column;min-width:0}
+.rwb b{font-size:11.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rwb small{font-size:10px;color:var(--muted)}
+.rwb:hover{background:#d3e5f0}
+.rwadd{all:unset;cursor:pointer;color:#9a9a92;font-size:15px;line-height:1;padding:2px 4px;border-radius:4px;align-self:flex-start}.rwadd:hover{background:var(--off-bg);color:#23729f}
+.rsec #respform{border:0;box-shadow:none;margin:0;padding-top:0;background:transparent}.rsec #respform>h3{display:none}
+@media (max-width:600px){.pslim .crow{grid-template-columns:22px minmax(0,1fr) 30px}.pslim .crow .who,.pslim .crow .cst{display:none}
+ .rrow{grid-template-columns:minmax(0,1fr) auto 32px}.rrow .ctime{display:none}.rrow .cnar{display:inline}
+ .rwk{grid-template-columns:76px repeat(5,minmax(64px,1fr))}}
+.rrow .who,.rwn .who{max-width:none}.rwn .who{white-space:normal;text-align:left}
+.pslim .ctx{flex-direction:row;flex-wrap:wrap;column-gap:10px;align-items:baseline}
+.pslim .crow{min-height:34px}
+.wk5 .wkd{min-height:0;padding:4px 2px;display:grid;grid-template-columns:auto auto;justify-content:center;column-gap:5px;row-gap:0;align-items:baseline;border-radius:9px}
+.wk5 .wkd span{font-size:12px}.wk5 .wkd b{font-size:14px;line-height:1.2}.wk5 .wkd small{grid-column:1/-1;text-align:center;font-size:10px}
+/* round 7 */
+.tabnav{display:inline-flex;gap:0;flex-wrap:nowrap;border:1.5px solid #23729f;border-radius:10px;overflow:hidden;box-shadow:0 2px 0 rgba(0,0,0,.12);background:var(--surface)}
+.tnb{font:inherit;font-size:13.5px;font-weight:700;border:0;border-left:1.5px solid #23729f;background:var(--surface);color:#23729f;padding:7px 14px;min-height:36px;cursor:pointer}
+.tnb:first-child{border-left:0}.tnb:hover{background:#e3eef5}.tnb.on{background:#23729f;color:#fff;cursor:default}
+.tacts{display:inline-flex;gap:6px;margin-left:auto;flex:none}
+.tltest.slim{align-items:center}.tltest.slim .tacts .btn{min-height:26px;padding:1px 9px}
+.tdone .tlt,.tdone .ptx b{text-decoration:line-through;color:var(--muted)}
+.ptest .tacts{margin-left:0}
+.ok{color:#2f6a3e;font-weight:700}
+.ibh{margin:14px 2px 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+@media (max-width:600px){.tabnav{width:100%}.tnb{flex:1;padding:7px 6px;font-size:12.5px}}
+#rpbox input[type=month]{min-height:40px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--fg);padding:0 10px;font:inherit;width:100%;box-sizing:border-box}#rpbox .actions{align-items:center;margin-top:8px}
+/* round 8 */
+.qrow{position:relative}.qrow>.tlhit{padding-right:84px}
+.qrow>.qdone{position:absolute;right:8px;top:6px}
+.tline.thin .qrow>.qdone{top:4px}
+.qdone{font:inherit;font-size:12px;font-weight:700;min-height:26px;min-width:64px;padding:2px 10px;border-radius:13px;border:1px solid #c4c4bc;background:#e3e3dc;color:#77776f;cursor:pointer;white-space:nowrap}
+.qdone:hover{background:#d8d8d0;color:#444}
+.qdone.on{background:#2f8a4a;border-color:#2f8a4a;color:#fff}.qdone.on:hover{background:#277a40}
+.qdone:disabled{opacity:.5;cursor:not-allowed}
+.qrow .nowb{margin-right:6px}
+.tltest.slim.qrow{padding:0;display:block}.tltest.slim.qrow>.tlhit{padding:5px 84px 5px 10px}
+.tltest.slim .tlh{display:block}.tltest.slim .tlt{font-size:13px;font-weight:700}
+.pslim .crow.cq{grid-template-columns:minmax(0,1fr) auto auto 30px}
+.ptest .qdone{margin-left:2px}
+.hquick{align-items:center}.hquick .rsp{flex:1}
+.mmx{display:inline-flex;border:1px solid #c4c4bc;border-radius:8px;overflow:hidden}
+.mmx button{font:inherit;font-size:12px;font-weight:700;border:0;background:var(--surface);color:#555;padding:3px 10px;min-height:26px;cursor:pointer}
+.mmx button+button{border-left:1px solid #c4c4bc}.mmx button.on{background:#23729f;color:#fff}
+.bn svg{transition:margin .15s,background .15s}
+.bn.on svg{width:26px;height:26px;padding:7px;border-radius:50%;background:#23729f;color:#fff;margin-top:-18px;box-shadow:0 3px 8px rgba(0,0,0,.25);box-sizing:content-box}
+.bn.on span{font-weight:800;color:#23729f}
+@media (max-width:600px){.pslim .crow.cq{grid-template-columns:minmax(0,1fr) auto 30px}.hquick .tabnav{width:100%}}
+/* round 10 */
+.qbar{display:flex;gap:8px;flex-wrap:wrap}.qtop{margin-bottom:2px}
+.hquick .qbar .btn:not(.primary){background:#ecebe5}
+.ntcp{gap:6px;align-items:center}
+.ntcp:not(.read) .ntcb>*{background:#dff1df!important;border-color:#8cc79a!important;color:#1f5a2e!important}
+.ntcp:not(.read) .ntcb>* b,.ntcp:not(.read) .ntcb>* span{color:#1f5a2e!important}
+.ntcp.read .ntcb>*{opacity:1}.ntcp.read b{font-weight:600}
+.ntcctl{display:flex;align-items:center;gap:5px;flex:none}
+.ntcsnz{font:inherit;font-size:11.5px;min-height:26px;height:26px;padding:0 4px;border:1px solid #c4c4bc;border-radius:7px;background:var(--surface);color:#555;width:auto;max-width:108px;cursor:pointer}
+.ntcz{font-size:11.5px;color:#6e4d10;white-space:nowrap}
+.ntcctl .btn.xs{min-height:26px;padding:1px 8px;font-size:11.5px}
+.ntmcard{max-width:640px;width:calc(100% - 24px);max-height:calc(100vh - 40px);overflow:auto;display:flex;flex-direction:column;gap:10px}
+.ntmlist{gap:8px}
+.bdone{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:4px}
+@media (max-width:600px){.ntcp{flex-wrap:wrap}.ntcctl{width:100%;justify-content:flex-end}}
+/* round 11 birthdays */
+.hsd,.wkd{position:relative}
+.sdstars{position:absolute;top:-6px;right:-4px;display:flex;gap:1px}
+.sdstar{width:17px;height:17px;border-radius:9px;color:#fff;font-size:10px;line-height:17px;text-align:center;box-shadow:0 0 0 2px #fff;background:#ff2d87}
+.sdstar.boy{background:#2f7fd6}
+.bdcards{display:flex;flex-direction:column;gap:8px}
+.bdc{background:#fff0f6;border:1px solid #ffb3d1;border-radius:14px;padding:12px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bdc.boy{background:#eef5fd;border-color:#a9cbef}
+.bdcs{width:34px;height:34px;border-radius:17px;background:#ff2d87;color:#fff;display:grid;place-items:center;font-size:17px;box-shadow:0 0 0 4px #ffd1e6}
+.bdc.boy .bdcs{background:#2f7fd6;box-shadow:0 0 0 4px #cfe1f7}
+.bdcs.sm{width:22px;height:22px;font-size:12px;box-shadow:0 0 0 3px #ffd1e6}
+.bdct{font-size:18px;font-weight:800;color:#b0124f;margin-top:4px}.bdc.boy .bdct{color:#1f5f9e}
+.bdct.sm{font-size:13.5px;margin-top:0}
+.bdc.soon{flex-direction:row;justify-content:center;gap:8px;padding:6px 12px}
+.bdcsub{font-size:12.5px;color:#6b6b63}
+.bdcwa{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:6px}.bdcwa .small{width:100%}
+.btn.wab{background:#25a35a;border-color:#25a35a;color:#fff;text-decoration:none}.btn.wab:hover{background:#1e8b4c}
+.tlbday.boy,.pbd.boy{background:#eef5fd;border-color:#a9cbef;border-left-color:#2f7fd6}
+.pbd.boy .bstar,.tlbday.boy .bstar{background:#2f7fd6}
+#tf-bdp-month{min-height:40px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--fg);padding:0 10px;font:inherit;width:100%;box-sizing:border-box}
+/* round 12 */
+.incsec{padding:0;overflow:visible}
+.incbody{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.incsec-new .incbody>.card,.incsec-pdf .incbody>.card{border:0;box-shadow:none;background:transparent;padding:0;margin:0}
+.incsec-new .incbody>.card>h3:first-child,.incsec-pdf .incbody>.card>h3:first-child{display:none}
+.bdc{position:relative}
+.bdx{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:13px;border:1px solid #ffb3d1;background:#fff;color:#b0124f;font:inherit;font-size:16px;font-weight:800;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}
+.bdc.boy .bdx{border-color:#a9cbef;color:#1f5f9e}
+.bdc.soon .bdx{top:50%;transform:translateY(-50%)}
+.bdmsgbox{display:flex;align-items:flex-start;gap:8px;margin-top:8px;background:#fff;border:1px solid #ffb3d1;border-radius:10px;padding:8px 10px;font-size:13px;text-align:left;max-width:440px;width:100%;box-sizing:border-box}
+.bdc.boy .bdmsgbox{border-color:#a9cbef}
+.bdmsgbox span{flex:1}
+.bdcopy{flex:none;width:28px;height:28px;border-radius:7px;border:1px solid #c4c4bc;background:var(--surface);color:#555;cursor:pointer;display:grid;place-items:center;padding:0}
+.bdcopy:hover{color:#23729f;border-color:#23729f}
 </style>
 </head>
 <body>
@@ -445,7 +606,7 @@ body::before{background:var(--hdr)}
 <header class="top">
   <div class="wrap">
     <div class="topin">
-      <div class="brand"><img class="logo" src="data:image/webp;base64,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" alt="Aldeia NeuroBehaviour Institute"><span class="ver" id="ver">v2.4.0</span></div>
+      <div class="brand"><img class="logo" src="data:image/webp;base64,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" alt="Aldeia NeuroBehaviour Institute"><span class="ver" id="ver">v2.5.0</span></div>
       <div class="tools"><button class="iconbtn" id="searchBtn" data-act="search" aria-label="Search"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg></button>
         <button class="iconbtn bellbtn" id="bellBtn" data-act="tab" data-t="notices" aria-label="Notices" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span class="bellc" id="bellC" hidden></span></button> <button class="chipbtn" id="whoBtn" data-act="who">Sign in</button>
         
@@ -465,11 +626,12 @@ body::before{background:var(--hdr)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-window.__PILOT=true;
+window.__PILOT=true;window.__PILOTNOTE=true;
 window.startApp=function(){
 const PILOT=!!window.__PILOT;
 const PILOTNOTE=PILOT&&!!window.__PILOTNOTE;
-const VERSION='2.4.0';
+const ISTEST=!!window.__ISTEST;
+const VERSION='2.5.0';
 const COLLS=['branches','staff','children','grades','curriculum','topics','periods','breaks','resp','online','attendance','terms','clock','announce','requests','contacts','groups','papprove','mood','leavereq','incidents','maint','ibhide','tests','leave','holidays','entries','plans','signoffs','plocks','feedback','replies','log'];
 const S={settings:{}}; COLLS.forEach(c=>S[c]=[]);
 let entryMap={}, soMap={}, db=null, dl=null, assets=null, photoOk=false, loaded=false, dbState='loading';
@@ -594,7 +756,7 @@ const plansFor=dates=>S.plans.filter(p=>dates.includes(p.date)&&(matchCommon(p,p
 function testsFor(sid){
   const st=byId('staff',sid); if(!st) return [];
   const t=todayIso();
-  return S.tests.filter(x=>{const who=x.staffId?x.staffId===sid:(!x.branchId||x.branchId===st.branchId);
+  return S.tests.filter(x=>{if(PILOTNOTE&&x.done)return false;const who=x.staffId?x.staffId===sid:(!x.branchId||x.branchId===st.branchId);
     return who&&x.date&&x.date>=t&&daysBetween(t,x.date)<=(Number(x.lead)||3)}).sort((a,b)=>a.date.localeCompare(b.date));
 }
 function testsOnDate(date){
@@ -634,7 +796,7 @@ function tabsFor(){if(ui.isMgr)return [['home','Today'],...(PILOT?[['notices','N
   if(P.includes('inbox'))t.push(['inbox','Inbox']);if(P.includes('setup'))t.push(['setup','Setup']);return t}
 const signedIn=()=>!!(ui.me||ui.mgr);
 const NAVICO={resp:'<path d="M9 4h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="M8 13l2.5 2.5L16 10"/>',time:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M13 14h3M8 17h3"/>',home:'<path d="M3 11 12 4l9 7v9H3z"/>',plan:'<path d="M4 20h16M6 16l9-9 3 3-9 9H6z"/>',reg:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11l2 2 4-4"/>',fb:'<path d="M4 5h16v11H8l-4 4z"/>',inbox:'<path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/>',more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
-function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return [['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
+function navItems(){if(PILOT){const rs=(ui.isMgr||hasPerm('resp'))?['resp','Responsibilities']:['reg','Register'];return PILOTNOTE?[['home','Today'],...(rs[0]==='reg'?[['plan','Plan'],rs]:[rs,['plan','Plan']]),['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]:[['home','Today'],['plan','Plan'],rs,['time','Timetable'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}return [['home','Today'],['plan','Plan'],['reg','Register'],(ui.isMgr||hasPerm('inbox'))?['inbox','Inbox']:['fb','Messages'],['more','More']]}
 function renderChrome(){
   const bn=document.getElementById('bnav'),tabs=document.getElementById('tabs');if(tabs){tabs.hidden=true}
   const me=byId('staff',ui.me);
@@ -647,7 +809,7 @@ function renderChrome(){
   bn.hidden=false;const nav=navItems();bn.style.gridTemplateColumns=`repeat(${nav.length},minmax(0,1fr))`;const inNav=nav.map(x=>x[0]),n=unread(),ni=unreadInbox();
   const moreOn=!inNav.slice(0,4).includes(ui.tab);
   bn.innerHTML=nav.map(([k,l])=>{const on=k==='more'?moreOn||ui.moreOpen:ui.tab===k&&!ui.moreOpen,b=k==='fb'?n:k==='inbox'?ni:k==='more'&&(ni||n)&&!inNav.includes('fb')?n:0;
-    return `<button class="bn${on?' on':''}" data-act="${k==='more'?'moretog':'tab'}" data-t="${k}" aria-label="${l}"${on?' aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${on?2.1:1.8}" aria-hidden="true">${NAVICO[k]}</svg><span>${l}</span>${b?`<span class="bnb">${b}</span>`:''}</button>`}).join('');
+    return `<button class="bn${on?' on':''}${PILOTNOTE&&k==='plan'?' bnplan':''}" data-act="${k==='more'?'moretog':'tab'}" data-t="${k}" aria-label="${l}"${on?' aria-current="page"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${on?2.1:1.8}" aria-hidden="true">${NAVICO[k]}</svg><span>${l}</span>${b?`<span class="bnb">${b}</span>`:''}</button>`}).join('');
   renderMore();
 }
 function renderMore(){let m=document.getElementById('moresheet');if(!ui.moreOpen||!signedIn()){if(m)m.remove();return}
@@ -679,12 +841,12 @@ function render(){
     let h='';
     if(dbState==='none') h+=`<div class="banner info"><b>Sign in to Claude to use the shared tracker.</b><span>Ticks, comments and planning are saved in one shared place once you're signed in.</span></div>`;
     else if(dbState==='error') h+=`<div class="banner"><b>Couldn't reach the shared data.</b><span>Check your connection, then reopen this page.</span></div>`;
-    if(PILOTNOTE&&signedIn()&&ui.tab!=='home') h+=`<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>`;
+    if(ISTEST&&signedIn()&&ui.tab!=='home') h+=`<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>`;
     if(PILOT&&signedIn()&&ui.tab!=='home'&&!navigator.onLine) h+=`<div class="banner"><b>You're offline</b><span class="small">Changes are saved on this phone and sent when you're back online.</span></div>`;
     if(ui.viewing) h+=`<div class="banner" style="background:var(--accent-soft)"><div class="row spread"><b>Viewing as ${esc(nm('staff',ui.me))}</b><button class="btn sm primary" data-act="viewexit">Back to my view</button></div></div>`;
-    if(!signedIn()) h+=vGate(); else {if(ui.acct)h+=acctCard(); h+=VIEWS[ui.tab]();}
+    if(!signedIn()) h+=vGate(); else {if(ui.acct)h+=acctCard(); if(PILOTNOTE&&['reg','time','inc'].includes(ui.tab))h+=`<div class="qtop">${qBar(ui.tab)}</div>`; h+=VIEWS[ui.tab]();}
     panel.innerHTML=h;
-    setTimeout(ydayModal,0);setTimeout(handleClock,0);
+    setTimeout(PILOTNOTE?()=>{if(!ntcModal())ydayModal()}:ydayModal,0);setTimeout(handleClock,0);
     for(const id in saved){if([...ui.clear].some(p=>id.startsWith(p)))continue;const el=document.getElementById(id);if(!el)continue;
       if(el.type==='checkbox'||el.type==='radio')el.checked=saved[id];else el.value=saved[id]}
     panel.querySelectorAll('select[data-subj]').forEach(sel=>{const p=sel.dataset.subj,tp=document.getElementById(p+'-topic');if(!tp)return;
@@ -789,6 +951,7 @@ function linkChild(p,force){const cs=document.getElementById(p+'-child');if(!cs)
 function fillFromChild(d,ck){const c=byId('children',d.childId);if(!c)return d;if(!d.gradeId)d.gradeId=c.gradeId||'';if(!d[ck]&&(c.curIds||[])[0])d[ck]=c.curIds[0];return d}
 function vCheck(){return vCheckInner()+(S.staff.length?progress():'')}
 function vCheckInner(){
+  if(PILOTNOTE)return vCheckSlim();
   let h=backupDue()+reminders()+fbNotice()+bdayBanner()+nudge()+ydayCard();
   if(!S.staff.length&&loaded) return h+setupFirst();
   h+=weekNav()+filtersCard();
@@ -813,7 +976,7 @@ function vCheckInner(){
     if(ui.f.staff&&signed(ui.f.staff,d)){const req=S.feedback.find(f=>f.kind==='unlock'&&f.scope!=='plan'&&f.date===d&&f.from===ui.f.staff&&!f.closed);
       h+=`<div class="banner info"><div class="row spread"><span><b>Signed off by the manager</b><br><span class="small">Ticks for this day are locked.</span></span>${ui.mgr?`<button class="btn sm primary" data-act="unlockday" data-s="${ui.f.staff}" data-d="${d}">Unlock day</button>`:req?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-d="${d}">Request unlock</button>`}</div></div>`}
     if(hol) h+=`<div class="banner info"><b>Public holiday: ${esc(hol.name||'')}</b></div>`;
-    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test${t.time?' · '+esc(t.time):''}:</b> ${esc(t.title||'')} ${[nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span></div>`);
+    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test${t.time?' · '+tRange(t):''}:</b> ${esc(t.title||'')} ${[nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span></div>`);
     h+=its.length?its.map(i=>itemHtml(i)).join(''):(dps.length?'':`<div class="muted small" style="padding:4px 2px">Nothing scheduled${Object.values(ui.f).some(Boolean)&&ui.mgr?' for these filters':''}.</div>`);
     if(dps.length) h+=`<div class="subhd">Planned activities</div>`+planLockBanner(d)+dps.map(planHtml).join('');
   });
@@ -868,18 +1031,18 @@ const myBranch=()=>(byId('staff',ui.me)||{}).branchId||'';
 function breaksFor(){const br=ui.mgr?(ui.f.branch||(ui.f.staff?(byId('staff',ui.f.staff)||{}).branchId:'')):myBranch();
   return S.breaks.filter(x=>!br||!x.branchId||x.branchId===br)}
 function testBanner(t){const can=ui.mgr||t.by===ui.me;
-  return `<div class="banner"><div class="row spread"><span><b>Test${t.time?' · '+esc(t.time):''}:</b> ${esc(t.title||'')}${[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span>${can?`<button class="btn sm danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div></div>`}
+  return `<div class="banner"><div class="row spread"><span><b>Test${t.time?' · '+tRange(t):''}:</b> ${esc(t.title||'')}${[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(x=>' · '+esc(x)).join('')}</span>${can?`<button class="btn sm danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div></div>`}
 function extraForms(){
-  const sd=selDates(), def=sd.includes(todayIso())?todayIso():sd[0];
-  return `<details class="card flt" id="testbox"${ui.testOpen?' open':''}><summary><span><span class="pmx"></span> Add a test</span><span class="fsum">Shows as a reminder <span class="chev">▾</span></span></summary>
-   <div class="grid2"><label class="fld"><span>Child</span><select id="tf-child">${opt('children','','—')}</select></label></div>
-   ${subjTopic('tf',null)}
+  const sd=selDates(), def=sd.includes(todayIso())?todayIso():sd[0], et=PILOTNOTE&&ui.editing.test?byId('tests',ui.editing.test):null;
+  return `<details class="card flt" id="testbox"${ui.testOpen||et?' open':''}><summary><span><span class="pmx"></span> ${et?'Edit test':'Add a test'}</span><span class="fsum">${PILOTNOTE?'':'Shows as a reminder '}<span class="chev">▾</span></span></summary>
+   <div class="grid2"><label class="fld"><span>Child</span><select id="tf-child">${opt('children',et?et.childId||'':'','—')}</select></label></div>
+   ${subjTopic('tf',et?{curriculumId:et.curId||'',topicId:et.topicId||''}:null)}
    <div class="grid2">
-   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${def}"></label>${PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
-   <label class="fld"><span>Grade</span><select id="tf-grade">${opt('grades','','—')}</select></label>
-   ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-branch">${opt('branches','','All branches')}</select></label><label class="fld"><span>Staff</span><select id="tf-staff">${opt('staff','','All staff at branch')}</select></label>`:''}
-   <label class="fld"><span>Remind days before</span><input type="number" id="tf-lead" value="3" min="0" max="30"></label></div>
-   <div class="actions"><button class="btn primary" data-act="savetest">Save test</button></div></details>
+   <label class="fld"><span>Date</span><input type="date" id="tf-date" value="${et?et.date:def}"></label>${PILOTNOTE?`<label class="fld"><span>Starts *</span><select id="tf-ttime" required>${timeOpts(et?et.time||'':'','Choose')}</select></label><label class="fld"><span>Ends *</span><select id="tf-tend" required>${timeOpts(et?et.timeEnd||'':'','Choose')}</select></label>`:PILOT?`<label class="fld"><span>Time</span><select id="tf-ttime">${timeOpts('','—')}</select></label>`:''}
+   <label class="fld"><span>Grade</span><select id="tf-grade">${opt('grades',et?et.gradeId||'':'','—')}</select></label>
+   ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-branch">${opt('branches',et?et.branchId||'':'','All branches')}</select></label><label class="fld"><span>Staff</span><select id="tf-staff">${opt('staff',et?et.staffId||'':'','All staff at branch')}</select></label>`:''}
+   <label class="fld"><span>Remind days before</span><input type="number" id="tf-lead" value="${et?esc(et.lead||'3'):'3'}" min="0" max="30"></label></div>
+   <div class="actions"><button class="btn primary" data-act="savetest">${et?'Save changes':'Save test'}</button>${et?'<button class="btn" data-act="testcancel">Cancel</button>':''}</div></details>
   <details class="card flt" id="brkbox"${ui.brkOpen?' open':''}><summary><span><span class="pmx"></span> Add break time</span><span class="fsum">${breaksFor().length} saved <span class="chev">▾</span></span></summary>
    <div class="grid2"><label class="fld"><span>Name</span><input type="text" id="tf-bname" placeholder="e.g. Tea break"></label>
    ${ui.mgr?`<label class="fld"><span>Branch</span><select id="tf-bbranch">${opt('branches','','All branches')}</select></label>`:''}
@@ -1009,25 +1172,25 @@ function vPlanP(){
   if(!S.staff.length&&loaded) return reminders()+setupFirst();
   if(ui.plBatch) return vPlanBatch();
   const ds=weekDates(ui.ws),d=plDaySel(),kids=classKids(),grps=classGroups(),w=ui.plWho||'';
-  let h=reminders()+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">Today</button></div>`;
+  let h=reminders()+(PILOTNOTE?`<div class="row spread" style="margin-bottom:-4px"><h2 style="margin:0">Plan</h2>${qBar('plan')}</div>`:'')+`<div class="pwnav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><div class="wl"><b>Week ${isoWeek(ui.ws)}</b> · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}${termLabel(ds[0])}</div><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><button class="btn sm primary" data-act="pltoday">${PILOTNOTE?'This week':'Today'}</button></div>`;
   if(ui.mgr) h+=filtersCard();
   h+=`<div class="wk5">${ds.map(x=>{const ps=plansFor([x]),dn=ps.filter(p=>p.done).length,lab=ps.length?(dn===ps.length?dn+' ✓':ps.length+' planned'):'empty';
-    return `<button class="wkd${x===d?' on':''}${ps.length?'':' empty'}" data-act="plday" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small></button>`}).join('')}</div>`;
+    return `<button class="wkd${x===d?' on':''}${ps.length?'':' empty'}" data-act="plday" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small>${bdStars(x)}</button>`}).join('')}</div>`;
   if(kids.length>1) h+=`<div class="chiprow" role="group" aria-label="Show planning for">${[['','All '+kids.length],...grps.map(g=>['g:'+g.id,g.name]),...kids.map(c=>['c:'+c.id,(c.name||'').split(' ')[0]])].map(([v,l])=>`<button class="chip${v===w?' on':''}" data-act="plwho" data-v="${v}" aria-pressed="${v===w}">${esc(l)}</button>`).join('')}</div>`;
   h+=`<div class="plbar"><button class="btn primary" data-act="psopen" data-d="${d}">+ Add activity</button><button class="btn" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="copyweek">Copy last week</button></div>`;
   h+=papBox();
   if(!w&&kids.length>1){const wk=plansFor(ds),miss=kids.filter(c=>!wk.some(p=>covers(p,c.id)));
     if(miss.length&&miss.length<kids.length) h+=`<div class="banner warnb"><span class="small"><b>No planning this week yet for:</b> ${miss.map(c=>esc((c.name||'').split(' ')[0])).join(', ')}</span></div>`}
   const ps=plansFor([d]).filter(plWhoMatch),bs=breaksFor(),ts=testsOnDate(d),tk=w?[]:itemsFor([d]);
-  h+=`<div class="row spread"><h2 style="margin:0">${esc(fmt(d))}${d===todayIso()?' · Today':''}</h2><span class="muted small">${ps.length} planned${tk.length?` · ${tk.length} task${tk.length>1?'s':''}`:''}</span></div>`;
-  h+=planLockBanner(d);ts.forEach(t=>h+=testBanner(t));
+  h+=`<div class="row spread"><h2 style="margin:0">${esc(fmt(d))}${d===todayIso()?' · Today':''}</h2><span class="row" style="gap:10px"><span class="muted small">${ps.length} planned${tk.length?` · ${tk.length} task${tk.length>1?'s':''}`:''}</span>${planView()}</span></div>`;
+  h+=planLockBanner(d);if(!PILOTNOTE)ts.forEach(t=>h+=testBanner(t));
   const used=new Set(ps.map(p=>p.periodId).filter(Boolean)),usedSt=new Set(ps.map(p=>oStart(p)));
   const free=periodsSorted().filter(x=>!used.has(x.id)&&!usedSt.has(x.start||'~'));
-  const rows=[...tk.map(i=>({s:oStart(i.r),html:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:planHtml(p)})),
-    ...bs.map(x=>({s:x.start||'99',html:`<div class="brk"><span class="pill">Break</span><span>${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}</span></div>`})),
-    ...bdRows(d).map(x=>({s:'06:55',html:`<div class="brk bdrow"><span class="pill due">Birthday</span><span>${esc(x.t)}</span></div>`})),
+  const rows=[...tk.map(i=>({s:oStart(i.r),html:PILOTNOTE&&!ui.planFull?`<div class="pslim">${chkRowTask(i)}</div>`:itemHtml(i)})),...ps.map(p=>({s:oStart(p),html:PILOTNOTE&&!ui.planFull?`<div class="pslim">${chkRowPlan(p)}</div>`:planHtml(p)})),...(PILOTNOTE?ts.map(t=>({s:t.time||'00',html:testRow(t)})):[]),
+    ...bs.map(x=>({s:x.start||'99',html:`<div class="brk${PILOTNOTE?' pthin':''}"><span class="pill">Break</span><span>${esc(x.name||'Break')} · ${esc(x.start||'')}${x.end?'–'+esc(x.end):''}</span></div>`})),
+    ...bdRows(d).map(x=>({s:'06:55',html:PILOTNOTE?`<div class="pthin pbd${x.boy?' boy':''}"><span class="bstar sm" aria-hidden="true">★</span><span>${esc(x.t)}</span></div>`:`<div class="brk bdrow"><span class="pill due">Birthday</span><span>${esc(x.t)}</span></div>`})),
     ...free.map(x=>({s:x.start||'99',html:`<button class="slotadd" data-act="psopen" data-d="${d}" data-slot="${x.id}">+ Add activity · ${esc(periodLabel(x))}</button>`}))].sort((a,b)=>a.s.localeCompare(b.s));
-  h+=ps.length||tk.length||bdRows(d).length?`<div class="ptl">${rows.map(r=>`<div class="ptlt">${r.s==='99'?'':esc(r.s)}</div><div class="ptlc">${r.html}</div>`).join('')}</div>`
+  h+=ps.length||tk.length||bdRows(d).length||(PILOTNOTE&&ts.length)?`<div class="ptl${PILOTNOTE?' thin':''}">${rows.map(r=>`<div class="ptlt">${r.s==='99'?'':esc(r.s)}</div><div class="ptlc">${r.html}</div>`).join('')}</div>`
     :`<div class="card empty">Nothing planned for ${esc(fmt(d))} yet.<div class="plbar" style="justify-content:center"><button class="btn primary" data-act="pbopen" data-d="${d}">Plan the whole day</button><button class="btn" data-act="psopen" data-d="${d}">+ Add one activity</button></div></div>`;
   h+=extraForms()+psSheet();
   return h}
@@ -1058,7 +1221,7 @@ function psSheet(){const s=ui.ps;if(!s)return '';const ds=weekDates(ui.ws),kids=
   <div class="pss"><div class="psl">4 · Activity</div>${sugg.length?`<div class="chips">${sugg.map(x=>chip('pstext',x,esc(x.length>28?x.slice(0,28)+'…':x),x===s.text)).join('')}</div>`:''}
     <input type="text" id="tf-ps-text" value="${esc(s.text)}" placeholder="What will you do? e.g. Phonics with picture cards" aria-label="Activity"></div>
   <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-rep"${s.rep?' checked':''}> Repeat every ${esc(dayWord(s.date))} this term</label>
-  <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-test"${s.isTest?' checked':''}> This is a test (adds a test reminder 3 days before, at this time)</label>
+  <label class="row" style="gap:8px;min-height:40px"><input type="checkbox" id="tf-ps-test"${s.isTest?' checked':''}> This is a test (adds a test reminder 3 days before; needs a start and end time)</label>
   ${clashBox('ps')}
   <button type="button" class="btn primary big" data-act="pssave">${ui.clash&&ui.clash.f==='ps'?'Save anyway':'Save'+(lab?' · '+esc(lab):'')}</button>
   </div></div>`}
@@ -1101,7 +1264,8 @@ const hhmm=at=>{try{return new Date(at).toTimeString().slice(0,5)}catch(e){retur
 const ibTime=at=>{if(!at)return '';const d=at.slice(0,10);return d===todayIso()?hhmm(at):relDay(d)==='Yesterday'?'Yesterday':fmt(d).split(' ').slice(1,3).join(' ')};
 function ibApprovals(){const out=[];
   S.feedback.forEach(f=>{if(f.deleted)return;
-    if(f.kind==='unlock'){const open=(f.scope==='plan'?plocked(f.from,f.date):signed(f.from,f.date))&&!f.closed;
+    if(f.kind==='unlock'&&f.scope==='week'){if(wkLock(f.from,f.date)&&!f.closed)out.push({at:f.at,sid:f.from,txt:'Unlock week '+isoWeek(parse(f.date))+' planning',note:f.text,btn:`<button class="btn sm primary" data-act="unlockweek" data-s="${f.from}" data-d="${f.date}">Unlock</button>`})}
+    else if(f.kind==='unlock'){const open=(f.scope==='plan'?plocked(f.from,f.date):signed(f.from,f.date))&&!f.closed;
       if(open)out.push({at:f.at,sid:f.from,txt:(f.scope==='plan'?'Unlock planning · ':'Unlock checklist · ')+fmt(f.date),note:f.text,btn:`<button class="btn sm primary" data-act="${f.scope==='plan'?'unlockplan':'unlockday'}" data-s="${f.from}" data-d="${f.date}">Unlock</button>`})}
     else if(!f.from||f.from==='manager')Object.entries(f.doneBy||{}).forEach(([k,t])=>{if(!(f.approvedFor||{})[k])out.push({at:t,sid:k,txt:'Done · '+f.text,btn:`<button class="btn sm primary" data-act="fbapprove" data-id="${f.id}" data-s="${k}">Approve</button><button class="btn sm" data-act="fbreopen" data-id="${f.id}" data-s="${k}">Not yet</button>`})})});
   S.papprove.forEach(r=>{if(r.status!=='submitted')return;const n=S.plans.filter(p=>p.staffId===r.staffId&&weekDates(parse(r.ws)).includes(p.date)).length;
@@ -1115,7 +1279,7 @@ function vInboxP(){if(ui.ibChat&&byId('staff',ui.ibChat))return ibThread(ui.ibCh
     h+=`<div class="chips">${[['','All'],['u','Unread']].map(([v,l])=>`<button class="chip${v===f?' on':''}" data-act="ibfilt" data-v="${v}" aria-pressed="${v===f}">${l}</button>`).join('')}</div>`;
     h+=list.length?`<div class="iblist">${list.map(t=>{const s=byId('staff',t.sid);return `<button class="ibrow" data-act="ibopen" data-s="${t.sid}">${av(t.sid,staffLabel(s))}<span class="ibm"><b>${esc(staffLabel(s))}</b><span class="${t.unread?'ub':''}">${esc(ibPrev(t.last))}</span></span><span class="ibr"><span class="${t.unread?'tn':''}">${esc(ibTime(t.last.at))}</span>${t.unread?`<span class="ibn">${t.unread}</span>`:''}</span></button>`}).join('')}</div>`
       :`<div class="card empty">${f?'No unread chats.':'No messages yet.'}</div>`}
-  else if(tab==='appr') h+=ap.length?`<div class="iblist">${ap.map(a=>`<div class="ibrow ibap">${av(a.sid,nm('staff',a.sid))}<span class="ibm"><b>${esc(nm('staff',a.sid))} <small class="muted">· ${esc(ibTime(a.at))}</small></b><span class="ub">${esc(a.txt)}</span>${a.note?`<span>${esc(a.note)}</span>`:''}</span><span class="acts">${a.btn}</span></div>`).join('')}</div>`:'<div class="card empty">Nothing waiting for approval.</div>';
+  else if(tab==='appr') h+=ap.length?`<div class="iblist">${ap.map(a=>`<div class="ibrow ibap">${av(a.sid,nm('staff',a.sid))}<span class="ibm"><b>${esc(nm('staff',a.sid))} <small class="muted">· ${esc(ibTime(a.at))}</small></b><span class="ub">${esc(a.txt)}</span>${a.note?`<span>${esc(a.note)}</span>`:''}</span><span class="acts">${a.btn}</span></div>`).join('')}</div>`+(PILOTNOTE?apprHist():''):'<div class="card empty">Nothing waiting for approval.</div>'+(PILOTNOTE?apprHist():'');
   else h+=ph.length?ph.slice(0,40).map(x=>`<div class="card"><div class="row spread small muted"><span><b>${esc(nm('staff',x.sid))}</b> · ${x.kind} · ${esc(x.text)}</span><span>${esc(fmt(x.date))}</span></div>${phGrid(x)}</div>`).join(''):'<div class="card empty">No photos from staff yet.</div>';
   return h}
 function ibThread(sid){const s=byId('staff',sid),ev=ibEvents(sid);
@@ -1157,10 +1321,12 @@ const papId=(sid,ws)=>sid+'_'+ws;
 function papBox(){const sid=ui.isMgr?ui.f.staff:ui.me;if(!sid||sid==='*')return '';const ws=iso(ui.ws),r=byId('papprove',papId(sid,ws)),n=S.plans.filter(p=>p.staffId===sid&&weekDates(ui.ws).includes(p.date)).length;
   const wk='week '+isoWeek(ui.ws);
   if(ui.isMgr){if(!r)return n?`<div class="banner"><span class="small">${esc(nm('staff',sid))} has not submitted ${wk} planning for approval yet (${n} planned).</span></div>`:'';
-    return `<div class="banner ${r.status==='approved'?'okb':''}"><div class="row spread"><span><b>${esc(nm('staff',sid))} · ${wk} planning</b><br><span class="small">${r.status==='approved'?'Approved '+esc(fmtAt(r.decidedAt)):r.status==='changes'?'Changes asked: '+esc(r.note||''):'Submitted '+esc(fmtAt(r.at))+' · '+n+' activities'}</span></span>${r.status==='submitted'?`<span class="acts"><button class="btn sm primary" data-act="papok" data-id="${r.id}">Approve</button></span>`:''}</div>${r.status==='submitted'?`<div class="addnew"><input type="text" id="tf-pch-${r.id}" placeholder="What should change?" aria-label="Changes needed"><button class="btn sm" data-act="papchg" data-id="${r.id}">Ask for changes</button></div>`:''}</div>`}
+    return `<div class="banner ${r.status==='approved'?'okb':''}"><div class="row spread"><span><b>${esc(nm('staff',sid))} · ${wk} planning</b><br><span class="small">${r.status==='approved'?'Approved '+esc(fmtAt(r.decidedAt)):r.status==='changes'?'Changes asked: '+esc(r.note||''):'Submitted '+esc(fmtAt(r.at))+' · '+n+' activities'}</span></span>${r.status==='submitted'?`<span class="acts"><button class="btn sm primary" data-act="papok" data-id="${r.id}">Approve</button>${PILOTNOTE?`<button class="btn sm" data-act="unlockweek" data-s="${r.staffId}" data-d="${r.ws}">Unlock</button>`:''}</span>`:PILOTNOTE&&r.status==='approved'?`<span class="acts"><button class="btn sm" data-act="unlockweek" data-s="${r.staffId}" data-d="${r.ws}">Unlock</button></span>`:''}</div>${r.status==='submitted'?`<div class="addnew"><input type="text" id="tf-pch-${r.id}" placeholder="What should change?" aria-label="Changes needed"><button class="btn sm" data-act="papchg" data-id="${r.id}">Ask for changes</button></div>`:''}</div>`}
   if(!r)return `<div class="banner"><div class="row spread"><span class="small"><b>${wk} planning</b> · ${n} activit${n===1?'y':'ies'} planned. When it is ready, send it to your manager.</span><button class="btn sm primary" data-act="papsend"${n?'':' disabled'}>Submit for approval</button></div></div>`;
+  if(r.status==='approved'&&PILOTNOTE){const q=wkReq(sid,ws);return `<div class="banner okb"><div class="row spread"><span class="small"><b>${wk} planning approved</b> · ${esc(fmtAt(r.decidedAt))}<br>Approved planning is locked.</span>${q?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-scope="week" data-d="${ws}">Request unlock</button>`}</div></div>`}
   if(r.status==='approved')return `<div class="banner okb"><span class="small"><b>${wk} planning approved</b> · ${esc(fmtAt(r.decidedAt))}</span></div>`;
   if(r.status==='changes')return `<div class="banner"><div class="row spread"><span class="small"><b>Your manager asked for changes to ${wk}:</b> ${esc(r.note||'See messages')}</span><button class="btn sm primary" data-act="papsend">Submit again</button></div></div>`;
+  if(PILOTNOTE){const q=wkReq(sid,ws);return `<div class="banner info"><div class="row spread"><span class="small"><b>${wk} planning submitted</b> · waiting for your manager · ${esc(fmtAt(r.at))}<br>You can't change this week's planning while it is with your manager.</span>${q?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-scope="week" data-d="${ws}">Request unlock</button>`}</div></div>`}
   return `<div class="banner info"><span class="small"><b>${wk} planning submitted</b> · waiting for your manager · ${esc(fmtAt(r.at))}</span></div>`}
 
 /* 9 mood check-in */
@@ -1220,9 +1386,10 @@ function incCard(x){const mgr=ui.isMgr,c=byId('children',x.childId)||{};
       ${photoOk&&(mgr||x.by===ui.me)?`<button class="btn sm" data-act="photopick" data-kind="incidents" data-k="${x.id}">+ Photo</button>`:''}<button class="btn sm" data-act="inprint" data-id="${x.id}">PDF report</button></div>
     ${mgr&&x.status!=='closed'?`<div class="addnew"><input type="text" id="tf-in-mn-${x.id}" placeholder="Manager note (optional)" aria-label="Manager note"><button class="btn sm primary" data-act="inclose" data-id="${x.id}">Mark reviewed</button></div>`:''}</div>`}
 function vInc(){const list=S.incidents.filter(x=>ui.isMgr?(!ui.f.branch||(byId('children',x.childId)||{}).branchId===ui.f.branch):x.by===ui.me).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
-  let h=incForm('')+`<div class="card"><h3>Incident report for a period (PDF)</h3><div class="grid2"><label class="fld"><span>From</span><input type="date" id="tf-inr-from" value="${iso(addDays(new Date(),-30))}"></label><label class="fld"><span>To</span><input type="date" id="tf-inr-to" value="${todayIso()}"></label><label class="fld"><span>Area</span><select id="tf-inr-br">${opt('branches','','All areas')}</select></label><label class="fld"><span>Child</span><select id="tf-inr-child">${opt('children','','All children')}</select></label></div><div class="actions"><button class="btn" data-act="inrange">Create PDF report</button></div><span class="small muted">Opens the report. Choose Save as PDF in the print window.</span></div>`;const open=list.filter(x=>x.status!=='closed');
-  h+=`<h2>${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span></h2>`+((ui.isMgr?open:list).map(incCard).join('')||'<div class="card empty">No incident reports.</div>');
+  let h=(PILOTNOTE?incOpen('new','New incident report')+incForm('')+incClose()+incOpen('pdf','Incident report for a period (PDF)'):incForm(''))+`<div class="card"><h3>Incident report for a period (PDF)</h3><div class="grid2"><label class="fld"><span>From</span><input type="date" id="tf-inr-from" value="${iso(addDays(new Date(),-30))}"></label><label class="fld"><span>To</span><input type="date" id="tf-inr-to" value="${todayIso()}"></label><label class="fld"><span>Area</span><select id="tf-inr-br">${opt('branches','','All areas')}</select></label><label class="fld"><span>Child</span><select id="tf-inr-child">${opt('children','','All children')}</select></label></div><div class="actions"><button class="btn" data-act="inrange">Create PDF report</button></div><span class="small muted">Opens the report. Choose Save as PDF in the print window.</span></div>`+(PILOTNOTE?incClose():'');const open=list.filter(x=>x.status!=='closed');
+  h+=(PILOTNOTE?incOpen('list',`${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span>`):`<h2>${ui.isMgr?'Open reports':'My reports'} <span class="count">${ui.isMgr?open.length:list.length}</span></h2>`)+((ui.isMgr?open:list).map(incCard).join('')||'<div class="card empty">No incident reports.</div>');
   if(ui.isMgr){const cl=list.filter(x=>x.status==='closed');if(cl.length)h+=`<h2>Reviewed</h2>`+cl.slice(0,20).map(incCard).join('')}
+  if(PILOTNOTE)h+=incClose();
   return h}
 
 /* 38 maintenance */
@@ -1292,11 +1459,11 @@ const whoName=by=>by==='manager'||!by?'Manager':nm('staff',by);
 /* 4 birthday reminders at 06:55 */
 function bdKids(){if(ui.isMgr)return kidsScope();const br=myBranch(),mine=new Set([...S.plans.filter(p=>p.staffId===ui.me).flatMap(p=>kidsOf(p)),...S.resp.filter(r=>staffFor(r).includes(ui.me)).map(r=>r.childId).filter(Boolean)]);
   return sortByName('children').filter(c=>!br||!c.branchId||c.branchId===br||mine.has(c.id))}
-function bdBar(d){const l=bdRows(d);return l.length?`<div class="halerts">${l.map(x=>`<div class="hal hal-bday"><span class="tico bd" aria-hidden="true">★</span><span class="hal-t"><b>${esc(x.t)}</b><span>Reminder at 06:55 · plan something small for the class</span></span></div>`).join('')}</div>`:''}
+function bdBar(d){if(PILOTNOTE)return bdBarP(d);const l=bdRows(d);return l.length?`<div class="halerts">${l.map(x=>`<div class="hal hal-bday"><span class="tico bd" aria-hidden="true">★</span><span class="hal-t"><b>${esc(x.t)}</b><span>Reminder at 06:55 · plan something small for the class</span></span></div>`).join('')}</div>`:''}
 function bdRows(d){const nx=iso(addDays(parse(d),1)),out=[];
   bdKids().forEach(c=>{if(!c.dob)return;const md=c.dob.slice(5),y=Number(c.dob.slice(0,4)),age=dt=>y>1900?Number(dt.slice(0,4))-y:null;
-    if(md===d.slice(5)){const a=age(d);out.push({id:c.id+d,t:`Birthday today: ${c.name}${a?' turns '+a:''}`})}
-    else if(md===nx.slice(5)){const a=age(nx);out.push({id:c.id+nx,t:`Birthday tomorrow: ${c.name}${a?' turns '+a:''}`})}});
+    if(md===d.slice(5)){const a=age(d);out.push({id:c.id+d,boy:c.sex==='boy',t:`Birthday today: ${c.name}${a?' turns '+a:''}`})}
+    else if(md===nx.slice(5)){const a=age(nx);out.push({id:c.id+nx,boy:c.sex==='boy',t:`Birthday tomorrow: ${c.name}${a?' turns '+a:''}`})}});
   return out}
 /* 12 birthday parent and child links */
 function bdLink(x){const c=byId('children',x.cid);if(!c)return '';
@@ -1309,8 +1476,8 @@ function noticeItems(){const d=document.createElement('div');d.innerHTML=notices
   return [...d.children].map(el=>{const k='n'+hashI(el.textContent.replace(/\s+/g,' ').trim()).toString(36);return {el,k,read:rd.includes(k)}})}
 function noticeCount(){try{return noticeItems().filter(x=>!x.read).length}catch(e){return 0}}
 function homeNoticeLine(){let all=0,n=0;try{const it=noticeItems();all=it.length;n=it.filter(x=>!x.read).length}catch(e){}
-  return `<div class="halerts">${PILOTNOTE?'<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>':''}${n?`<button class="hal hal-notice" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n?n+' new notice'+(n>1?'s':''):all+' notice'+(all>1?'s':'')+' · all read'}</b><span>Tests, birthdays, approvals and more · tap to see</span></span>${n?`<span class="ncount">${n}</span>`:''}</button>`:''}</div>`}
-function vNotices(){let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
+  return `<div class="halerts">${ISTEST?'<div class="pilotbar"><b>Test pilot</b> · test data only. Your real Staff Desk is not affected.</div>':''}${n?`<button class="hal hal-notice" data-act="tab" data-t="notices"><span class="nbell">${BELL}</span><span class="hal-t"><b>${n?n+' new notice'+(n>1?'s':''):all+' notice'+(all>1?'s':'')+' · all read'}</b><span>Tests, birthdays, approvals and more · tap to see</span></span>${n?`<span class="ncount">${n}</span>`:''}</button>`:''}</div>`}
+function vNotices(){if(PILOTNOTE)return vNoticesP();let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
   let h=`<div class="row spread"><h2 style="margin:0">Notices${n?` <span class="count">${n} new</span>`:''}</h2><span class="actions">${n?'<button class="btn sm" data-act="ntcall">Mark all as read</button>':''}<button class="btn sm" data-act="tab" data-t="home">Back to Today</button></span></div><div class="small muted">Tap a notice to mark it as read. Use Open to go to it.</div>`;
   if(!items.length)return h+'<div class="card empty">No notices right now. All caught up.</div>';
   return h+`<div class="halerts">${items.map(({el,k,read})=>{let open='';
@@ -1330,7 +1497,7 @@ async function moodXL(cid){if(typeof XLSX==='undefined'){toast('Excel export cou
 
 /* 2 photos with delete */
 function phGrid(x){return `<div class="thumbs">${(x.photos||[]).map((p,i)=>{const u=purl(p),k='ph'+x.c+x.rid+i;
-  return `<span class="phw"><button type="button" class="thumb" data-act="photoview" data-src="${esc(u)}" aria-label="Open photo"><img src="${esc(u)}" alt="Photo from ${esc(nm('staff',x.sid))}" loading="lazy" onerror="this.parentNode.classList.add('bad');this.remove()"><span class="phbad">Photo not available</span></button>${ui.isMgr&&x.c?`<button type="button" class="phdel${ui.confirmDel===k?' on':''}" data-act="phdel" data-c="${x.c}" data-id="${x.rid}" data-i="${i}" aria-label="Delete photo">${ui.confirmDel===k?'Delete?':'×'}</button>`:''}</span>`}).join('')}</div>`}
+  return `<span class="phw"><button type="button" class="thumb" data-act="photoview" data-src="${esc(u)}" aria-label="Open photo"><img src="${esc(u)}" alt="Photo from ${esc(nm('staff',x.sid))}" loading="lazy" onerror="this.parentNode.classList.add('bad');this.remove()"><span class="phbad">Photo not available</span></button>${ui.isMgr&&x.c&&!(PILOTNOTE&&ui.tab==='inbox'&&ui.ibChat&&!ui.ibSel)?`<button type="button" class="phdel${ui.confirmDel===k?' on':''}" data-act="phdel" data-c="${x.c}" data-id="${x.rid}" data-i="${i}" aria-label="Delete photo">${ui.confirmDel===k?'Delete?':'×'}</button>`:''}</span>`}).join('')}</div>`}
 
 /* 14 + 15 incidents: history and reports */
 const incHist=(x,what)=>[...(x.hist||[]),{at:new Date().toISOString(),by:ui.me||'manager',what}];
@@ -1360,6 +1527,239 @@ function incRange(){const f=val('tf-inr-from')||iso(addDays(new Date(),-30)),t=v
 function vReqCombo(){const sec=ui.rqSec||'res',nr=S.requests.filter(r=>r.status==='requested'&&(ui.isMgr||r.by===ui.me)).length,br=ui.isMgr?(ui.f.branch||''):myBranch(),nf=S.maint.filter(x=>x.status!=='fixed'&&(!br||!x.branchId||x.branchId===br)).length;
   return `<div class="ibtabs two" role="tablist" aria-label="Requests and repairs">${[['res','Resources',nr],['fix','Repairs',nf]].map(([k,l,n])=>`<button role="tab" aria-selected="${k===sec}" class="${k===sec?'on':''}" data-act="rqsec" data-v="${k}">${l}${n?` <span class="ibn">${n}</span>`:''}</button>`).join('')}</div>`+(sec==='fix'?vMaint():vReq())}
 
+/* ---------- pilot round 5: slim Checklist ---------- */
+function bdLine(){const l=bdayList().filter(x=>x.days<=3);if(!l.length)return '';
+  const w=x=>x.days===0?'today':x.days===1?'tomorrow':fmt(x.date);
+  return `<div class="bdline"><span class="bstar" aria-hidden="true">★</span><span class="bdt"><b>Birthdays:</b> ${l.map(x=>esc(x.name)+(x.kind==='Parent'?` <span class="muted">(parent of ${esc((byId('children',x.cid)||{}).name||'')})</span>`:'')+' <b>'+esc(w(x))+'</b>').join(' · ')}</span><button class="linkbtn" data-act="tab" data-t="bday">See all</button></div>`}
+function dayScore(d){const its=itemsFor([d]).filter(i=>i.st!=='off'),ps=plansFor([d]),tot=its.length+ps.length,dn=its.filter(i=>i.st==='done').length+ps.filter(p=>p.done).length,ms=its.filter(i=>i.st==='missed').length+(d<todayIso()?ps.filter(p=>!p.done).length:0);return {tot,dn,ms}}
+const timeRange=o=>{const s=oStart(o),e=oEnd(o);return s==='99'?'Any time':s+(e?'–'+e:'')};
+function crow(x){const open=ui.rowMenu===x.k,STC={done:'ok',missed:'bad',due:'due',upcoming:'',off:'muted'};
+  return `<div class="crow${x.done?' cdone':''}${open?' cmopen':''}${x.qd?' cq':''}">${x.qd?'':`<input type="checkbox" ${x.tick} aria-label="Mark ${esc(x.title)} done">`}<span class="ctime">${esc(x.time)}</span><span class="ctx"><span class="ctt">${esc(x.title)}${x.icons}</span><span class="cmeta">${x.meta}<span class="cnar"> · ${esc(x.time)} · ${esc(nm('staff',x.who))} · ${esc(x.stl)}</span></span></span><span class="who ${bcls(x.who)}">${esc(nm('staff',x.who))}</span>${x.qd?x.qd:`<span class="cst ${STC[x.st]||''}">${esc(x.stl)}</span>`}<button class="cmore" data-act="rowmenu" data-k="${esc(x.k)}" aria-label="Actions for ${esc(x.title)}" aria-expanded="${open}">⋯</button>${open?`<div class="cmenu" role="menu">${x.menu.map(([a,ds,l,cls])=>`<button role="menuitem" class="${cls||''}" data-act="${a}" ${Object.entries(ds).map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ')}>${esc(l)}</button>`).join('')}</div>`:''}</div>`}
+function chkRowTask(i){const {r,date:d,sid,st,cover}=i,e=entryMap[ekey(r,d,sid)]||{},key=r.id+'|'+d+'|'+sid,lock=signed(sid,d)&&!ui.mgr,off=st==='off'?offReason(sid,d):'';
+  if(ui.openC.has(key)||(ui.rowFull&&ui.rowFull.has('t'+key)))return `<div class="crfull">${itemHtml(i)}${ui.openC.has(key)?'':`<button class="btn sm" data-act="rowless" data-k="t${esc(key)}">Show less</button>`}</div>`;
+  const a=r.childId&&byId('attendance',d+'_'+r.childId);
+  const meta=[r.childId&&nm('children',r.childId),tName(r.topicId),!r.childId&&('Task'+(r.staffId==='*'?' · all staff':''))].filter(Boolean).map(esc).join(' · ')+(a&&!a.present?' · <span class="bad">absent</span>':'')+(cover?' · cover for '+esc(nm('staff',sid)):'')+(signed(sid,d)?' · signed off':'');
+  const menu=[lock?null:['copen',{k:key},e.comment?'Edit comment':'Add comment'],photoOk&&!lock?['photopick',{kind:'entry',k:key},'Add photo']:null,ui.mgr?['editresp',{id:r.id},'Edit responsibility']:null,['rowmore',{k:'t'+key},'Show details'],ui.isMgr?['del',{c:'resp',id:r.id},ui.confirmDel==='resp'+r.id?'Tap again to delete':'Delete responsibility','danger']:null].filter(Boolean);
+  return crow({qd:planQd()&&st!=='off'?qdBtn(!!e.done,'hdone',`data-k="${esc(key)}"`,lock,r.text):'',k:'t'+key,done:!!e.done,tick:`data-tick="${esc(key)}" ${e.done?'checked':''} ${lock||st==='off'?'disabled':''}`,time:timeRange(r),title:r.text,meta,who:cover||sid,st,stl:off||ST_LABEL[st],icons:rIcons({comment:e.comment,photos:e.photos}),menu})}
+function chkRowPlan(p){const lk=p.staffId!=='*'&&plocked(p.staffId,p.date),can=(ui.mgr||p.staffId===ui.me||p.by===ui.me)&&(!lk||ui.mgr),st=p.done?'done':p.date<todayIso()?'missed':p.date===todayIso()?'due':'upcoming';
+  if(ui.rowFull&&ui.rowFull.has('p'+p.id))return `<div class="crfull">${planHtml(p)}<button class="btn sm" data-act="rowless" data-k="p${p.id}">Show less</button></div>`;
+  const k1=kidsOf(p),ab=k1.length===1&&byId('attendance',p.date+'_'+k1[0]);
+  const meta=[k1.length>1?whoLabel(p):k1.length?nm('children',k1[0]):'',tName(p.topicId),'Plan'].filter(Boolean).map(esc).join(' · ')+(ab&&!ab.present?' · <span class="bad">absent</span>':'')+(lk?' · locked':'');
+  const menu=[can?['editplan',{id:p.id},'Edit']:null,can&&photoOk?['photopick',{kind:'plan',k:p.id},'Add photo']:null,['rowmore',{k:'p'+p.id},'Show details'],can?['del',{c:'plans',id:p.id},ui.confirmDel==='plans'+p.id?'Tap again to delete':'Delete','danger']:null].filter(Boolean);
+  return crow({qd:planQd()?qdBtn(!!p.done,'hpdone',`data-id="${p.id}"`,lk&&!ui.mgr,p.text):'',k:'p'+p.id,done:!!p.done,tick:`data-ptick="${p.id}" ${p.done?'checked':''} ${lk&&!ui.mgr?'disabled':''}`,time:timeRange(p),title:p.text,meta,who:p.staffId,st,stl:p.done?'Done':st==='missed'?'Missed':'Planned',icons:rIcons({comment:p.comment,photos:p.photos}),menu})}
+function chkHead(){const ds=weekDates(ui.ws),t=todayIso(),nf=Object.values(ui.f).filter(Boolean).length;
+  const sc=d=>{const x=dayScore(d);return x.tot?`${x.dn}/${x.tot}${x.ms?' · '+x.ms+' missed':''}`:(d===t?'today':'—')};
+  return `<div class="card chead"><div class="chrow"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><b class="cwk">Week ${isoWeek(ui.ws)} · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}</b><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><span class="chsp"></span>
+    <button class="btn sm" data-act="tab" data-t="reg">Register</button><button class="btn sm" data-act="tab" data-t="plan">Planning</button><button class="btn sm${ui.chkFlt?' primary':''}" data-act="chkflt" aria-expanded="${!!ui.chkFlt}">Filters${nf&&ui.mgr?' ('+nf+')':''}</button>
+    <span class="cmw"><button class="iconx" data-act="chkmore" aria-label="More: open all days, report and Excel" aria-expanded="${!!ui.chkMore}">⋯</button>${ui.chkMore?`<div class="cmenu" role="menu"><button role="menuitem" data-act="today">Go to today</button><button role="menuitem" data-act="dall" data-p="c" data-o="1">Open all days</button><button role="menuitem" data-act="report">Printable report</button><button role="menuitem" data-act="excel">Excel</button></div>`:''}</span></div>
+    <div class="cdays"><button class="cday${ui.day==='all'?' on':''}" data-act="day" data-d="all">Week<small>${isoWeek(ui.ws)}</small></button>${ds.map(d=>`<button class="cday${ui.day===d?' on':''}${d===t?' today':''}" data-act="day" data-d="${d}">${esc(fmt(d).split(' ').slice(0,2).join(' '))}<small>${sc(d)}</small></button>`).join('')}</div></div>`+(ui.chkFlt?filtersCard():'')}
+function vCheckSlim(){let h=homeNoticeLine().replace(/<div class="pilotbar">.*?<\/div>/,'')+bdLine();
+  if(!S.staff.length&&loaded)return h+setupFirst();
+  h+=chkHead();
+  const ds=selDates(),items=itemsFor(ds);
+  if(ui.ws<=mondayOf(new Date())){const prev=[];for(let i=14;i>=1;i--){const d=addDays(ui.ws,-i);if(d.getDay()>0&&d.getDay()<6)prev.push(iso(d))}
+    const miss=itemsFor(prev).filter(i=>i.st==='missed'&&!signed(i.sid,i.date));
+    if(miss.length){const o=ui.openDays.has('carry');h+=`<button class="cdh" data-act="dtog" data-k="carry" aria-expanded="${o}"><span class="cdt bad">Carried over · missed</span><span class="cds"><b class="bad">${miss.length}</b> from the last two weeks ${o?'▾':'▸'}</span></button>`;
+      if(o)h+=`<div class="clist">${miss.slice(0,20).map(i=>chkRowTask(i).replace('<span class="ctime">','<span class="ctime">'+esc(fmt(i.date).split(' ').slice(0,2).join(' '))+'<br>')).join('')}</div>`}}
+  if(!S.resp.length&&loaded&&!plansFor(ds).length)return h+`<div class="card empty"><span>No responsibilities yet.</span>${ui.mgr?'<button class="btn primary" data-act="tab" data-t="resp">Add responsibilities</button>':'<span class="small">Your manager adds them.</span>'}</div>`;
+  ds.forEach(d=>{const its=items.filter(i=>i.date===d),dps=plansFor([d]),hol=S.holidays.find(x=>x.date===d),sc=dayScore(d),open=ds.length===1||ui.openDays.has('c'+d);
+    h+=`<button class="cdh" data-act="dtog" data-k="c${d}" aria-expanded="${open}"><span class="cdt">${esc(DAYS_LONG[parse(d).getDay()])} ${parse(d).getDate()} ${esc(MON_LONG[parse(d).getMonth()])}${d===todayIso()?' · Today':''}</span><span class="cds">${sc.dn} of ${sc.tot} done${sc.ms?` · <b class="bad">${sc.ms} missed</b>`:''}${hol?' · holiday':''}${ds.length>1?(open?' ▾':' ▸'):''}</span><span class="cbar"><i style="width:${pct(sc.dn,sc.tot)}%"></i></span></button>`;
+    if(!open)return;
+    const tickable=its.filter(i=>i.st!=='done'&&i.st!=='off'&&!(signed(i.sid,d)&&!ui.mgr)).length;
+    if(tickable>1)h+=`<div class="actions"><button class="btn sm" data-act="tickall" data-d="${d}">${ui.confirmDel==='tickall'+d?`Tap again to tick ${tickable}`:`✓ Tick all for ${fmt(d)}`}</button></div>`;
+    if(ui.f.staff&&signed(ui.f.staff,d)){const req=S.feedback.find(f=>f.kind==='unlock'&&f.scope!=='plan'&&f.date===d&&f.from===ui.f.staff&&!f.closed);
+      h+=`<div class="banner info"><div class="row spread"><span><b>Signed off by the manager</b><br><span class="small">Ticks for this day are locked.</span></span>${ui.mgr?`<button class="btn sm primary" data-act="unlockday" data-s="${ui.f.staff}" data-d="${d}">Unlock day</button>`:req?'<span class="pill due">Unlock requested</span>':`<button class="btn sm" data-act="requnlock" data-d="${d}">Request unlock</button>`}</div></div>`}
+    if(hol)h+=`<div class="banner info"><b>Public holiday: ${esc(hol.name||'')}</b></div>`;
+    testsOnDate(d).forEach(t=>h+=`<div class="banner"><span><b>Test${t.time?' · '+tRange(t):''}:</b> ${esc(t.title||'')}${t.childId?' · '+esc(nm('children',t.childId)):''}</span></div>`);
+    h+=planLockBanner(d);
+    const rows=[...its.map(i=>({s:oStart(i.r),h:chkRowTask(i)})),...dps.map(p=>({s:oStart(p),h:chkRowPlan(p)})),...bdRows(d).map(x=>({s:'06:55',h:`<div class="crow cbd"><span class="bstar sm" aria-hidden="true">★</span><span class="ctime">06:55</span><span class="ctx"><span class="ctt">${esc(x.t)}</span></span></div>`}))].sort((a,b)=>a.s.localeCompare(b.s));
+    h+=rows.length?`<div class="clist">${rows.map(r=>r.h).join('')}</div>`:`<div class="muted small" style="padding:4px 2px">Nothing scheduled${Object.values(ui.f).some(Boolean)&&ui.mgr?' for these filters':''}.</div>`});
+  return h}
+
+function addRefresh(){if(!PILOTNOTE||document.getElementById('refBtn'))return;const t=document.querySelector('header.top .tools');if(!t)return;
+  t.insertAdjacentHTML('beforeend','<button class="iconbtn refbtn" id="refBtn" data-act="refresh" aria-label="Refresh" title="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button>')}
+try{addRefresh();document.addEventListener('DOMContentLoaded',addRefresh)}catch(e){}
+/* ---------- pilot round 6 ---------- */
+const tRange=t=>t.time?esc(t.time)+(t.timeEnd?'–'+esc(t.timeEnd):''):'';
+function tabNav(cur){const has=k=>tabsFor().some(t=>t[0]===k),L=[['home','Today'],['plan','Plan'],['resp','Responsibilities']].filter(([k])=>k===cur||k==='home'||has(k));
+  return `<div class="tabnav" role="group" aria-label="Go to">${L.map(([k,l])=>`<button class="tnb${k===cur?' on':''}" data-act="tab" data-t="${k}"${k===cur?' aria-current="page"':''}>${l}</button>`).join('')}</div>`}
+function homeStrip(d){const ds=weekDates(mondayOf(parse(d))),t=todayIso();
+  return `<div class="hstrip">${ds.map(x=>{const s=dayScore(x),lab=s.tot?`${s.dn}/${s.tot}${s.dn===s.tot?' ✓':''}`:'empty';
+    return `<button class="hsd${x===d?' on':''}${x===t?' tdy':''}${s.tot?'':' empty'}${s.ms?' miss':''}" data-act="hdayset" data-d="${x}" aria-pressed="${x===d}"><span>${esc(dayWord(x))}</span><b>${parse(x).getDate()}</b><small>${lab}</small>${bdStars(x)}</button>`}).join('')}</div>`}
+function testRow(t){const can=ui.mgr||t.by===ui.me,x=[nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).map(esc).join(' · ');
+  return `<div class="pthin ptest${t.done?' tdone':''}"><span class="ptx"><b>Test: ${esc(t.title||'')}</b>${x?' · '+x:''}${t.time?` · ${tRange(t)}`:' · <span class="bad">no time set</span>'}</span>${can?`<button class="btn xs" data-act="edittest" data-id="${t.id}">Edit</button>`:''}${qdBtn(!!t.done,'testdone',`data-id="${t.id}"`,false,t.title)}${can?`<button class="btn xs danger" data-act="del" data-c="tests" data-id="${t.id}" aria-label="Delete test">${ui.confirmDel==='tests'+t.id?'Tap again':'Delete'}</button>`:''}</div>`}
+function respMeta(r){const when=r.recur==='once'?'Once: '+fmt(r.date):((r.days||[]).length===5?'Mon–Fri':(r.days||[]).map(d=>DAYS[d]).join(', '));
+  return [when,r.childId&&nm('children',r.childId),nm('grades',r.gradeId),nm('curriculum',r.curriculumId),tName(r.topicId)].filter(Boolean).map(esc).join(' · ')}
+function rrow(r){const k='r'+r.id,open=ui.rowMenu===k;
+  const menu=[['editresp',{id:r.id},'Edit'],['reassign',{id:r.id},'Re-assign'],['arch',{c:'resp',id:r.id},'Archive'],['del',{c:'resp',id:r.id},ui.confirmDel==='resp'+r.id?'Tap again to delete':'Delete','danger']];
+  return `<div class="rrow${open?' cmopen':''}"><span class="ctime">${esc(timeLabel(r)||'Any time')}</span><span class="ctx"><span class="ctt">${esc(r.text)}</span><span class="cmeta">${respMeta(r)}<span class="cnar"> · ${esc(timeLabel(r)||'Any time')}</span></span>
+    ${ui.reassign===r.id?`<span class="addnew" style="margin-top:6px"><select id="tf-ra">${opt('staff',r.staffId,'Choose staff',[['*','All staff']])}</select><button class="btn sm primary" data-act="rasave" data-id="${r.id}">Save</button><button class="btn sm" data-act="racancel">Cancel</button></span>`:''}</span>
+    <span class="who ${bcls(r.staffId)}">${esc(r.staffId==='*'?'All staff':nm('staff',r.staffId)||'Unassigned')}</span><button class="cmore" data-act="rowmenu" data-k="${k}" aria-label="Actions for ${esc(r.text)}" aria-expanded="${open}">⋯</button>
+    ${open?`<div class="cmenu" role="menu">${menu.map(([a,ds,l,cls])=>`<button role="menuitem" class="${cls||''}" data-act="${a}" ${Object.entries(ds).map(([k2,v])=>`data-${k2}="${esc(v)}"`).join(' ')}>${esc(l)}</button>`).join('')}</div>`:''}</div>`}
+function vRespP(){const sec=ui.editing.resp?'new':(ui.respSec||'list'),bOf=id=>(byId('staff',id)||{}).branchId;
+  const arch=S.resp.filter(r=>r.archived);
+  const list=S.resp.filter(r=>!r.archived&&(!ui.respStaff||r.staffId===ui.respStaff)&&(!ui.respBranch||r.staffId==='*'||bOf(r.staffId)===ui.respBranch));
+  const head=(k,l,sub)=>`<button class="rsh" data-act="respsec" data-v="${k}" aria-expanded="${sec===k}"><span class="pmb${sec===k?'':' c'}" aria-hidden="true">${sec===k?'−':'+'}</span><b>${l}</b><span class="rsp"></span><span class="muted small">${sub}</span></button>`;
+  const filt=`<div class="rflt"><select data-uiset="respBranch">${opt('branches',ui.respBranch,'All branches')}</select><select data-uiset="respStaff"><option value="">Everyone</option><option value="*"${ui.respStaff==='*'?' selected':''}>Tasks for all staff</option>${sortByName('staff').filter(x=>!ui.respBranch||x.branchId===ui.respBranch).map(x=>`<option value="${x.id}"${x.id===ui.respStaff?' selected':''}>${esc(staffLabel(x))}</option>`).join('')}</select></div>`;
+  let h=`<div class="row spread"><h2 style="margin:0">Responsibilities</h2>${qBar('resp')}</div>`;
+  // list
+  h+=`<div class="card rsec">${head('list','All responsibilities',`${list.length}${sec==='list'?'':' · tap to open'}`)}`;
+  if(sec==='list'){h+=filt;const srt=[...list].sort((a,b)=>oStart(a).localeCompare(oStart(b))||nm('staff',a.staffId).localeCompare(nm('staff',b.staffId)));
+    h+=srt.length?`<div class="rlist">${srt.map(rrow).join('')}</div>`:'<div class="muted small rpad">No responsibilities yet. Open "New responsibility" to add one.</div>';
+    if(arch.length){h+=`<div class="rpad"><button class="btn sm" data-act="togarch">${ui.showArch?'Hide':'Show'} archived (${arch.length})</button></div>`;
+      if(ui.showArch)h+=`<div class="rlist">${arch.map(r=>`<div class="rrow"><span class="ctime">Archived</span><span class="ctx"><span class="ctt">${esc(r.text)}</span><span class="cmeta">${esc(nm('staff',r.staffId))} · archived ${fmt(r.archivedAt)}</span></span><span class="actions"><button class="btn xs" data-act="restore" data-c="resp" data-id="${r.id}">Restore</button><button class="btn xs danger" data-act="del" data-c="resp" data-id="${r.id}">${ui.confirmDel==='resp'+r.id?'Tap again':'Delete forever'}</button></span></div>`).join('')}</div>`}}
+  h+=`</div>`;
+  // week table
+  const ds=weekDates(ui.ws);
+  h+=`<div class="card rsec">${head('week','Week view',`Week ${isoWeek(ui.ws)}`)}`;
+  if(sec==='week'){const groups={};list.forEach(r=>(groups[r.staffId]=groups[r.staffId]||[]).push(r));
+    const sids=Object.keys(groups).sort((a,b)=>(a==='*'?-1:b==='*'?1:nm('staff',a).localeCompare(nm('staff',b))));
+    h+=filt+`<div class="rwknav"><button class="iconx" data-act="wk" data-n="-1" aria-label="Previous week">‹</button><b>Week ${isoWeek(ui.ws)} · ${esc(fmt(ds[0]).slice(4))} – ${esc(fmt(ds[4]).slice(4))}</b><button class="iconx" data-act="wk" data-n="1" aria-label="Next week">›</button><span class="muted small">Tap a block to edit · + to add</span></div>`;
+    h+=`<div class="rwk"><div class="rwh">Staff</div>${ds.map(d=>`<div class="rwh">${esc(fmt(d).split(' ').slice(0,2).join(' '))}</div>`).join('')}`;
+    sids.forEach(sid=>{h+=`<div class="rwn"><span class="who ${bcls(sid)}">${esc(sid==='*'?'All staff':nm('staff',sid)||'Unassigned')}</span></div>`;
+      ds.forEach(d=>{const rs=groups[sid].filter(r=>applies(r,d)).sort((a,b)=>oStart(a).localeCompare(oStart(b)));
+        h+=`<div class="rwc">${rs.map(r=>`<button class="rwb" data-act="editresp" data-id="${r.id}" title="${esc(r.text)}"><b>${esc(r.text)}</b>${timeLabel(r)?`<small>${esc(timeLabel(r))}</small>`:''}</button>`).join('')}<button class="rwadd" data-act="respadd" data-s="${esc(sid)}" data-n="${parse(d).getDay()}" aria-label="Add for ${esc(nm('staff',sid)||'all staff')} on ${esc(fmt(d))}">+</button></div>`})});
+    h+=`</div>`;if(!sids.length)h+='<div class="muted small rpad">Nothing for these filters.</div>'}
+  h+=`</div>`;
+  // new
+  h+=`<div class="card rsec">${head('new',ui.editing.resp?'Edit responsibility':'New responsibility',ui.editing.resp?'':'tap to add')}${sec==='new'?respForm():''}</div>`;
+  return h}
+
+/* ---------- pilot round 7 ---------- */
+const canTest=t=>ui.mgr||t.by===ui.me;
+function testBtns(t){return `<span class="tacts"><button class="btn xs${t.done?'':' primary'}" data-act="testdone" data-id="${t.id}">${t.done?'Undo':'✓ Done'}</button>${canTest(t)?`<button class="btn xs" data-act="edittest" data-id="${t.id}">Edit</button>`:''}</span>`}
+function regPrint(){const kind=val('tf-rp-kind')||'month',br=ui.regBranch||'',kids=regKids();if(!kids.length){toast('No children to print.');return}
+  const st=`<style>table{max-width:none;table-layout:auto}th,td{padding:4px 5px;font-size:10.5px}td.c{text-align:center}.P{color:#2f6a3e;font-weight:700}.A{color:#a3322a;font-weight:700}.H{color:#888}</style>`;
+  const att=(d,c)=>{const r=byId('attendance',d+'_'+c.id);return r?(r.present?'P':'A'):''},hol=d=>S.holidays.some(h=>h.date===d);
+  const bl=br?' · '+nm('branches',br):'';
+  if(kind==='month'){const m=val('tf-rp-month')||todayIso().slice(0,7),[y,mo]=m.split('-').map(Number),ds=[];
+    for(let d=new Date(y,mo-1,1);d.getMonth()===mo-1;d=addDays(d,1))if(d.getDay()>0&&d.getDay()<6)ds.push(iso(d));
+    let rows=kids.map(c=>{let p=0,a=0;const cells=ds.map(d=>{if(hol(d))return '<td class="c H">H</td>';const v=att(d,c);if(v==='P')p++;if(v==='A')a++;return `<td class="c ${v}">${v}</td>`}).join('');
+      return `<tr><td>${esc(c.name)}</td>${cells}<td class="n">${p}</td><td class="n">${a}</td><td class="n">${p+a?Math.round(p/(p+a)*100)+'%':'—'}</td></tr>`}).join('');
+    const tp=kids.reduce((s,c)=>s+ds.filter(d=>att(d,c)==='P').length,0),ta=kids.reduce((s,c)=>s+ds.filter(d=>att(d,c)==='A').length,0);
+    rows+=`<tr class="g"><td>Total</td>${ds.map(d=>`<td class="c">${hol(d)?'H':kids.filter(c=>att(d,c)==='P').length||''}</td>`).join('')}<td class="n">${tp}</td><td class="n">${ta}</td><td class="n">${tp+ta?Math.round(tp/(tp+ta)*100)+'%':'—'}</td></tr>`;
+    const title=`Register · ${MON_LONG[mo-1]} ${y}${bl}`;
+    openPrint(title,st+`<h1>${esc(title)}</h1><div class="m">P = present · A = absent · H = public holiday · blank = not marked · Printed ${esc(fmtAt(new Date().toISOString()))}</div><table><thead><tr><th>Child</th>${ds.map(d=>`<th class="c">${esc(DAYS[parse(d).getDay()].slice(0,2))}<br>${parse(d).getDate()}</th>`).join('')}<th class="n">P</th><th class="n">A</th><th class="n">%</th></tr></thead><tbody>${rows}</tbody></table>`,true);return}
+  const y=Number(val('tf-rp-year'))||new Date().getFullYear(),all=S.attendance.filter(r=>(r.id||'').startsWith(String(y)));
+  const cnt=(c,mo)=>{let p=0,a=0;all.forEach(r=>{const [d,cid]=[r.id.slice(0,10),r.id.slice(11)];if(cid===c.id&&Number(d.slice(5,7))===mo){r.present?p++:a++}});return [p,a]};
+  let tp=0,ta=0,rows=kids.map(c=>{let P=0,A=0;const cells=[...Array(12)].map((_,i)=>{const [p,a]=cnt(c,i+1);P+=p;A+=a;return `<td class="c">${p+a?`<span class="P">${p}</span>/<span class="A">${a}</span>`:''}</td>`}).join('');tp+=P;ta+=A;
+    return `<tr><td>${esc(c.name)}</td>${cells}<td class="n">${P}</td><td class="n">${A}</td><td class="n">${P+A?Math.round(P/(P+A)*100)+'%':'—'}</td></tr>`}).join('');
+  rows+=`<tr class="g"><td>Total</td>${[...Array(12)].map(()=>'<td></td>').join('')}<td class="n">${tp}</td><td class="n">${ta}</td><td class="n">${tp+ta?Math.round(tp/(tp+ta)*100)+'%':'—'}</td></tr>`;
+  const title=`Register · ${y}${bl}`;
+  openPrint(title,st+`<h1>${esc(title)}</h1><div class="m">Each month shows days present / days absent · Printed ${esc(fmtAt(new Date().toISOString()))}</div><table><thead><tr><th>Child</th>${MON.map(m=>`<th class="c">${esc(m)}</th>`).join('')}<th class="n">Present</th><th class="n">Absent</th><th class="n">%</th></tr></thead><tbody>${rows}</tbody></table>`,true)}
+function regPrintCard(){const k=ui.rpKind||'month',y=new Date().getFullYear();
+  return `<details class="card flt" id="rpbox"${ui.rpOpen?' open':''}><summary><span><span class="pmx"></span> Print register (PDF)</span><span class="fsum">Month or year <span class="chev">▾</span></span></summary>
+  <div class="grid3"><label class="fld"><span>Period</span><select id="tf-rp-kind" data-uiset="rpKind"><option value="month"${k==='month'?' selected':''}>Month</option><option value="year"${k==='year'?' selected':''}>Year</option></select></label>
+  ${k==='month'?`<label class="fld"><span>Month</span><input type="month" id="tf-rp-month" value="${todayIso().slice(0,7)}"></label>`:`<label class="fld"><span>Year</span><select id="tf-rp-year">${[y,y-1,y-2].map(v=>`<option>${v}</option>`).join('')}</select></label>`}</div>
+  <div class="actions"><button class="btn primary" data-act="regprint">Print PDF</button><span class="muted small">Uses the branch chosen above. Choose "Save as PDF" in the print window.</span></div></details>`}
+function apprHist(){const done=S.papprove.filter(r=>r.status==='approved').sort((a,b)=>(b.decidedAt||'').localeCompare(a.decidedAt||'')).slice(0,30);
+  if(!done.length)return '';
+  return `<h3 class="ibh">Approved planning</h3><div class="iblist">${done.map(r=>`<div class="ibrow ibap">${av(r.staffId,nm('staff',r.staffId))}<span class="ibm"><b>${esc(nm('staff',r.staffId))} <small class="muted">· approved ${esc(ibTime(r.decidedAt))}</small></b><span class="ub">Week ${isoWeek(parse(r.ws))} · ${esc(fmt(r.ws).slice(4))} – ${esc(fmt(iso(addDays(parse(r.ws),4))).slice(4))}</span></span><span class="acts"><button class="btn sm" data-act="ibplan" data-s="${r.staffId}" data-ws="${r.ws}">Open week</button></span></div>`).join('')}</div>`}
+
+/* ---------- pilot round 8 ---------- */
+function qdBtn(done,act,ds,dis,label){return `<button class="qdone${done?' on':''}" data-act="${act}" ${ds}${dis?' disabled':''} aria-pressed="${done}" aria-label="${done?'Done. Tap to undo':'Mark '+esc(label||'')+' done'}">${done?'<span aria-hidden="true">✓</span> Done':'Done'}</button>`}
+const planQd=()=>PILOTNOTE&&ui.tab==='plan';
+function testCard(r,isOpen){const t=r.o,x=[t.time?tRange(t):'',nm('children',t.childId),nm('grades',t.gradeId),nm('curriculum',t.curId)].filter(Boolean).join(' · ');
+  return `<div class="tlc tltest slim qrow${t.done?' tdone':''}${isOpen?' tlx':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}</span><span class="tlsub">${x?' · '+x:''}</span></span></span></button>${qdBtn(!!t.done,'testdone',`data-id="${t.id}"`,false,r.t)}${isOpen?`<div class="tlbody"><div class="tlacts">${canTest(t)?`<button class="btn" data-act="edittest" data-id="${t.id}">Edit test</button><button class="btn danger" data-act="del" data-c="tests" data-id="${t.id}">${ui.confirmDel==='tests'+t.id?'Tap again to delete':'Delete test'}</button>`:'<span class="small muted">Only the person who added this test can change it.</span>'}</div></div>`:''}</div>`}
+function planView(){return PILOTNOTE?`<div class="mmx" role="group" aria-label="Row size"><button class="${ui.planFull?'':'on'}" data-act="planfull" data-v="0" aria-pressed="${!ui.planFull}">Min</button><button class="${ui.planFull?'on':''}" data-act="planfull" data-v="1" aria-pressed="${!!ui.planFull}">Max</button></div>`:''}
+
+/* ---------- pilot round 9: weekly plan lock ---------- */
+const wkLock=(sid,d)=>{if(!PILOTNOTE||!sid||sid==='*'||!d)return null;const r=byId('papprove',papId(sid,iso(mondayOf(parse(d)))));return r&&(r.status==='submitted'||r.status==='approved')?r:null};
+const wkReq=(sid,ws)=>S.feedback.find(f=>f.kind==='unlock'&&f.scope==='week'&&f.from===sid&&f.date===ws&&!f.closed);
+function wkGuard(b){if(!PILOTNOTE||ui.mgr||!ui.me)return false;const a=b.dataset.act;
+  if(!['psopen','pbopen','copyweek','editplan','slotadd','psave','pbsave'].includes(a)&&!(a==='del'&&b.dataset.c==='plans'))return false;
+  const p=b.dataset.id&&byId('plans',b.dataset.id),d=b.dataset.d||(p&&p.date)||(a==='copyweek'?iso(ui.ws):(ui.ps&&ui.ps.date)||plDaySel());
+  const r=wkLock(ui.me,d);if(!r)return false;
+  toast(`Week ${isoWeek(parse(r.ws))} planning is ${r.status==='approved'?'approved':'with your manager'}. Tap "Request unlock" to change it.`);return true}
+
+/* ---------- pilot round 10 ---------- */
+function qBar(cur){const has=k=>tabsFor().some(t=>t[0]===k),L=[['reg','Register'],['plan','Plan'],['time','Timetable'],['inc','Incidents']].filter(([k])=>has(k));
+  return `<div class="qbar" role="group" aria-label="Go to">${L.map(([k,l])=>`<button class="btn sm${k===cur?' primary':''}" data-act="tab" data-t="${k}"${k===cur?' aria-current="page"':''}>${l}</button>`).join('')}</div>`}
+/* notices: green unread, unread again, remind me */
+const ntcSnz=()=>{try{return JSON.parse(lsGet('ntcsnz_'+meKey())||'{}')}catch(e){return {}}};
+const ntcSave=r=>lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)));
+const SNZ=[[15,'in 15 min'],[30,'in 30 min'],[60,'in 1 hour'],[120,'in 2 hours'],[180,'in 3 hours']];
+function ntcRows(items){const sz=ntcSnz();return items.map(({el,k,read})=>{let open='';
+  if(el.tagName==='BUTTON'&&el.dataset.act){const ds=Object.entries(el.dataset).map(([a,v])=>`data-${a.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}="${esc(v)}"`).join(' ');open=`<button class="btn xs ntcopen" ${ds} data-ntcgo="1">Open</button>`;const dv=document.createElement('div');dv.className=el.className;dv.innerHTML=el.innerHTML;el=dv}
+  const until=sz[k];
+  return `<div class="ntc ntcp${read?' read':''}" data-act="ntcread" data-nk="${k}" title="${read?'Read':'Tap to mark as read'}">${read?'':'<span class="ntcdot" aria-label="New"></span>'}<div class="ntcb">${el.outerHTML}</div><span class="ntcctl">${open}
+    ${until?`<span class="ntcz" title="Reminder set">⏰ ${esc(fmtAt(until).split(' ').pop())}</span><button class="btn xs" data-act="ntcsnzx" data-nk="${k}" aria-label="Cancel reminder">✕</button>`:`<select class="ntcsnz" data-act="noop" data-snz="${k}" aria-label="Remind me later"><option value="">Remind me</option>${SNZ.map(([m,l])=>`<option value="${m}">${l}</option>`).join('')}</select>`}
+    ${read?`<button class="btn xs" data-act="ntcunread" data-nk="${k}">Unread</button>`:''}</span></div>`}).join('')}
+function vNoticesP(){let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
+  let h=`<div class="row spread"><h2 style="margin:0">Notices${n?` <span class="count">${n} new</span>`:''}</h2><span class="actions">${n?'<button class="btn sm" data-act="ntcall">Mark all as read</button>':''}<button class="btn sm" data-act="tab" data-t="home">Back to Today</button></span></div><div class="small muted">Green = new. Tap to mark as read. Use Remind me to see it again later.</div>`;
+  if(!items.length)return h+'<div class="card empty">No notices right now. All caught up.</div>';
+  return h+`<div class="halerts">${ntcRows(items)}</div>`}
+function ntcModal(){if(document.getElementById('ntm'))return true;if(!loaded||!signedIn()||ui.viewing)return false;
+  if(ui.ntcDone||lsGet('ntcpop_'+meKey())===todayIso())return false;let items=[];try{items=noticeItems()}catch(e){}if(!items.some(x=>!x.read)){ui.ntcDone=true;return false}
+  if(ui.tab!=='home')return true;ui.ntcDone=true;
+  const m=document.createElement('div');m.id='ntm';m.className='modal';document.body.appendChild(m);ntcModalFill();return true}
+function ntcModalFill(){const m=document.getElementById('ntm');if(!m)return;let items=[];try{items=noticeItems()}catch(e){}const n=items.filter(x=>!x.read).length;
+  m.innerHTML=`<div class="modalcard ntmcard" role="dialog" aria-modal="true" aria-labelledby="ntmh"><div class="row spread"><h2 id="ntmh" style="margin:0">Read your notices first</h2>${n?`<span class="count">${n} new</span>`:''}</div>
+  <p class="small muted" style="margin:0">Tap each notice once you have read it. Then go to your tasks for the day.</p><div class="halerts ntmlist">${ntcRows(items)}</div>
+  <div class="actions"><button class="btn primary" data-act="ntmclose" data-all="1">${n?'Mark all read and see my tasks':'See my tasks'}</button>${n?'<button class="btn" data-act="ntmclose">Later</button>':''}</div></div>`}
+function ntcTick(){if(!signedIn())return;const sz=ntcSnz(),now=new Date().toISOString(),due=Object.keys(sz).filter(k=>sz[k]<=now);if(!due.length)return;
+  const r=ntcRead().filter(k=>!due.includes(k));ntcSave(r);due.forEach(k=>delete sz[k]);lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));
+  let txt='';try{const it=noticeItems().find(x=>due.includes(x.k));if(it)txt=it.el.textContent.replace(/\s+/g,' ').trim()}catch(e){}
+  toast('Reminder: '+(txt||'a notice is waiting'),6000);try{if('Notification' in window&&Notification.permission==='granted')new Notification('Aldeia reminder',{body:txt||'A notice is waiting'})}catch(e){}
+  render()}
+if(PILOTNOTE)setInterval(ntcTick,30000);
+/* staff messages, chat style */
+function stPeers(){const me=ui.me,set=new Set(['manager']);S.feedback.forEach(f=>{if(f.deleted)return;if(f.from===me&&f.to&&f.to!=='manager'&&f.to!=='*')set.add(f.to);if(f.to===me&&f.from&&f.from!=='manager')set.add(f.from)});return [...set]}
+function stEvents(peer){const me=ui.me,ev=[];
+  S.feedback.forEach(f=>{const inT=peer==='manager'?((f.from===me&&f.to==='manager')||((!f.from||f.from==='manager')&&(f.to===me||f.to==='*'))):((f.from===me&&f.to===peer)||(f.from===peer&&f.to===me));if(!inT)return;
+    ev.push({t:'f',at:f.at||'',f,me:f.from===me});S.replies.filter(r=>r.fid===f.id).forEach(r=>ev.push({t:'r',at:r.at||'',r,f,me:r.by===me}))});
+  return ev.sort((a,b)=>a.at.localeCompare(b.at))}
+const stSeenK=p=>'stseen_'+p+'_'+meKey();
+const stName=p=>p==='manager'?'Manager':staffLabel(byId('staff',p)||{})||'Staff';
+function vFbStaffP(){const peer=ui.stChat;if(peer)return stThread(peer);
+  const rows=stPeers().map(p=>{const ev=stEvents(p),last=ev[ev.length-1],seen=lsGet(stSeenK(p))||'';return {p,last,unread:ev.filter(e=>!e.me&&e.at>seen&&!(e.f&&e.f.deleted)).length}}).sort((a,b)=>(b.last?b.last.at:'').localeCompare(a.last?a.last.at:'')||(a.p==='manager'?-1:1));
+  let h=`<div class="row spread"><h2 style="margin:0">Messages</h2></div><div class="iblist">${rows.map(x=>{const t=x.last?(x.last.t==='r'?x.last.r.text:x.last.f.text):'No messages yet';
+    return `<button class="ibrow" data-act="stopen" data-s="${esc(x.p)}">${av(x.p==='manager'?'mgr':x.p,stName(x.p))}<span class="ibm"><b>${esc(stName(x.p))}${x.last?` <small class="muted">· ${esc(ibTime(x.last.at))}</small>`:''}</b><span class="${x.unread?'ub':''}">${x.last&&x.last.me?'You: ':''}${esc((t||'').slice(0,80))}</span></span>${x.unread?`<span class="ibn">${x.unread}</span>`:''}</button>`}).join('')}</div>`;
+  h+=`<div class="card"><div class="addnew"><select id="tf-stnew" aria-label="Start a chat with"><option value="">New chat with…</option>${sortByName('staff').filter(x=>x.id!==ui.me&&!stPeers().includes(x.id)).map(x=>`<option value="${x.id}">${esc(staffLabel(x))}</option>`).join('')}</select><button class="btn sm primary" data-act="stnew">Start chat</button></div></div>`;
+  return h}
+function stThread(peer){const ev=stEvents(peer);if(ev.length)lsSet(stSeenK(peer),new Date().toISOString());
+  let h=`<div class="ibhead"><button class="iconx" data-act="stback" aria-label="Back to chats">‹</button>${av(peer==='manager'?'mgr':peer,stName(peer))}<div style="flex:1;min-width:0"><b>${esc(stName(peer))}</b></div></div><div class="ibchat">`;
+  let day='';ev.forEach(e=>{const d=(e.at||'').slice(0,10);if(d&&d!==day){day=d;h+=`<div class="dpill">${esc(relDay(d))}</div>`}
+    let body='',cls=e.me?'bub me':'bub';
+    if(e.t==='f'){const f=e.f,k=fbKind(f),lab=f.to==='*'?'To all staff':k==='fb'||k==='staff'||k==='note'?'':(KIND_LABEL[k]||'')+(f.date?' · '+fmt(f.date):'');
+      if(f.deleted){cls+=' gone';body=`<s>${esc(f.text)}</s>`}
+      else{const done=(f.doneBy||{})[ui.me],ok=(f.approvedFor||{})[ui.me];
+        body=`${lab?`<div class="bl">${esc(lab)}</div>`:''}<div class="bt">${esc(f.text)}</div>${f.kind==='unlock'?fbStatus(f):''}${!e.me&&(!f.from||f.from==='manager')&&!f.kind?`<label class="bdone"><input type="checkbox" data-fbdone="${f.id}"${done?' checked':''}> Done${ok?' · <span class="ok">approved</span>':done?' · waiting for approval':''}</label>`:''}`}}
+    else body=`<div class="bq">${esc((e.f.text||'').slice(0,90))}</div><div class="bt">${esc(e.r.text)}</div>`;
+    h+=`<div class="${cls}">${body}<div class="bm">${esc(hhmm(e.at))}</div></div>`});
+  if(!ev.length)h+='<div class="muted small" style="text-align:center;padding:20px">No messages yet. Say hello.</div>';
+  h+=`</div><form class="ibcomp" data-act="stsend" data-s="${esc(peer)}"><input type="text" id="tf-stc" placeholder="Message ${esc(stName(peer).split(' ')[0])}" autocomplete="off" aria-label="Message to ${esc(stName(peer))}"><button class="btn primary" type="submit">Send</button></form>`;
+  return h}
+
+/* ---------- pilot round 11: birthdays ---------- */
+const bdCol=c=>c&&c.sex==='boy'?'boy':'girl';
+const bdOn=d=>bdKids().filter(c=>c.dob&&c.dob.slice(5)===d.slice(5));
+function bdStars(d){if(!PILOTNOTE)return '';const ks=bdOn(d);if(!ks.length)return '';const cols=[...new Set(ks.map(bdCol))];
+  return `<span class="sdstars" aria-label="Birthday: ${esc(ks.map(c=>c.name).join(', '))}" title="Birthday: ${esc(ks.map(c=>c.name).join(', '))}">${cols.map(k=>`<span class="sdstar ${k}">★</span>`).join('')}</span>`}
+const waNum=n=>{let d=String(n||'').replace(/\D/g,'');if(d.startsWith('00'))d=d.slice(2);if(d.startsWith('0'))d='27'+d.slice(1);return d};
+const bdMsg=c=>`Happy birthday to ${(c.name||'').split(' ')[0]} from all of us at Aldeia! 🎉 Have a wonderful day.`;
+const bdMinK=(c,d)=>'bdmin_'+c.id+'_'+d+'_'+meKey();
+function bdWa(c){const msg=bdMsg(c);
+  const ps=[['p1','p1cell'],['p2','p2cell']].filter(([n,k])=>c[k]);
+  if(!ps.length)return `<a class="btn sm wab" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp a greeting</a><div class="small muted">Add a parent cellphone in Setup → Children to send it straight to the parent.</div>`;
+  return ps.map(([n,k])=>`<a class="btn sm wab" href="https://wa.me/${waNum(c[k])}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp ${esc(c[n]||'parent')}</a>`).join('')}
+function bdBarP(d){const nx=iso(addDays(parse(d),1)),age=(c,dt)=>{const y=Number((c.dob||'').slice(0,4));return y>1900?Number(dt.slice(0,4))-y:null};
+  const td=bdOn(d),tm=bdOn(nx);if(!td.length&&!tm.length)return '';
+  return `<div class="bdcards">${td.map(c=>{const a=age(c,d);if(lsGet(bdMinK(c,d)))return `<div class="bdc soon ${bdCol(c)}"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">${esc(c.name)}${a?` turns ${a}`:''} today</div><button class="bdx" data-act="bdmin" data-c="${c.id}" data-d="${d}" aria-label="Show birthday card" title="Show">+</button></div>`;
+    const showM=ui.bdMsg===c.id;return `<div class="bdc ${bdCol(c)}"><button class="bdx" data-act="bdmin" data-c="${c.id}" data-d="${d}" aria-label="Minimise birthday card" title="Minimise">−</button><span class="bdcs" aria-hidden="true">★</span><div class="bdct">${esc(c.name)}${a?` turns ${a}`:''} today</div><div class="bdcsub">${esc([nm('grades',c.gradeId),nm('branches',c.branchId)].filter(Boolean).join(' · '))}</div><div class="bdcwa">${bdWa(c)}<button class="btn sm" data-act="bdmsg" data-c="${c.id}" aria-expanded="${showM}">${showM?'Hide message':'Show message'}</button></div>${showM?`<div class="bdmsgbox"><span id="bdm-${c.id}">${esc(bdMsg(c))}</span><button class="bdcopy" data-act="bdcopy" data-c="${c.id}" aria-label="Copy message" title="Copy"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div>`:''}</div>`}).join('')}
+  ${tm.map(c=>{const a=age(c,nx);return `<div class="bdc soon ${bdCol(c)}"><span class="bdcs sm" aria-hidden="true">★</span><div class="bdct sm">Tomorrow: ${esc(c.name)}${a?` turns ${a}`:''}</div></div>`}).join('')}</div>`}
+function bdPosterCard(){return `<div class="card"><h3>Birthday poster (PDF)</h3><div class="grid2"><label class="fld"><span>Month</span><input type="month" id="tf-bdp-month" value="${todayIso().slice(0,7)}"></label><label class="fld"><span>Branch</span><select id="tf-bdp-br">${opt('branches',ui.f.branch||'','All branches')}</select></label></div>
+  <div class="actions"><button class="btn primary" data-act="bdposter">Print poster</button><span class="muted small">A page for the classroom wall. Choose "Save as PDF" in the print window.</span></div></div>`}
+function bdPoster(){const m=val('tf-bdp-month')||todayIso().slice(0,7),[y,mo]=m.split('-').map(Number),br=val('tf-bdp-br');
+  const ks=sortByName('children').filter(c=>c.dob&&Number(c.dob.slice(5,7))===mo&&(!br||c.branchId===br)).sort((a,b)=>a.dob.slice(8).localeCompare(b.dob.slice(8)));
+  if(!ks.length){toast(`No children's birthdays in ${MON_LONG[mo-1]}.`);return}
+  const st=`<style>.pt{text-align:center;margin:10px 0 18px}.pt .ck{font-size:46px}.pt h1{font-size:34px;color:#b0124f;margin:4px 0}.r{display:flex;align-items:center;gap:14px;border-bottom:2px dashed #ffb3d1;padding:10px 4px;font-size:20px;max-width:680px;margin:0 auto}.a{width:44px;height:44px;border-radius:22px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;flex:none}.girl{background:#ff2d87}.boy{background:#2f7fd6}.r b{flex:1}.dd{color:#b0124f;font-weight:800}</style>`;
+  const rows=ks.map(c=>{const a=Number(c.dob.slice(0,4))>1900?y-Number(c.dob.slice(0,4)):null;return `<div class="r"><span class="a ${bdCol(c)}">${esc((c.name||'?')[0])}</span><b>${esc(c.name)}${a?` · turns ${a}`:''}</b><span class="dd">${Number(c.dob.slice(8))} ${MON[mo-1]}</span></div>`}).join('');
+  openPrint(`${MON_LONG[mo-1]} birthdays`,st+`<div class="pt"><div class="ck">🎂</div><h1>${MON_LONG[mo-1]} birthdays</h1><div class="m">Aldeia${br?' · '+esc(nm('branches',br)):''}</div></div>${rows}`)}
+
+/* ---------- pilot round 12 ---------- */
+function incOpen(k,t){const on=ui.incSec===k;return `<div class="card incsec incsec-${k}${on?' on':''}"><button class="rsh" data-act="incsec" data-v="${k}" aria-expanded="${on}"><span class="pmb${on?'':' c'}" aria-hidden="true">${on?'−':'+'}</span><b>${t}</b></button><div class="incbody"${on?'':' hidden'}>`}
+const incClose=()=>'</div></div>';
 /* ---------- home (design E) ---------- */
 function homeDay(){if(ui.homeDay)return ui.homeDay;const t=todayIso(),wd=parse(t).getDay();return (wd===0||wd===6)?iso(mondayOf(new Date())):t}
 function vHome(){
@@ -1368,23 +1768,24 @@ function vHome(){
   const its=itemsFor([d]).filter(i=>i.st!=='off'),pls=plansFor([d]),tot=its.length+pls.length,dn=its.filter(i=>i.st==='done').length+pls.filter(p=>p.done).length;
   let h=`<div class="hhead"><div class="hgreet">${greet}</div><div class="hdrow"><div><div class="hdate">${DAYS_LONG[parse(d).getDay()]} ${parse(d).getDate()} ${MON_LONG[parse(d).getMonth()]}${d!==t?` <button class="hlink" data-act="htoday">Back to today</button>`:''}</div><div class="hweek">Week ${isoWeek(parse(d))}${termLabel(d)}</div></div>
     <div class="harrows"><button aria-label="Previous day" data-act="hday" data-n="-1">‹</button><button aria-label="Next day" data-act="hday" data-n="1">›</button></div></div>
-    <div class="hprog"><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div></div>`;
+    ${PILOTNOTE?homeStrip(d):''}<div class="hprog"${PILOTNOTE?' hidden':''}><div class="row spread"><b>${dn} of ${tot} done</b><b>${pct(dn,tot)}%</b></div><div class="hbar"><i style="width:${pct(dn,tot)}%"></i></div></div>${PILOTNOTE?'<div class="hquick">'+qBar('home')+'</div>':''}</div>`;
   h+=PILOT?homeNoticeLine()+bdBar(d):`<div class="halerts">${backupDue()}${fbNotice()}${homeMissed()}${homeBday()}${reminders()}</div>`;
   const rows=[];
   its.forEach(i=>{const k=i.r.id+'|'+i.date+'|'+i.sid,e=entryMap[ekey(i.r,i.date,i.sid)]||{};rows.push({type:'task',key:'t:'+k,k,s:oStart(i.r),e:oEnd(i.r),t:i.r.text,o:i.r,done:i.st==='done',miss:i.st==='missed',who:i.cover||i.sid,cover:i.cover?i.sid:'',lock:signed(i.sid,i.date)&&!ui.mgr,comment:e.comment,photos:e.photos})});
   pls.forEach(p=>{const lk=p.staffId!=='*'&&plocked(p.staffId,p.date);rows.push({type:'plan',key:'p:'+p.id,id:p.id,s:oStart(p),e:oEnd(p),t:p.text,o:p,done:!!p.done,who:p.staffId,lock:lk&&!ui.mgr,comment:p.comment,photos:p.photos,cover:coverOf(p)?p.staffId:''})});
   breaksFor().forEach(b=>rows.push({type:'brk',key:'b:'+b.id,s:b.start||'99',e:b.end||'',t:b.name||'Break'}));
-  if(PILOT)bdRows(d).forEach(x=>rows.push({type:'bday',key:'bd:'+x.id,s:'06:55',e:'',t:x.t}));
-  testsOnDate(d).forEach(x=>rows.push({type:'test',key:'x:'+x.id,s:x.time||'99',e:'',t:'Test: '+(x.title||''),o:x}));
+  if(PILOT)bdRows(d).forEach(x=>rows.push({type:'bday',key:'bd:'+x.id,s:'06:55',e:'',t:x.t,boy:x.boy}));
+  testsOnDate(d).forEach(x=>rows.push({type:'test',key:'x:'+x.id,s:x.time||'99',e:x.timeEnd||'',t:'Test: '+(x.title||''),o:x}));
   rows.sort((a,b)=>a.s.localeCompare(b.s));
   if(!rows.length)return h+`<div class="card empty">Nothing scheduled for ${d===t?'today':fmt(d)}.<button class="btn primary" data-act="tab" data-t="plan">Add planning</button></div>`;
   const toM=x=>x&&x!=='99'?Number(x.slice(0,2))*60+Number(x.slice(3,5)):null;
   let cur=null;if(d===t){const act=rows.filter(r=>(r.type==='task'||r.type==='plan')&&!r.done&&toM(r.s)!=null);
     cur=act.find(r=>toM(r.s)<=nowM&&nowM<(toM(r.e)||toM(r.s)+30))||act.find(r=>toM(r.s)>nowM)||null}
-  const open=ui.homeOpen==='__none'?null:(ui.homeOpen||(cur&&cur.key));ui.homeOpenEff=open;
+  const open=ui.homeOpen==='__none'?null:(ui.homeOpen||(PILOTNOTE?null:cur&&cur.key));ui.homeOpenEff=open;
   const card=r=>{
     if(r.type==='brk')return `<div class="tlc tlbrk">${esc(r.t)} · ${esc(r.s)}${r.e?'–'+esc(r.e):''}</div>`;
-    if(r.type==='bday')return `<div class="tlc tlbday"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
+    if(r.type==='bday')return `<div class="tlc tlbday${PILOTNOTE&&r.boy?' boy':''}"><span class="tlhit"><span class="tlt">${esc(r.t)}</span><span class="tlsub">Reminder · 06:55</span></span></div>`;
+    if(r.type==='test'&&PILOTNOTE)return testCard(r,open===r.key);
     if(r.type==='test')return `<div class="tlc tltest"><b>${esc(r.t)}</b><div class="tlsub">${[nm('grades',r.o.gradeId),nm('curriculum',r.o.curId)].filter(Boolean).map(esc).join(' · ')}</div></div>`;
     const isNow=cur&&cur.key===r.key,isOpen=open===r.key,o=r.o;
     const sub=[r.s!=='99'?r.s+(r.e?'–'+r.e:''):'Any time',r.type==='task'?'Task':'Plan',o.childId&&nm('children',o.childId),tName(o.topicId)||nm('curriculum',o.curriculumId),(ui.mgr||r.cover)&&nm('staff',r.who)].filter(Boolean).map(esc).join(' · ');
@@ -1395,11 +1796,11 @@ function vHome(){
       act=`${r.comment&&!editing?`<div class="cmt">${esc(r.comment)}</div>`:''}${thumbs(r.photos)}`;
       if(editing)act+=r.type==='task'?`<textarea data-comment="${r.k}" rows="2" placeholder="Type your comment">${esc(r.comment||'')}</textarea><div class="actions"><button class="btn sm primary" data-act="csave" data-k="${r.k}">Save comment</button><button class="btn sm" data-act="cclose" data-k="${r.k}">Cancel</button></div>`
         :`<textarea id="pc-${r.id}" rows="2" placeholder="Type your comment">${esc(r.comment||'')}</textarea><div class="actions"><button class="btn sm primary" data-act="pcsave" data-id="${r.id}">Save comment</button><button class="btn sm" data-act="pcclose" data-id="${r.id}">Cancel</button></div>`;
-      else if(!r.lock)act+=`<div class="tlacts"><button class="btn ${r.done?'':'primary'} tlgo" data-act="${r.type==='task'?'hdone':'hpdone'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.done?'Undo':'Done'}</button><button class="btn" data-act="${r.type==='task'?'copen':'pcopen'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.comment?'Edit comment':'Comment'}</button>${photoOk?`<button class="btn tlph" aria-label="Add photo" data-act="photopick" data-kind="${r.type==='task'?'entry':'plan'}" data-k="${r.type==='task'?r.k:r.id}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l2-3h4l2 3"/></svg></button>`:''}</div>`;
+      else if(!r.lock)act+=`<div class="tlacts">${PILOTNOTE?'':`<button class="btn ${r.done?'':'primary'} tlgo" data-act="${r.type==='task'?'hdone':'hpdone'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.done?'Undo':'Done'}</button>`}<button class="btn" data-act="${r.type==='task'?'copen':'pcopen'}" ${r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`}>${r.comment?'Edit comment':'Comment'}</button>${photoOk?`<button class="btn tlph" aria-label="Add photo" data-act="photopick" data-kind="${r.type==='task'?'entry':'plan'}" data-k="${r.type==='task'?r.k:r.id}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l2-3h4l2 3"/></svg></button>`:''}</div>`;
       else act+='<div class="small muted">This day is locked. Ask your manager to unlock it.</div>';
       if(PILOT&&ui.isMgr)act+=r.type==='task'?`<div class="tlmgr"><button class="btn sm danger" data-act="del" data-c="resp" data-id="${o.id}">${ui.confirmDel==='resp'+o.id?'Tap again to delete':'Delete this responsibility'}</button>${o.staffId==='*'?'<span class="small muted">This task is for all staff, so it is deleted for everyone. To stop it for one person only, use Re-assign or Archive under Responsibilities.</span>':''}</div>`:`<div class="tlmgr"><button class="btn sm danger" data-act="del" data-c="plans" data-id="${r.id}">${ui.confirmDel==='plans'+r.id?'Tap again to delete':'Delete this plan'}</button></div>`;
     }
-    return `<div class="tlc ${r.done?'tldone':'tlopen'}${r.miss?' tlmiss':''}${isOpen?' tlx':''}${r.type==='plan'?' tlplan':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}${PILOT?rIcons(r):''}</span><span class="tlsub">${sub}</span></span>${isNow?'<span class="nowb">NOW</span>':''}</span></button>${tags||act?`<div class="tlbody">${tags?`<div class="meta">${tags}</div>`:''}${act}</div>`:''}</div>`};
+    return `<div class="tlc ${r.done?'tldone':'tlopen'}${r.miss?' tlmiss':''}${isOpen?' tlx':''}${r.type==='plan'?' tlplan':''}${PILOTNOTE?' qrow':''}"><button class="tlhit" data-act="hopen" data-k="${r.key}" aria-expanded="${isOpen}"><span class="tlh"><span><span class="tlt">${esc(r.t)}${PILOT?rIcons(r):''}</span><span class="tlsub">${sub}</span></span>${isNow?'<span class="nowb">NOW</span>':''}</span></button>${PILOTNOTE?qdBtn(!!r.done,r.type==='task'?'hdone':'hpdone',r.type==='task'?`data-k="${r.k}"`:`data-id="${r.id}"`,r.lock,r.t):''}${tags||act?`<div class="tlbody">${tags?`<div class="meta">${tags}</div>`:''}${act}</div>`:''}</div>`};
   h+=`<div class="tline${PILOT&&ui.isMgr?' thin':''}">${rows.map(r=>`<div class="tltime${cur&&cur.key===r.key?' tlnow':''}">${r.s==='99'?'Any':esc(r.s)}</div>${card(r)}`).join('')}</div>`;
   h+=`<div class="hfoot"><button class="btn sm" data-act="tab" data-t="check">Full checklist and week view</button></div>`;
   return h}
@@ -1427,6 +1828,7 @@ function bdayBanner(){const l=bdayList().filter(x=>x.days<=3);if(!l.length)retur
 function vBday(){const f=ui.bdKind||'';const l=bdayList().filter(x=>!f||x.kind===f);
   let h=`<div class="card"><div class="grid2"><label class="fld"><span>Show</span><select data-uiset="bdKind"><option value="">Everyone</option>${['Child','Staff','Parent'].map(k=>`<option value="${k}"${k===f?' selected':''}>${k==='Child'?'Children':k==='Staff'?'Staff':'Parents'}</option>`).join('')}</select></label></div>
     <span class="muted small">Reminders show on the Checklist 3 days before. Add birthdays in Setup → Children (child and parents) and Setup → Staff.</span></div>`;
+  if(PILOTNOTE)h+=bdPosterCard();
   if(!l.length)return h+`<div class="card empty">No birthdays added yet.</div>`;
   const row=x=>`<div class="li"><div class="lt"><b>${esc(x.name)}</b> <span class="pill">${x.kind}</span><div class="muted small">${esc(x.sub||'')}</div>${PILOT?bdLink(x):''}</div><div class="acts" style="text-align:right"><b>${fmt(x.date)}</b><div class="small ${x.days<=3?'bad':'muted'}">${x.days===0?'Today':x.days===1?'Tomorrow':'In '+x.days+' days'}${x.age&&x.kind!=='Parent'?' · turns '+x.age:''}</div></div></div>`;
   const soon=l.filter(x=>x.days<=30),later=l.filter(x=>x.days>30);
@@ -1438,6 +1840,7 @@ function vReg(){const d=focusDay(),kids=regKids(),rec=c=>byId('attendance',d+'_'
   const p=kids.filter(c=>rec(c)&&rec(c).present).length,a=kids.filter(c=>rec(c)&&!rec(c).present).length;
   let h=weekNav();
   if(ui.isMgr)h+=`<div class="card"><div class="grid2"><label class="fld"><span>Branch</span><select data-uiset="regBranch">${opt('branches',ui.regBranch||'','All branches')}</select></label></div></div>`;
+  if(PILOTNOTE)h+=regPrintCard();
   h+=`<div class="row spread"><div class="stats"><span class="pill upcoming">${d===todayIso()?'Today':fmt(d)}</span><span class="pill done">Present ${p}</span><span class="pill missed">Absent ${a}</span><span class="pill">Not marked ${kids.length-p-a}</span></div><button class="btn sm" data-act="attall" data-d="${d}">Mark the rest present</button></div>`;
   if(!kids.length)return h+`<div class="card empty">No children in this branch yet. Add them in Setup → Children.</div>`;
   if(PILOT){const ab=absAlerts().filter(a=>kids.some(k=>k.id===a.cid));if(ab.length)h+=`<div class="banner warnb"><b>Patterns to look at</b>${ab.map(a=>`<span class="small">${esc(a.txt)}</span>`).join('')}</div>`}
@@ -1555,7 +1958,7 @@ function evPanel(){const E=ui.evEdit;if(!E)return '';const o=evObj(E);if(!o)retu
   ${weekly?`<div class="fld"><span>Apply to</span><div class="seg"><label><input type="radio" name="tf-escope" id="tf-esc-one" checked> ${fmt(E.d)} only</label><label><input type="radio" name="tf-escope" id="tf-esc-all"> Every week</label></div></div>`:''}
   ${clashBox('ev')}<div class="actions"><button class="btn primary" data-act="evsave">${ui.clash&&ui.clash.f==='ev'?'Save anyway':'Save'}</button><button class="btn" data-act="evcancel">Cancel</button></div></div>`}
 function vTime(){
-  let h=weekNav()+(ui.mgr?`<div class="card"><div class="grid2"><label class="fld"><span>Staff</span><select data-filter="staff"><option value="">All staff</option>${sortByName('staff').filter(x=>!ui.f.branch||x.branchId===ui.f.branch).map(x=>`<option value="${x.id}"${x.id===ui.f.staff?' selected':''}>${esc(staffLabel(x))}</option>`).join('')}</select></label>
+  let h=weekNav()+(ui.mgr&&!PILOTNOTE?`<div class="card"><div class="grid2"><label class="fld"><span>Staff</span><select data-filter="staff"><option value="">All staff</option>${sortByName('staff').filter(x=>!ui.f.branch||x.branchId===ui.f.branch).map(x=>`<option value="${x.id}"${x.id===ui.f.staff?' selected':''}>${esc(staffLabel(x))}</option>`).join('')}</select></label>
     <label class="fld"><span>Branch</span><select data-filter="branch">${opt('branches',ui.f.branch,'All branches')}</select></label></div></div>`:'')+filtersCard()+evPanel();
   const F0=420,F1=1020,PX=12, ds=selDates();let T0=F0,T1=F1;
   if(ui.mgr&&!ui.f.staff) h+=`<div class="banner info"><span class="small">Showing everyone. Pick one staff member above for a clearer timetable. Tap a block to edit it.</span></div>`;
@@ -1735,6 +2138,8 @@ function unread(){if(!signedIn())return 0;
 function unreadInbox(){if(!signedIn()||!(ui.isMgr||hasPerm('inbox')))return 0;const seen=lsGet(seenKey('inbox'))||'';return unreadIn(fbVisible().filter(f=>fbKind(f)!=='fb'),seen,r=>r.by!=='manager')+photoRecs().filter(x=>x.staffPh&&x.at>seen).length}
 function fbStatus(f){
   if(f.deleted) return '';
+  if(f.kind==='unlock'&&f.scope==='week'){const open=!!wkLock(f.from,f.date)&&!f.closed;
+    return `<div class="row small" style="gap:8px">${open?(ui.mgr?`<button class="btn sm primary" data-act="unlockweek" data-s="${f.from}" data-d="${f.date}">Unlock week ${isoWeek(parse(f.date))}</button>`:'<span class="pill due">Waiting for manager</span>'):'<span class="pill done">Unlocked</span>'}</div>`}
   if(f.kind==='unlock'&&f.scope==='plan'){const open=plocked(f.from,f.date)&&!f.closed;
     return `<div class="row small" style="gap:8px">${open?(ui.mgr?`<button class="btn sm primary" data-act="unlockplan" data-s="${f.from}" data-d="${f.date}">Unlock planning ${fmt(f.date)}</button>`:'<span class="pill due">Waiting for manager</span>'):'<span class="pill done">Unlocked</span>'}</div>`}
   if(f.kind==='unlock'){const open=signed(f.from,f.date)&&!f.closed;
@@ -1762,7 +2167,7 @@ function fbCard(f){
 function selBar(){const sel=[...ui.fbSel].filter(id=>{const f=byId('feedback',id);return f&&!f.deleted&&isMine(f)});if(!sel.length)return '';
   return `<div class="banner"><b>${sel.length} message${sel.length>1?'s':''} selected</b><span class="small">Enter your PIN to delete.${ui.mgr?'':' Your manager still sees deleted messages, crossed out.'}</span>
     <form data-act="fbdel" class="addnew"><input type="password" id="fb-delpw" inputmode="numeric" autocomplete="off" placeholder="PIN"><button class="btn sm danger" type="submit">Delete selected</button><button class="btn sm" type="button" data-act="fbselclear">Cancel</button></form></div>`}
-function vFb(){
+function vFb(){if(PILOTNOTE&&!ui.mgr)return vFbStaffP();
   let h='';
   if(ui.mgr) h+=`<div class="card"><h3>Send a message</h3><label class="fld"><span>To</span><select id="fb-to" data-fbto="1">${opt('staff',ui.fbTo,'Choose staff',[['*','All staff']])}</select></label>
     <label class="fld"><span>Message</span><textarea id="fb-text" rows="3" placeholder="e.g. Great work with the sensory room this week"></textarea></label>
@@ -1829,7 +2234,7 @@ function respDesc(r){
   const when=r.recur==='once'?'Once: '+fmt(r.date):((r.days||[]).length===5?'Mon–Fri':(r.days||[]).map(d=>DAYS[d]).join(', '));
   return [when,timeLabel(r),r.childId&&'Child: '+nm('children',r.childId),nm('grades',r.gradeId),nm('curriculum',r.curriculumId),tName(r.topicId)].filter(Boolean).map(esc).join(' · ');
 }
-function vResp(){
+function vResp(){if(PILOTNOTE)return vRespP();
   let h=respForm();
   const bOf=id=>(byId('staff',id)||{}).branchId;
   const arch=S.resp.filter(r=>r.archived);
@@ -1877,6 +2282,7 @@ const SETUP=[
  {c:'ROLES',t:'Access & roles'},
  {c:'SEC',t:'Security'}
 ];
+if(PILOTNOTE){const ch=SETUP.find(s=>s.c==='children');if(ch){const at=k=>ch.f.findIndex(f=>f.k===k)+1;ch.f.splice(at('dob'),0,{k:'sex',l:'Boy or girl',opts:[['','—'],['girl','Girl'],['boy','Boy']]});ch.f.splice(at('p1'),0,{k:'p1cell',l:'Parent 1 cellphone',type:'tel',ph:'e.g. 082 123 4567'});ch.f.splice(at('p2'),0,{k:'p2cell',l:'Parent 2 cellphone',type:'tel',ph:'e.g. 082 123 4567'})}}
 function secForm(sec){
   const ed=ui.editing[sec.c]?byId(sec.c,ui.editing[sec.c]):null;
   const fields=sec.f.map(f=>{const id=`sf-${sec.c}-${f.k}`,v=ed?(ed[f.k]??''):(f.def||'');
@@ -1902,7 +2308,7 @@ function staffBtns(x){return (hasPerm('viewas')?`<button class="btn sm" data-act
 function vSetup(){
   let h=`<div class="row spread"><h2>Setup</h2><span class="muted small">v${VERSION}</span></div>`;
   const wrap=(sec,body,count)=>`<details class="sec" data-sec="${sec.c}"${ui.open.has(sec.c)?' open':''}><summary>${sec.t}${count!=null?`<span class="count" style="margin-left:auto;margin-right:10px">${count}</span>`:''}</summary><div class="secbody">${body}</div></details>`;
-  SETUP.forEach(sec=>{
+  (PILOTNOTE?[...SETUP].sort((a,b)=>String(a.t).replace(/<[^>]*>/g,'').localeCompare(String(b.t).replace(/<[^>]*>/g,''))):SETUP).forEach(sec=>{
     if(!ui.isMgr&&['staff','branches','RESET','BACKUP','SEC','ROLES','LOG'].includes(sec.c))return;
     if(sec.c==='RESP'){h+=wrap(sec,respForm().replace('class="card" id="respform"','id="respform" style="display:flex;flex-direction:column;gap:10px"')+'<button class="btn" data-act="tab" data-t="resp">See all responsibilities</button>',S.resp.length);return}
     if(sec.c==='RESET'){
@@ -2018,7 +2424,7 @@ async function signOff(sids,on){
   render();toast(on?'Signed off':'Reopened');
 }
 const acts={
-  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
+  tab:b=>{ui.moreOpen=false;ui.tab=b.dataset.t;ui.stChat='';ui.incSec=null;ui.ibChat='';ui.ibSel=null;if(ui.tab==='leave')markSeen('leave');ui.ps=null;ui.plBatch=null;ui.clash=null;if(ui.tab==='req')lsSet('rqseen_'+meKey(),new Date().toISOString());if(!ui.isMgr&&hasPerm(PERM_OF_TAB[ui.tab]))ui.f.staff='';if(ui.tab==='inbox')ui.ibPrev=lsGet(seenKey('inbox'))||'';ui.fbSel=new Set();ui.addOpen=false;ui.evEdit=null;ui.reassign=null;ui.openDays=new Set();ui.focusDay='';ui.clash=null;ui.clearOpen=false;ui.copyOpen=false;lsSet('tab',ui.tab);ui.confirmDel=null;ui.acct=false;render();window.scrollTo(0,0)},
   theme:()=>{const n=effTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=n;lsSet('theme',n);renderChrome()},
   who:()=>{if(!signedIn())return;ui.acct=!ui.acct;render();window.scrollTo(0,0)},
   logout:()=>{ui.me='';ui.mgr=false;ui.acct=false;lsSet('me',null);lsSet('mgr',null);ui.f.staff='';render()},
@@ -2056,10 +2462,12 @@ const acts={
   dtog:b=>{ui.fltOpen=false;const k=b.dataset.k;if(ui.openDays.has(k))ui.openDays.delete(k);else{if(k.startsWith('ib-'))[...ui.openDays].forEach(x=>{if(x.startsWith('ib-'))ui.openDays.delete(x)});if(/^[cp]\d/.test(k))[...ui.openDays].forEach(x=>{if(x[0]===k[0]&&/^[cp]\d/.test(x))ui.openDays.delete(x)});ui.openDays.add(k);if(/^[cp]\d/.test(k))ui.focusDay=k.slice(1)}render()},
   dall:b=>{const p=b.dataset.p,o=b.dataset.o==='1';selDates().forEach(d=>o?ui.openDays.add(p+d):ui.openDays.delete(p+d));render()},
   tscroll:b=>{const t=document.getElementById('tabs');t.scrollBy({left:Number(b.dataset.n)*t.clientWidth*0.7,behavior:'smooth'})},
-  savetest:async()=>{const sj=readSubj('tf'),d={title:(byId('topics',sj.topicId)||{}).name||'',topicId:sj.topicId,childId:val('tf-child'),date:val('tf-date'),gradeId:val('tf-grade'),curId:sj.curriculumId,lead:val('tf-lead')||'3',...(PILOT?{time:val('tf-ttime')}:{}),branchId:ui.mgr?val('tf-branch'):myBranch(),staffId:ui.mgr?val('tf-staff'):'',by:ui.me||'manager'};
+  savetest:async()=>{const sj=readSubj('tf'),d={title:(byId('topics',sj.topicId)||{}).name||'',topicId:sj.topicId,childId:val('tf-child'),date:val('tf-date'),gradeId:val('tf-grade'),curId:sj.curriculumId,lead:val('tf-lead')||'3',...(PILOT?{time:val('tf-ttime')}:{}),...(PILOTNOTE?{timeEnd:val('tf-tend')}:{}),branchId:ui.mgr?val('tf-branch'):myBranch(),staffId:ui.mgr?val('tf-staff'):'',by:ui.me||'manager'};
     fillFromChild(d,'curId');
-    if(!d.topicId){toast('Choose the subject for the test.');return} if(!d.date){toast('Pick the test date.');return}
-    if(await put('tests',newId(),d)){logAct(`Added test "${d.title}" on ${fmt(d.date)}`);ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
+    if(!d.topicId&&!(PILOTNOTE&&ui.editing.test)){toast('Choose the subject for the test.');return} if(!d.date){toast('Pick the test date.');return}
+    if(PILOTNOTE&&(!d.time||!d.timeEnd)){toast('Choose when the test starts and ends.');return} if(PILOTNOTE&&d.timeEnd<=d.time){toast('The test must end after it starts.');return}
+    const eid=PILOTNOTE&&ui.editing.test,old=eid&&byId('tests',eid);if(old){const {id:_i,...o}=old;if(!d.topicId){d.title=o.title||'';d.topicId=o.topicId||''}Object.assign(d,{done:o.done||false,doneBy:o.doneBy||'',doneAt:o.doneAt||'',by:o.by||d.by})}
+    if(await put('tests',eid||newId(),d)){logAct(`${eid?'Edited':'Added'} test "${d.title}" on ${fmt(d.date)}`);ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;ui.openDays.add('p'+d.date);render();toast('Test saved')}},
   savebreak:async()=>{const d={name:val('tf-bname')||'Break',start:val('tf-bstart'),end:val('tf-bend'),branchId:ui.mgr?val('tf-bbranch'):myBranch(),by:ui.me||'manager'};
     if(!d.start){toast('Pick the start time.');return}
     if(await put('breaks',newId(),d)){logAct(`Added break time ${d.name} ${d.start}`);ui.clear.add('tf-');ui.brkOpen=false;render();toast('Break saved')}},
@@ -2099,7 +2507,7 @@ const acts={
   unlockplan:async b=>{const sid=b.dataset.s,d=b.dataset.d,k=sid+'_'+d;S.plocks=S.plocks.filter(x=>x.id!==k);await remove('plocks',k);
     for(const f of S.feedback.filter(f=>f.kind==='unlock'&&f.scope==='plan'&&f.from===sid&&f.date===d&&!f.closed)){const {id,...rest}=f;await put('feedback',id,{...rest,closed:true})}
     logAct(`Unlocked planning on ${fmt(d)} for ${nm('staff',sid)}`);render();toast('Planning unlocked')},
-  requnlock:async b=>{const d=b.dataset.d,sc=b.dataset.scope||'';if(await put('feedback',newId(),{to:'manager',from:ui.me,kind:'unlock',scope:sc,date:d,text:sc==='plan'?`Please unlock my planning for ${fmt(d)}.`:`Please unlock ${fmt(d)} so I can update my ticks.`,at:new Date().toISOString()})){render();toast('Unlock request sent to your manager')}},
+  requnlock:async b=>{const d=b.dataset.d,sc=b.dataset.scope||'';if(await put('feedback',newId(),{to:'manager',from:ui.me,kind:'unlock',scope:sc,date:d,text:sc==='week'?`Please unlock my week ${isoWeek(parse(d))} planning so I can change it.`:sc==='plan'?`Please unlock my planning for ${fmt(d)}.`:`Please unlock ${fmt(d)} so I can update my ticks.`,at:new Date().toISOString()})){render();toast('Unlock request sent to your manager')}},
   unlockday:async b=>{const sid=b.dataset.s,d=b.dataset.d,k=sid+'_'+d;delete soMap[k];await remove('signoffs',k);
     for(const f of S.feedback.filter(f=>f.kind==='unlock'&&f.scope!=='plan'&&f.from===sid&&f.date===d&&!f.closed)){const {id,...rest}=f;await put('feedback',id,{...rest,closed:true})}
     logAct(`Unlocked ${fmt(d)} for ${nm('staff',sid)}`);render();toast('Day unlocked')},
@@ -2153,7 +2561,7 @@ const acts={
   hday:b=>{let d=parse(homeDay());do{d=addDays(d,Number(b.dataset.n))}while(d.getDay()===0||d.getDay()===6);ui.homeDay=iso(d);ui.homeOpen=null;render()},
   htoday:()=>{ui.homeDay=null;ui.homeOpen=null;render()},
   hopen:b=>{const k=b.dataset.k;ui.homeOpen=ui.homeOpenEff===k?'__none':k;render()},
-  hdone:b=>{const [rid,date,sid]=b.dataset.k.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid),cur=!!(entryMap[id]||{}).done;setEntry(id,rid,date,sid,{done:!cur});if(!cur){ui.homeOpen=null;toast('Done')}},
+  hdone:b=>{const [rid,date,sid]=b.dataset.k.split('|'),r=byId('resp',rid);if(!r)return;const id=ekey(r,date,sid),cur=!!(entryMap[id]||{}).done;setEntry(id,rid,date,sid,{done:!cur});if(!cur){ui.homeOpen=null;toast('Done')}if(PILOTNOTE)render()},
   hpdone:b=>{const p=byId('plans',b.dataset.id);if(!p)return;const {id,...rest}=p,v=!p.done;p.done=v;put('plans',id,{...rest,done:v});if(v){checkPlanDone(p.staffId,p.date);ui.homeOpen=null;toast('Done')}render()},
   pcopen:b=>{ui.openC.add('p:'+b.dataset.id);render();document.getElementById('pc-'+b.dataset.id)?.focus()},
   pcclose:b=>{ui.openC.delete('p:'+b.dataset.id);render()},
@@ -2196,9 +2604,10 @@ const acts={
     const d={staffId,date:s.date,session:'',periodId:per?per.id:'',start:per?per.start||'':s.start,end:per?per.end||'':s.end,text:(s.text||'').trim()||tName(s.topicId),
       childIds:kids,childId:kids.length===1?kids[0]:'',groupId:s.who.startsWith('g:')?s.who.slice(2):'',wholeClass:s.who==='class',gradeId:'',curriculumId:s.curriculumId,topicId:s.topicId,
       done:false,photos:[],by:ui.me||'manager',updated:new Date().toISOString()};
+    if(PILOTNOTE&&s.isTest&&(!d.start||!d.end)){toast('A test needs a start and an end time.');return}
     if(checkClash('ps',d,[staffId],[d.date]))return;
     const pid=newId();if(s.rep)d.series=pid;
-    if(await put('plans',pid,d)){if(s.isTest)await put('tests',newId(),{title:tName(d.topicId)||d.text,topicId:d.topicId,childId:kids.length===1?kids[0]:'',date:d.date,time:d.start||'',gradeId:'',curId:d.curriculumId||'',lead:'3',branchId:ui.isMgr?plBranch():myBranch(),staffId,by:ui.me||'manager'});let n=0;if(s.rep){const until=repUntilDefault();for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd});n++}}
+    if(await put('plans',pid,d)){if(s.isTest)await put('tests',newId(),{title:tName(d.topicId)||d.text,topicId:d.topicId,childId:kids.length===1?kids[0]:'',date:d.date,time:d.start||'',timeEnd:d.end||'',gradeId:'',curId:d.curriculumId||'',lead:'3',branchId:ui.isMgr?plBranch():myBranch(),staffId,by:ui.me||'manager'});let n=0;if(s.rep){const until=repUntilDefault();for(let k=1;k<=52;k++){const nd=iso(addDays(parse(d.date),7*k));if(nd>until)break;await put('plans',newId(),{...d,date:nd});n++}}
       ui.ps=null;ui.clash=null;ui.plDay=d.date;ui.clear.add('tf-ps-');render();toast(n?`Saved and repeated for ${n} more week${n===1?'':'s'}`:'Activity saved')}},
   pbopen:b=>{ui.plBatch=b.dataset.d;ui.pb={src:'last'};ui.ps=null;ui.clear.add('tf-pb-');render();window.scrollTo(0,0)},
   pbclose:()=>{ui.plBatch=null;ui.ps=null;render()},
@@ -2217,8 +2626,8 @@ const acts={
     ui.plBatch=null;ui.plDay=d;ui.clear.add('tf-pb-');render();toast(n?`${n} activit${n>1?'ies':'y'} saved for ${fmt(d)}${sk?` · ${sk} already there`:''}`:(sk?'Those are already planned.':'Nothing ticked to save.'))},
   ibtab:b=>{ui.ibTab=b.dataset.v;render()},
   ibfilt:b=>{ui.ibFilt=b.dataset.v;render()},
-  ibopen:b=>{ui.ibChat=b.dataset.s;render();window.scrollTo(0,document.body.scrollHeight)},
-  ibback:()=>{ui.ibChat='';ui.ibSel=null;render()},
+  ibopen:b=>{ui.ibChat=b.dataset.s;ui.ibSel=null;ui.confirmDel=null;render();window.scrollTo(0,document.body.scrollHeight)},
+  ibback:()=>{ui.ibChat='';ui.ibSel=null;ui.confirmDel=null;render()},
   ibsend:async b=>{const sid=b.dataset.s,text=val('tf-ibc');if(!text){toast('Type a message first.');return}
     if(await put('feedback',newId(),{to:sid,text,from:'manager',at:new Date().toISOString()})){logAct('Sent message to '+nm('staff',sid));ui.clear.add('tf-ibc');lsSet(ibSeenK(sid),new Date().toISOString());render();window.scrollTo(0,document.body.scrollHeight)}},
   pltest:b=>{ui.tab='plan';ui.ws=mondayOf(parse(b.dataset.d));ui.plDay=b.dataset.d;render();window.scrollTo(0,0)},
@@ -2264,7 +2673,15 @@ const acts={
     S.ibhide=[...S.ibhide.filter(x=>x.id!==sid),{id:sid,...d}];ui.ibSel=null;ui.confirmDel=null;render();await put('ibhide',sid,d);logAct(`Deleted ${n} message${n>1?'s':''} from the chat with ${nm('staff',sid)}`);toast(`${n} message${n>1?'s':''} deleted`)},
   ibclear:async b=>{const sid=b.dataset.s;if(ui.confirmDel!=='ibchat'+sid){ui.confirmDel='ibchat'+sid;render();return}
     const all=ibEvents(sid),lastAt=all.reduce((m,e)=>e.at>m?e.at:m,''),nowI=new Date().toISOString(),d={clearedAt:lastAt>nowI?lastAt:nowI,hidden:[]};S.ibhide=[...S.ibhide.filter(x=>x.id!==sid),{id:sid,...d}];ui.confirmDel=null;ui.ibChat='';render();await put('ibhide',sid,d);logAct('Deleted the chat with '+nm('staff',sid));toast('Chat deleted')},
-  ntcread:b=>{const k=b.dataset.nk,r=ntcRead();if(!r.includes(k)){r.push(k);lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)))}render()},
+  ntcread:b=>{const k=b.dataset.nk,r=ntcRead();if(!r.includes(k)){r.push(k);lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)))}render();ntcModalFill()},
+  ntcunread:(b,e)=>{e&&e.stopPropagation();const k=b.dataset.nk;ntcSave(ntcRead().filter(x=>x!==k));render();ntcModalFill()},
+  ntcsnzx:(b,e)=>{e&&e.stopPropagation();const sz=ntcSnz();delete sz[b.dataset.nk];lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));render();ntcModalFill()},
+  ntmclose:b=>{lsSet('ntcpop_'+meKey(),todayIso());if(b.dataset.all){const r=ntcRead();noticeItems().forEach(x=>{if(!r.includes(x.k))r.push(x.k)});ntcSave(r)}document.getElementById('ntm')?.remove();ui.homeOpen='__none';render();setTimeout(ydayModal,0)},
+  stopen:b=>{ui.stChat=b.dataset.s;render();window.scrollTo(0,document.body.scrollHeight)},
+  stback:()=>{ui.stChat='';render()},
+  stnew:()=>{const v=val('tf-stnew');if(!v){toast('Choose who to message.');return}ui.stChat=v;render()},
+  stsend:async b=>{const to=b.dataset.s,text=val('tf-stc');if(!text){toast('Type a message first.');return}
+    if(await put('feedback',newId(),{to,from:ui.me,text,at:new Date().toISOString()})){ui.clear.add('tf-stc');lsSet(stSeenK(to),new Date().toISOString());render();window.scrollTo(0,document.body.scrollHeight)}},
   ntcall:()=>{const r=ntcRead();noticeItems().forEach(x=>{if(!r.includes(x.k))r.push(x.k)});lsSet('ntcread_'+meKey(),JSON.stringify(r.slice(-300)));render()},
   moodxl:b=>moodXL(b.dataset.c||''),
   phdel:async b=>{const c=b.dataset.c,id=b.dataset.id,i=Number(b.dataset.i),k='ph'+c+id+i;if(ui.confirmDel!==k){ui.confirmDel=k;render();return}ui.confirmDel=null;
@@ -2273,8 +2690,31 @@ const acts={
   inrange:()=>incRange(),
   rqsec:b=>{ui.rqSec=b.dataset.v;render()},
   rqgo:b=>{ui.tab='req';ui.rqSec=b.dataset.v;ui.moreOpen=false;render();window.scrollTo(0,0)},
+  rowmenu:b=>{ui.rowMenu=ui.rowMenu===b.dataset.k?null:b.dataset.k;ui.confirmDel=null;render()},
+  rowmore:b=>{(ui.rowFull=ui.rowFull||new Set()).add(b.dataset.k);ui.rowMenu=null;render()},
+  rowless:b=>{if(ui.rowFull)ui.rowFull.delete(b.dataset.k);render()},
+  chkmore:()=>{ui.chkMore=!ui.chkMore;render()},
+  chkflt:()=>{ui.chkFlt=!ui.chkFlt;render()},
   hidenudge:()=>{ui.nudgeHide=true;render()},
   shownudge:()=>{ui.tab='check';ui.ws=mondayOf(new Date());ui.day='all';ui.openDays=new Set(['carry']);render();document.querySelector('[data-k="carry"]')?.scrollIntoView({behavior:'smooth',block:'start'})},
+  refresh:()=>{toast('Refreshing…');setTimeout(()=>location.reload(),150)},
+  hdayset:b=>{ui.homeDay=b.dataset.d;ui.homeOpen=null;render()},
+  respsec:b=>{const v=b.dataset.v,cur=ui.editing.resp?'new':(ui.respSec||'list');if(cur==='new'&&ui.editing.resp){ui.editing.resp=null;ui.clear.add('rf-')}ui.respSec=cur===v?'none':v;ui.rowMenu=null;render()},
+  respadd:b=>{ui.editing.resp=null;ui.respSec='new';ui.clear.add('rf-');render();const st=document.getElementById('rf-staff');if(st)st.value=b.dataset.s;[1,2,3,4,5].forEach(n=>{const c=document.getElementById('rf-d'+n);if(c)c.checked=String(n)===b.dataset.n});document.getElementById('respform')?.scrollIntoView({behavior:'smooth',block:'start'})},
+  testdone:b=>{const t=byId('tests',b.dataset.id);if(!t)return;const {id,...r}=t,v=!t.done;Object.assign(t,{done:v,doneBy:v?(ui.me||'manager'):'',doneAt:v?new Date().toISOString():''});put('tests',id,{...r,done:v,doneBy:t.doneBy,doneAt:t.doneAt});logAct(`${v?'Marked':'Unmarked'} test "${t.title}" done`);render()},
+  edittest:b=>{const t=byId('tests',b.dataset.id);if(!t)return;ui.editing.test=t.id;ui.clear.add('tf-');ui.tab='plan';ui.ws=mondayOf(parse(t.date));ui.plDay=t.date;ui.testOpen=true;render();document.getElementById('testbox')?.scrollIntoView({behavior:'smooth',block:'start'})},
+  testcancel:()=>{ui.editing.test=null;ui.clear.add('tf-');ui.testOpen=false;render()},
+  regprint:()=>regPrint(),
+  planfull:b=>{ui.planFull=b.dataset.v==='1';ui.rowMenu=null;render()},
+  unlockweek:async b=>{const sid=b.dataset.s,ws=b.dataset.d,r=byId('papprove',papId(sid,ws));const at=new Date().toISOString();
+    if(r){const {id,...rest}=r;r.status='changes';r.note='Unlocked so you can make changes. Submit again when ready.';r.decidedAt=at;await put('papprove',id,{...rest,status:'changes',note:r.note,decidedAt:at})}
+    for(const f of S.feedback.filter(f=>f.kind==='unlock'&&f.scope==='week'&&f.from===sid&&f.date===ws&&!f.closed)){const {id,...rest}=f;f.closed=true;await put('feedback',id,{...rest,closed:true})}
+    logAct(`Unlocked week ${isoWeek(parse(ws))} planning for ${nm('staff',sid)}`);render();toast('Week unlocked')},
+  bdposter:()=>bdPoster(),
+  incsec:b=>{ui.incSec=ui.incSec===b.dataset.v?null:b.dataset.v;render()},
+  bdmin:b=>{const k='bdmin_'+b.dataset.c+'_'+b.dataset.d+'_'+meKey();lsGet(k)?lsSet(k,''):lsSet(k,'1');render()},
+  bdmsg:b=>{ui.bdMsg=ui.bdMsg===b.dataset.c?null:b.dataset.c;render()},
+  bdcopy:b=>{const c=byId('children',b.dataset.c);if(!c)return;const t=bdMsg(c);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Message copied'),()=>{const r=document.createRange(),el=document.getElementById('bdm-'+c.id);if(el){r.selectNodeContents(el);const sl=getSelection();sl.removeAllRanges();sl.addRange(r);try{document.execCommand('copy');toast('Message copied')}catch(e){toast('Select the text to copy it')}}})},
   search:()=>{ui.tab=ui.tab==='search'?'check':'search';render();window.scrollTo(0,0);document.getElementById('q')?.focus()},
   goto:b=>{const k=b.dataset.k,v=b.dataset.v,d=b.dataset.d;ui.openDays=new Set();ui.focusDay='';
     if(d){ui.ws=mondayOf(parse(d));ui.day=d;}
@@ -2377,9 +2817,9 @@ function saveComment(key,text){
   if(((entryMap[id]||{}).comment||'')===text){render();return}
   setEntry(id,rid,date,sid,{comment:text,cby:ui.me||'manager'});toast('Comment saved');
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.tagName==='FORM')return;if(b.dataset.ntcgo&&document.getElementById('ntm')){document.getElementById('ntm').remove();ui.ntcDone=false}if(wkGuard(b)){e.preventDefault();e.stopPropagation();return}if(ui.rowMenu&&!['rowmenu','del'].includes(b.dataset.act))ui.rowMenu=null;if(ui.chkMore&&b.dataset.act!=='chkmore')ui.chkMore=false;if(ui.confirmDel&&!['del','resetgo','tickall','pwresetall','ibclear','ibseldel','ibsel','phdel'].includes(b.dataset.act))ui.confirmDel=null;acts[b.dataset.act]?.(b,e)});
 document.addEventListener('submit',e=>{e.preventDefault();acts[e.target.dataset.act]?.(e.target)});
-document.addEventListener('change',e=>{const t=e.target;
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.snz){const m=Number(t.value);if(!m)return;const k=t.dataset.snz,sz=ntcSnz();sz[k]=new Date(Date.now()+m*60000).toISOString();lsSet('ntcsnz_'+meKey(),JSON.stringify(sz));const r=ntcRead();if(!r.includes(k)){r.push(k);ntcSave(r)}toast('I will remind you '+(SNZ.find(x=>x[0]===m)||[0,''])[1]);render();ntcModalFill();return}
   if(t.dataset.filter!==undefined){ui.f[t.dataset.filter]=t.value;if(t.dataset.filter==='cur')ui.f.topic='';
     if(t.dataset.filter==='child'){const c=byId('children',t.value);ui.f.grade=c?c.gradeId||'':'';ui.f.cur=c&&(c.curIds||[]).length?c.curIds[0]:'';ui.f.topic=''}
     render();return}
@@ -2406,7 +2846,7 @@ document.addEventListener('change',e=>{const t=e.target;
   if(t.dataset.topic){const p=t.dataset.topic,w=document.getElementById('xn-'+p+'-wrap');
     if(t.value==='__new'){t.value='';if(!val(p+'-cur')){toast('Choose the curriculum first.');return}w.dataset.mode='topic';w.hidden=false;const i=document.getElementById('xn-'+p);i.placeholder='New subject for '+nm('curriculum',val(p+'-cur'))+', e.g. Maths';i.focus()}return}
 });
-document.addEventListener('toggle',e=>{const d=e.target;if(d.id==='fltbox')ui.fltOpen=d.open;if(d.id==='testbox')ui.testOpen=d.open;if(d.id==='brkbox')ui.brkOpen=d.open;if(d.dataset&&d.dataset.sec){if(d.open){ui.open=new Set([d.dataset.sec]);panel.querySelectorAll('details.sec[open]').forEach(x=>{if(x!==d)x.open=false})}else ui.open.delete(d.dataset.sec)}},true);
+document.addEventListener('toggle',e=>{const d=e.target;if(d.id==='fltbox')ui.fltOpen=d.open;if(d.id==='testbox')ui.testOpen=d.open;if(d.id==='rpbox')ui.rpOpen=d.open;if(d.id==='brkbox')ui.brkOpen=d.open;if(d.dataset&&d.dataset.sec){if(d.open){ui.open=new Set([d.dataset.sec]);panel.querySelectorAll('details.sec[open]').forEach(x=>{if(x!==d)x.open=false})}else ui.open.delete(d.dataset.sec)}},true);
 
 /* ---------- theme ---------- */
 function effTheme(){const t=document.documentElement.dataset.theme;if(t)return t;return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}

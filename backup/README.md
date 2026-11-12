@@ -13,3 +13,11 @@ Staff, children, plans and messages are **not** in these files. They live in Fir
 
 - `Aldeia-Staff-Desk-v2.4.0-source.zip`: the working files for this version. `mkbuild.py live` builds the live page, `mkbuild.py` builds the pilot.
 - To go back to v2.3.0, use the v2.3.0 site zip above.
+
+## v2.4.0 live site, saved 12 Nov 2026 before v2.5.0
+
+- `Aldeia-Staff-Desk-v2.4.0-live-site.zip`: the website files exactly as they ran (index.html, sw.js, manifest, icons). To go back, unzip and upload these to the main folder. Also in GitHub history as commit `6622360`.
+
+## v2.5.0 (pilot rounds since 11 Nov moved to the live site), 12 Nov 2026
+
+- `Aldeia-Staff-Desk-v2.5.0-source.zip`: the working files for this version.
