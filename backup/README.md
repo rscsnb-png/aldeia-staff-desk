@@ -21,3 +21,11 @@ Staff, children, plans and messages are **not** in these files. They live in Fir
 ## v2.5.0 (pilot rounds since 11 Nov moved to the live site), 12 Nov 2026
 
 - `Aldeia-Staff-Desk-v2.5.0-source.zip`: the working files for this version.
+
+## v2.5.0 live site, saved 12 Nov 2026 before v2.6.0
+
+- `Aldeia-Staff-Desk-v2.5.0-live-site.zip`: the website files exactly as they ran (index.html, sw.js, manifest, icons). To go back, unzip and upload these to the main folder. Also in GitHub history as commit `a81dc24`.
+
+## v2.6.0 (pilot rounds of 12 Nov afternoon and evening moved to the live site), 12 Nov 2026
+
+- Live is now the same as the pilot, apart from the pilot's own test data, login list and labels.
